@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<TextView 
+		android:id="@+id/shopListTitle"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/shopping_list_title"
+		/>
+	<TextView
+		android:id="@+id/totalSpentText"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/total_spent"
+		android:layout_alignParentBottom="true"
+		/>	
+	<Button
+		android:id="@+id/addItemToShopListButton"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/add_item"
+		android:layout_above="@+id/totalSpentText"
+		/>
+	<ListView
+		android:id="@+id/shopListView"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_below="@+id/shopListTitle"
+		android:layout_above="@+id/addItemToShopListButton"
+		/>
+</RelativeLayout>

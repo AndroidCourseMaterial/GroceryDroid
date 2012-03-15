@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  	xmlns:android="http://schemas.android.com/apk/res/android"
+  	android:layout_width="fill_parent"
+  	android:layout_height="fill_parent">
+  	<TextView
+		android:id="@+id/stockTitle"
+  		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+  		android:text="@string/stock_title"
+  		android:textSize="10dp"
+  		/>
+	<Button
+		android:id="@+id/addItemButton"
+  		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/add_item"	
+		android:layout_alignParentBottom="true"
+		/>
+  	<ListView
+  		android:id="@+id/stockListView"
+  		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+  		android:layout_above="@+id/addItemButton"
+  		android:layout_below="@+id/stockTitle"
+  		/>
+</RelativeLayout>

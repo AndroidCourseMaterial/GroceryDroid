@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="total_spent">Total spent:</string>
+    <string name="shopping_list_title">Shopping List - </string>
+    <string name="number_to_stock_prompt">Number to stock:</string>
+    <string name="unit_prompt">Unit:</string>
+    <string name="reset">Reset</string>
+    <string name="add">Add</string>
+    <string name="add_item">Add Item</string>
+    <string name="stock_title">Stock List</string>
+    <string name="hello">Hello World, MainActivity!</string>
+    <string name="app_name">GroceryDroid</string>
+    <string name="confirm_delete">Are you sure you want to remove this item?</string>
+    <string name="confirm_delete_store">Are you sure you want to remove this store?</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="main_instructions">Choose a shopping list</string>
+    <string name="main_instructions2">Use the menu to add a list</string>
+    <string name="show_all">Show All</string>
+    <string name="hide_bought">Hide Bought</string>
+</resources>

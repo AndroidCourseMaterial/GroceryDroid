@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item 
+		android:id="@+id/shopMenuDone"
+		android:title="Done shopping" 
+		android:titleCondensed="Done shopping"
+		/>
+	<item 
+		android:id="@+id/shopMenuShowHide"
+		android:title="Show all" 
+		android:titleCondensed="Show/hide"
+		/>
+	<item 
+		android:id="@+id/shopMenuReset"
+		android:title="Start over with this list" 
+		android:titleCondensed="Start over with list"
+		/>
+</menu>

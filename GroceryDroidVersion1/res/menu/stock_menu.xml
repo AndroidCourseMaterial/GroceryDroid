@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item 
+		android:id="@+id/stockMenuReloadList"
+		android:title="Use basic list" 
+		android:titleCondensed="Use basic list"
+		/>
+	<item 
+		android:id="@+id/stockMenuResetList"
+		android:title="Reset quantities to 0" 
+		android:titleCondensed="Reset quantities to 0"
+		/>
+</menu>
+
