@@ -19,6 +19,10 @@ If you'd like to see the current status of the project, here's where to look:
 * [Milestones](https://github.com/AndroidCourseMaterial/GroceryDroid/issues/milestones) - 
   What's going into the next version of GroceryDroid.
 
+## Development Environment Setup
+
+**TODO**
+
 ## License
 
 **TODO**
