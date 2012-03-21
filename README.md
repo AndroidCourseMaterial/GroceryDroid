@@ -17,8 +17,8 @@ following pages:
 * [Issues](https://github.com/AndroidCourseMaterial/GroceryDroid/issues) -
   What's currently being worked on.
 
-* [Milestones](https://github.com/AndroidCourseMaterial/GroceryDroid/issues/milestones)
-  - What's going into the next version of GroceryDroid.
+* [Milestones](https://github.com/AndroidCourseMaterial/GroceryDroid/issues/milestones) - 
+  What's going into the next version of GroceryDroid.
 
 ## License
 
