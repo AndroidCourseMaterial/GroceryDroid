@@ -9,9 +9,19 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/** Provide generic functionality to all database adapters */
+/**
+ * Provide generic functionality to all database adapters 
+ *
+ * @author Matthew Boutell, based on code from Kevin Wells.
+ *         Created Mar 29, 2012.
+ */
 public abstract class TableAdapter {
 
+	// TODO: remove the map and refs. This is overkill for me.
+	// TODO: instead, make the actual db be static and singleton. 
+	// Jimmy says: protected getDB() { if not there, calls open once() }
+	// I'm not sure how that fits. See where the db is called.
+	
 	private static Map<SQLiteDatabase, Integer> dbCount;
 
 	private SQLiteOpenHelper dbOpenHelper;
@@ -145,11 +155,6 @@ public abstract class TableAdapter {
 	protected String columnAlias(String column, String alias) {
 		return column + " AS " + alias;
 	}
-
-	//protected String tables(String... args) {
-	//	//TODO implement
-	//	return args[0];
-	//}
 
 	/**
 	 * Format a table name/alias pair

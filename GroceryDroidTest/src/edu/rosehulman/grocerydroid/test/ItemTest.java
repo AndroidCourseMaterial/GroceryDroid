@@ -1,125 +1,209 @@
 package edu.rosehulman.grocerydroid.test;
 
+import java.util.ArrayList;
+
+import android.database.sqlite.SQLiteDatabase;
 import android.test.ActivityInstrumentationTestCase2;
-import android.util.Log;
-import edu.rosehulman.grocerydroid.GroceryDroidActivity;
-import edu.rosehulman.grocerydroid.MyApplication;
+import edu.rosehulman.grocerydroid.MainActivity;
 import edu.rosehulman.grocerydroid.db.DatabaseHelper;
 import edu.rosehulman.grocerydroid.db.ItemDataAdapter;
 import edu.rosehulman.grocerydroid.model.Item;
 import edu.rosehulman.grocerydroid.model.ItemUnitLabel;
 
 /**
- * TODO Put here a description of what this class does.
- *
- * @author boutell.
- *         Created Mar 26, 2012.
+ * Tests Item and ItemDataAdapter.
+ * 
+ * @author Matthew Boutell. Created Mar 26, 2012.
  */
 public class ItemTest extends
-		ActivityInstrumentationTestCase2<GroceryDroidActivity> {
+		ActivityInstrumentationTestCase2<MainActivity> {
 
-	private GroceryDroidActivity mActivity;
-	private Item item;
+	private MainActivity mActivity;
+	private Item bananas;
+	private int idToDelete = 3;
+	private Item oranges;
+	private Item beef;
+
+	private ItemDataAdapter ida;
+	private DatabaseHelper dbHelper;
 	private static float EPSILON = 0.0000001f;
-	
+
 	/**
 	 * Calls another constructor with the given hardcoded info.
-	 *
+	 * 
 	 * @param activityClass
 	 */
 	public ItemTest() {
-		super("edu.rosehulman.grocerydroid", GroceryDroidActivity.class);
+		super("edu.rosehulman.grocerydroid", MainActivity.class);
+	}
+
+	/**
+	 * Purges the database
+	 */
+	public void purgeDb() {
+		SQLiteDatabase db = this.dbHelper.getWritableDatabase();
+		db.beginTransaction();
+		this.dbHelper.onUpgrade(db, 0, 0);
+		db.setTransactionSuccessful();
+		db.endTransaction();
+		//db.close();
 	}
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.mActivity = this.getActivity();
-	
-		Log.d(MyApplication.GD, "Creating single instance of Database Helper in setUp");
-		DatabaseHelper.createInstance(this.mActivity.getApplicationContext(), true);
-        
-		this.item = new Item(17, "Bananas", 4, 2, 1.50f, 1, ItemUnitLabel.bag, true, 28, 4);
+		this.dbHelper = DatabaseHelper.createInstance(this.mActivity);
+		
+		this.bananas = new Item(this.idToDelete, 1, "Bananas", 4, 2, 1.50f, 1,
+				ItemUnitLabel.bag, true, 28, 4);
+		this.oranges = new Item(18, 1, "Oranges", 2, 2, 3.00f, 1,
+				ItemUnitLabel.bag, true, 27, 5);
+		this.beef = new Item(19, 2, "Beef", 3, 1, 4.50f, 1, ItemUnitLabel.lb,
+				true, 30, 8);
+
+		this.ida = new ItemDataAdapter();
+		this.ida.open();
 	}
-	
-	public void testPreconditions() {
-		// Empty
-	}
-	
+
+	/**
+	 * Tests the item operation.
+	 */
 	public void testConstructFullItem() {
-		assertEquals(17, this.item.getId());
-		assertEquals("Bananas", this.item.getName());
-		assertEquals(4, this.item.getnStock());
-		assertEquals(2, this.item.getnBuy());
-		assertEquals(1.50, this.item.getPrice(), EPSILON);
-		assertEquals(1, this.item.getUnitSize(), EPSILON);
-		assertEquals(ItemUnitLabel.bag, this.item.getUnitLabel());
-		assertTrue(this.item.isBought());
-		assertEquals(28, this.item.getStockIdx());
-		assertEquals(4, this.item.getShopIdx());
+		assertEquals(this.idToDelete, this.bananas.getId());
+		assertEquals("Bananas", this.bananas.getName());
+		assertEquals(4, this.bananas.getnStock());
+		assertEquals(2, this.bananas.getnBuy());
+		assertEquals(1.50, this.bananas.getPrice(), EPSILON);
+		assertEquals(1, this.bananas.getUnitSize(), EPSILON);
+		assertEquals(ItemUnitLabel.bag, this.bananas.getUnitLabel());
+		assertTrue(this.bananas.isBought());
+		assertEquals(28, this.bananas.getStockIdx());
+		assertEquals(4, this.bananas.getShopIdx());
 	}
-	
+
+	/**
+	 * Tests the item operation.
+	 */
 	public void testIncrement() {
-		this.item.incrementNumberToBuy();
-		this.item.incrementNumberToBuy();
-		assertEquals(4, this.item.getnBuy());
+		this.bananas.incrementNumberToBuy();
+		this.bananas.incrementNumberToBuy();
+		assertEquals(4, this.bananas.getnBuy());
 	}
-	
+
+	/**
+	 * Tests the item operation.
+	 */
 	public void testResetNumberToBuy() {
-		this.item.resetNumberToBuy();
-		assertEquals(0, this.item.getnBuy());
+		this.bananas.resetNumberToBuy();
+		assertEquals(0, this.bananas.getnBuy());
 	}
-	
+
+	/**
+	 * Tests the item operation.
+	 */
 	public void testTotalPrice() {
-		assertEquals(3.0f, this.item.totalPrice(), EPSILON);
+		assertEquals(3.0f, this.bananas.totalPrice(), EPSILON);
+		this.beef.resetNumberToBuy();
+		assertEquals(0.0f, this.beef.totalPrice(), EPSILON);
 	}
-	
+
+	/**
+	 * Tests the item operation.
+	 */
 	public void testTotalSpent() {
-		assertEquals(3.0f, this.item.totalSpent(), EPSILON);
-		this.item.setBought(false);
-		assertEquals(0.0f, this.item.totalSpent(), EPSILON);
+		assertEquals(3.0f, this.bananas.totalSpent(), EPSILON);
+		this.bananas.setBought(false);
+		assertEquals(0.0f, this.bananas.totalSpent(), EPSILON);
+		this.beef.resetNumberToBuy();
+		assertEquals(0.0f, this.beef.totalPrice(), EPSILON);
 	}
-	
+
+	/**
+	 * Tests the item operation.
+	 */
 	public void testToString() {
-		String expected = "17 Bananas (2/4) 2K/1.0 bag B 28 4";
-		assertEquals(expected, this.item.toString());
+		String expected = String.format("%d 1 Bananas (2/4) 2K/1.0 bag B 28 4",
+				this.idToDelete);
+		assertEquals(expected, this.bananas.toString());
 	}
-	
+
+	/**
+	 * Tests the item operation.
+	 */
 	public void testShortString() {
-		// TODO when I write it.
+		// CONSIDER do this when I write it.
 	}
 
+	/**
+	 * Tests the item operation.
+	 */
 	public void testInsert() {
-		ItemDataAdapter ida = new ItemDataAdapter();
-		ida.open();
-		ida.insertItem(this.item);
-		this.item.setName("Apples");
-		ida.updateItem(this.item);
-		ida.close();
-//		this.item.save();
-		
-		
-		
-		
-		
-		// TODO: test that it's in the DB.
+		purgeDb();
+		this.ida.insertItem(this.bananas);
+		this.ida.insertItem(this.bananas);
+		this.ida.insertItem(this.oranges);
+		this.ida.insertItem(this.beef);
+
+		// TODO: test that it's in the DB. Currently just use a utility to
+		// check.
 	}
 
-	public void testSaveToDB() {
-		ItemDataAdapter ida = new ItemDataAdapter();
-		ida.open();
-		ida.insertItem(this.item);
-		this.item.setName("Apples");
-		ida.updateItem(this.item);
-		ida.close();
-//		this.item.save();
-		
-		
-		
-		
-		
-		// TODO: test that it's in the DB.
+	/**
+	 * Tests the item operation.
+	 */
+	public void testUpdate() {
+		purgeDb();
+		this.ida.insertItem(this.bananas);
+		this.bananas.setName("Apples");
+		this.ida.updateItem(this.bananas);
 	}
+
+	/**
+	 * Tests the item operation.
+	 */
+	public void testDelete() {
+		purgeDb();
+		this.ida.insertItem(this.bananas);
+		assertFalse(this.ida.deleteItem(this.beef));
+		assertTrue(this.ida.deleteItem(this.bananas));
+	}
+
+	/**
+	 * Tests the item operation.
+	 */
+	public void testLoadAllItemsWithListId() {
+		purgeDb();
+		this.ida.insertItem(this.bananas);
+		this.ida.insertItem(this.oranges);
+		this.ida.insertItem(this.beef);
+
+		ArrayList<Item> items = new ArrayList<Item>();
+		long shoppingListId = 1;
+		this.ida.loadAllItemsWithListId(items, shoppingListId);
+
+		// The first one in the DB should be the matching item.
+		// The IDs may not match, though, so we don't test them.
+		this.bananas.setId(items.get(0).getId());
+		assertEquals(this.bananas, items.get(0));
+		assertEquals(this.oranges, items.get(1));
+		assertEquals(2, items.size());
+	}
+
+
+	/**
+	 * Tests the item operation.
+	 */
 	
 	
+	public void testDeleteAllItemsWithListId() {
+		purgeDb();
+		this.ida.insertItem(this.bananas);
+		this.ida.insertItem(this.oranges);
+		this.ida.insertItem(this.beef);
+
+		long shoppingListId = 1;
+		int nDeleted = this.ida.deleteAllItemsWithListId(shoppingListId);
+		assertEquals(2, nDeleted);
+	}
 }

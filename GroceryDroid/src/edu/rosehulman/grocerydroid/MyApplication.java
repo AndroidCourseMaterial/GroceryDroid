@@ -12,6 +12,9 @@ import edu.rosehulman.grocerydroid.db.DatabaseHelper;
  */
 public class MyApplication extends Application {
 	
+	/**
+	 * Tag for debugging to logcat.
+	 */
 	public static final String GD = "GD";
 	
 	/**
@@ -42,10 +45,8 @@ public class MyApplication extends Application {
 		instance = this;
 		
 		Context context = getApplicationContext();
-		boolean isMocking = true;
-
 		Log.d(GD, "Creating single instance of Database Helper in MyApplication");
-		this.dbHelper = DatabaseHelper.createInstance(context, isMocking);
+		this.dbHelper = DatabaseHelper.createInstance(context);
 		instance = this;
 		
 		//start with a fresh database every run

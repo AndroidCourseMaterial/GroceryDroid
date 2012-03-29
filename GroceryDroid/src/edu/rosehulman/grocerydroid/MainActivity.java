@@ -2,13 +2,14 @@ package edu.rosehulman.grocerydroid;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
-import edu.rosehulman.grocerydroid.db.DatabaseHelper;
-import edu.rosehulman.grocerydroid.db.ItemDataAdapter;
-import edu.rosehulman.grocerydroid.model.Item;
-import edu.rosehulman.grocerydroid.model.ItemUnitLabel;
 
-public class GroceryDroidActivity extends Activity {
+/**
+ * The main screen displays all a user's shopping lists.
+ * 
+ * @author Matthew Boutell. 
+ * 		   Created Mar 29, 2012.
+ */
+public class MainActivity extends Activity {
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -2,18 +2,18 @@ package edu.rosehulman.grocerydroid.test;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.TextView;
-import edu.rosehulman.grocerydroid.GroceryDroidActivity;
+import edu.rosehulman.grocerydroid.MainActivity;
 
 /**
- * TODO Put here a description of what this class does.
+ * Tests the Main Activity.
  *
- * @author boutell.
+ * @author Matthew Boutell.
  *         Created Mar 26, 2012.
  */
 public class GroceryDroidTest extends
-		ActivityInstrumentationTestCase2<GroceryDroidActivity> {
+		ActivityInstrumentationTestCase2<MainActivity> {
 
-	private GroceryDroidActivity mActivity;
+	private MainActivity mActivity;
 	private TextView mView;
 	private String resourceString;
 
@@ -23,7 +23,7 @@ public class GroceryDroidTest extends
 	 * @param activityClass
 	 */
 	public GroceryDroidTest() {
-		super("edu.rosehulman.grocerydroid", GroceryDroidActivity.class);
+		super("edu.rosehulman.grocerydroid", MainActivity.class);
 	}
 
 	@Override

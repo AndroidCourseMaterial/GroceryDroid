@@ -1,7 +1,5 @@
 package edu.rosehulman.grocerydroid.model;
 
-import edu.rosehulman.grocerydroid.db.ItemDataAdapter;
-
 /**
  * A single grocery item.
  * 
@@ -11,8 +9,9 @@ public class Item {
 
 	/** For debugging */
 	public static final String GD = "GD";
-
+	private static final float EPSILON = 0.000001f;
 	private long id;
+	private long listId; // the list to which it belongs
 	private String name;
 	private int nStock;
 	private int nBuy;
@@ -25,13 +24,15 @@ public class Item {
 	private int stockIdx;
 	private int shopIdx;
 
-	// id, name, nStock, nBuy, price, unitSize, unitLabel, isBought, stockIdx,
+	// id, listId, name, nStock, nBuy, price, unitSize, unitLabel, isBought,
+	// stockIdx,
 	// shopIdx
 
 	/**
 	 * Creates a Item from the given parameters.
 	 * 
 	 * @param id
+	 * @param listId
 	 * @param name
 	 * @param nStock
 	 * @param nBuy
@@ -42,10 +43,11 @@ public class Item {
 	 * @param stockIdx
 	 * @param shopIdx
 	 */
-	public Item(long id, String name, int nStock, int nBuy, float price,
-			float size, ItemUnitLabel unit, boolean isBought, int stockIdx,
-			int shopIdx) {
+	public Item(long id, long listId, String name, int nStock, int nBuy,
+			float price, float size, ItemUnitLabel unit, boolean isBought,
+			int stockIdx, int shopIdx) {
 		this.id = id;
+		this.listId = listId;
 		this.name = name;
 		this.nStock = nStock;
 		this.nBuy = nBuy;
@@ -57,20 +59,22 @@ public class Item {
 		this.shopIdx = shopIdx;
 	}
 
-	/**
-	 * Creates a Item from the given parameters.
-	 * 
-	 * @param id
-	 * @param name
-	 * @param nStock
-	 * @param price
-	 * @param size
-	 * @param unit
-	 */
-	public Item(long id, String name, int nStock, float price, float size,
-			ItemUnitLabel unit) {
-		this(id, name, nStock, 0, price, size, unit, false, -1, -1);
-	}
+	// /**
+	// * Creates a Item from the given parameters.
+	// *
+	// * @param id
+	// * @param listId
+	// * @param name
+	// * @param nStock
+	// * @param price
+	// * @param size
+	// * @param unit
+	// */
+	// public Item(long id, long listId, String name, int nStock, float price,
+	// float size,
+	// ItemUnitLabel unit) {
+	// this(id, listId, name, nStock, 0, price, size, unit, false, -1, -1);
+	// }
 
 	// CONSIDER: may not need next 2 methods any more. Update if I do.
 	// /**
@@ -110,13 +114,13 @@ public class Item {
 
 	@Override
 	public String toString() {
-		// TODO: have String format be locale dependent
+		// CONSIDER: have String format be locale dependent
 		// USA: String s = String.format("%s (%d) $%.2f/%.1f %s", this.name,
 		// this.nToStock, this.price, this.size, this.unit.toString());
-		String s = String.format("%d %s (%d/%d) %.0fK/%.1f %s %s %d %d", this.id,
-				this.name, this.nBuy, this.nStock, this.price, this.unitSize,
-				this.unitLabel, this.isBought ? "B" : "N", this.stockIdx,
-				this.shopIdx);
+		String s = String.format("%d %d %s (%d/%d) %.0fK/%.1f %s %s %d %d",
+				this.id, this.listId, this.name, this.nBuy, this.nStock,
+				this.price, this.unitSize, this.unitLabel, this.isBought ? "B"
+						: "N", this.stockIdx, this.shopIdx);
 		return s;
 	}
 
@@ -127,6 +131,31 @@ public class Item {
 		return String.format("%s, %.1f %s", this.name, this.unitSize,
 				this.unitLabel);
 	}
+
+	/**
+	 * Returns true if the given item is an Item that equals this Item.
+	 */
+	@Override
+	public boolean equals(Object object) {
+		if (object == null || this.getClass() != object.getClass()) {
+			return false;
+		}
+		Item other = (Item) object;
+		return this.id == other.id 
+			&& this.listId == other.listId
+			&& this.name.equals(other.name) && this.nBuy == other.nBuy
+			&& this.nStock == other.nStock
+			&& Math.abs(this.price - other.price) < EPSILON
+			&& Math.abs(this.unitSize - other.unitSize) < EPSILON
+			&& this.unitLabel == other.unitLabel
+			&& this.isBought == other.isBought
+			&& this.stockIdx == other.stockIdx
+			&& this.shopIdx == other.shopIdx;
+	}
+
+	// id, listId, name, nStock, nBuy, price, unitSize, unitLabel, isBought,
+	// stockIdx,
+	// shopIdx
 
 	/**
 	 * Adds one to the number to be bought.
@@ -161,21 +190,11 @@ public class Item {
 		return this.nBuy * this.price;
 	}
 
-	public void save() {
-		ItemDataAdapter ida = new ItemDataAdapter();
-		ida.open();
-		ida.insertItem(this);
-		ida.close();
-		
-	}
-	
-	
-	
-	
 	// CONSIDER: removing the setters/getters.
 
 	/**
 	 * Returns the value of the field called 'price'.
+	 * 
 	 * @return Returns the price.
 	 */
 	public float getPrice() {
@@ -184,7 +203,9 @@ public class Item {
 
 	/**
 	 * Sets the field called 'price' to the given value.
-	 * @param price The price to set.
+	 * 
+	 * @param price
+	 *            The price to set.
 	 */
 	public void setPrice(float price) {
 		this.price = price;
@@ -207,6 +228,25 @@ public class Item {
 	 */
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	/**
+	 * Returns the value of the field called 'listId'.
+	 * 
+	 * @return Returns the listId.
+	 */
+	public long getListId() {
+		return this.listId;
+	}
+
+	/**
+	 * Sets the field called 'listId' to the given value.
+	 * 
+	 * @param listId
+	 *            The listId to set.
+	 */
+	public void setListId(long listId) {
+		this.listId = listId;
 	}
 
 	/**

@@ -20,78 +20,63 @@ import edu.rosehulman.grocerydroid.MyApplication;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
+	private static final int DATABASE_VERSION = 3;
 	private static DatabaseHelper instance = null;
 	private static final String DATABASE_NAME = "shopping_items.db";
 	private static final String MOCK_DATABASE_NAME = "mock_shopping_items.db";
 	private static final boolean MOCK = true;
 
 	/**
-	 * Create the single, static instance of DatabaseHelper
+	 * Creates or just retrieves a singleton instance of DatabaseHelper. See
+	 * http://www.touchlab.co/blog/single-sqlite-connection/ More complicated
+	 * than the singleton pattern there, but keeps us from having to pass a
+	 * Context into the adapter classes.
 	 * 
-	 * @param context The context to use
-	 * @param mock True if a mock database should be used
-	 * @return The newly created DatabaseHelper
+	 * @param context
+	 *            The context to use
+	 * @return The single instance of DatabaseHelper
 	 */
-	public static DatabaseHelper createInstance(Context context, boolean mock) {
-		if (mock) {
-			instance = new DatabaseHelper(context.getApplicationContext(), MOCK_DATABASE_NAME);
-		} else {
-			instance = new DatabaseHelper(context.getApplicationContext(), DATABASE_NAME);
-		}
+	public static synchronized DatabaseHelper createInstance(Context context) {
+		// CONSIDER should context be context.getApplicationContext()?
+		instance = new DatabaseHelper(context, MOCK ? MOCK_DATABASE_NAME
+				: DATABASE_NAME);
 		return instance;
 	}
-	
+
 	/**
 	 * Retrieves the instance of DatabaseHelper
 	 * 
 	 * @return The single instance of DatabaseHelper
 	 */
 	public static DatabaseHelper getInstance() {
-		assert(instance != null);
+		assert (instance != null);
 		if (instance == null) {
 			Log.d(MyApplication.GD, "Getting null instance of DatabaseHelper");
 		} else {
-			Log.d(MyApplication.GD, "Getting non-null instance of DataBaseHelper");
+			Log.d(MyApplication.GD,
+					"Getting non-null instance of DataBaseHelper");
 		}
 		return instance;
 	}
-//
-//	// Using simpler singleton pattern in
-//	// http://www.javaworld.com/javaworld/jw-04-2003/jw-0425-designpatterns.html
-//	/**
-//	 * Get or create the single, static instance of DatabaseHelper
-//	 * 
-//	 * @param context
-//	 *            The context to use
-//	 * @return The single instance of DatabaseHelper
-//	 */
-//	public static DatabaseHelper getInstance(Context context) {
-//		if (instance == null) {
-//			if (MOCK) {
-//				instance = new DatabaseHelper(context.getApplicationContext(),
-//						MOCK_DATABASE_NAME);
-//			} else {
-//				instance = new DatabaseHelper(context.getApplicationContext(),
-//						DATABASE_NAME);
-//			}
-//		}
-//		return instance;
-//	}
 
-	private static final int DATABASE_VERSION = 1;
-
-	private static final String TABLE_SHOPPING_LISTS = "shoppingLists";
+	private DatabaseHelper(Context context, String dbName) {
+		// Private to defeat instantiation from elsewhere.
+		super(context, dbName, null, DATABASE_VERSION);
+	}
 
 	// SQL statement to create a new database
 	private static final String CREATE_TABLE_SHOPPING_LISTS = "CREATE TABLE "
-			+ TABLE_SHOPPING_LISTS + " (" + ShoppingListDataAdapter.DB_KEY_ID
+			+ ShoppingListDataAdapter.TABLE_SHOPPING_LISTS + " ("
+			+ ShoppingListDataAdapter.DB_KEY_ID
 			+ " integer primary key autoincrement, "
 			+ ShoppingListDataAdapter.DB_KEY_NAME + " text not null" + ");";
 
 	// SQL statement to create a new database
-	private static final String CREATE_TABLE_GROCERY_ITEMS = 
-			"CREATE TABLE " + ItemDataAdapter.TABLE_GROCERY_ITEMS + " (" 
-			+ ItemDataAdapter.DB_KEY_ID + " integer primary key autoincrement, "
+	private static final String CREATE_TABLE_GROCERY_ITEMS = "CREATE TABLE "
+			+ ItemDataAdapter.TABLE_GROCERY_ITEMS + " ("
+			+ ItemDataAdapter.DB_KEY_ID
+			+ " integer primary key autoincrement, "
+			+ ItemDataAdapter.DB_KEY_LIST_ID + " integer, "
 			+ ItemDataAdapter.DB_KEY_NAME + " text not null, "
 			+ ItemDataAdapter.DB_KEY_NUM_TO_STOCK + " integer, "
 			+ ItemDataAdapter.DB_KEY_NUM_TO_BUY + " integer, "
@@ -102,11 +87,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ ItemDataAdapter.DB_KEY_STOCK_IDX + " integer,"
 			+ ItemDataAdapter.DB_KEY_SHOP_IDX + " integer" + ");";
 
-	private DatabaseHelper(Context context, String dbName) {
-		// Private to defeat instantiation from elsewhere.
-		super(context, dbName, null, DATABASE_VERSION);
-	}
-	
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(CREATE_TABLE_SHOPPING_LISTS);
@@ -119,8 +99,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		// + " to " + newVersion
 		// + ", which will destroy all old data.");
 
-		db.execSQL("DROP TABLE IF EXISTS " + ItemDataAdapter.TABLE_GROCERY_ITEMS);
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOPPING_LISTS);
+		db.execSQL("DROP TABLE IF EXISTS "
+				+ ItemDataAdapter.TABLE_GROCERY_ITEMS);
+		db.execSQL("DROP TABLE IF EXISTS "
+				+ ShoppingListDataAdapter.TABLE_SHOPPING_LISTS);
 
 		this.onCreate(db);
 	}
