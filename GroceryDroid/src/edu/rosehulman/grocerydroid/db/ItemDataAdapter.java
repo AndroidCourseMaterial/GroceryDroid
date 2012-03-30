@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import edu.rosehulman.grocerydroid.model.DisplayOrder;
 import edu.rosehulman.grocerydroid.model.Item;
 import edu.rosehulman.grocerydroid.model.ItemUnitLabel;
+import edu.rosehulman.grocerydroid.model.ShoppingList;
 
 /**
  * All the operations needed to access the shopping list data in the database.
@@ -161,7 +163,7 @@ public class ItemDataAdapter extends TableAdapter {
 			} while (c.moveToNext());
 		}
 	}
-
+	
 	/**
 	 * @param listId
 	 * @return A Cursor for all the items with the given list ID.
@@ -177,5 +179,22 @@ public class ItemDataAdapter extends TableAdapter {
 		 * DB_KEY_PRICE, DB_KEY_UNIT_SIZE, DB_KEY_UNIT_LABEL, DB_KEY_IS_BOUGHT,
 		 * DB_KEY_STOCK_IDX, DB_KEY_SHOP_IDX }
 		 */
+	}
+
+	/**
+	 * For each item in the shopping list, update the corresponding item in the
+	 * database.
+	 *
+	 * @param list
+	 * @return The number of items which have been updated.
+	 */
+	public int updateAllItemsInList(ShoppingList list) {
+		// CONSIDER: is there a better way to do this, like using a 
+		// Cursor or a transaction?
+		int nUpdated = 0;
+		for (Item item : list.getItems(DisplayOrder.AS_IS)) {
+			nUpdated += (updateItem(item) ? 1 : 0);
+		}
+		return nUpdated;
 	}
 }

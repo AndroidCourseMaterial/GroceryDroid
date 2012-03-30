@@ -400,5 +400,4 @@ public class Item {
 	public void setShopIdx(int shopIdx) {
 		this.shopIdx = shopIdx;
 	}
-
 }

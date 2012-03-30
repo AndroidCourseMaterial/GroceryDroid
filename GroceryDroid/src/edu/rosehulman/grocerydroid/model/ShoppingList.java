@@ -1,6 +1,8 @@
 package edu.rosehulman.grocerydroid.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import edu.rosehulman.grocerydroid.db.ItemDataAdapter;
 
@@ -13,7 +15,7 @@ public class ShoppingList {
 	private long id;
 	private String name;
 	private ArrayList<Item> items;
-
+	
 	/**
 	 * Creates a ShoppingList from the given parameters.
 	 * 
@@ -98,6 +100,35 @@ public class ShoppingList {
 	}
 
 	/**
+	 * Each item remembers its order in the pantry, when stocking. This method
+	 * updates that order to match the order that the items appear on the screen
+	 * (presumably after they have been rearranged by the user), so that it can
+	 * be stored in the DB.
+	 */
+	public void setPantryOrderToListOrder() {
+		for (int i = 0; i < this.items.size(); i++) {
+			// CONSIDER: switch order backwards so that adding an item to the
+			// top doesn't affect the order of every item in the list.
+			this.items.get(i).setStockIdx(i);
+		}
+
+	}
+
+	/**
+	 * Each item remembers its order in the store, when shopping. This method
+	 * updates that order to match the order that the items appear on the screen
+	 * (presumably after they have been rearranged by the user), so that it can
+	 * be stored in the DB.
+	 */
+	public void setShoppingOrderToListOrder() {
+		for (int i = 0; i < this.items.size(); i++) {
+			// CONSIDER: switch order backwards so that adding an item to the
+			// top doesn't affect the order of every item in the list.
+			this.items.get(i).setShopIdx(i);
+		}
+	}
+
+	/**
 	 * Returns the value of the field called 'name'.
 	 * 
 	 * @return Returns the name.
@@ -139,21 +170,55 @@ public class ShoppingList {
 	 * 
 	 * Lazy-loads the items if needed.
 	 * 
+	 * @param order
+	 *            The order in which the items will be returned
 	 * @param ida
 	 *            The item data adapter
 	 * @return The list of Items
 	 */
-	public ArrayList<Item> getItems() {
+	public ArrayList<Item> getItems(DisplayOrder order) {
 		if (this.items == null || this.items.size() == 0) {
 			// If items isn't, then lazy-load it.
 			ItemDataAdapter ida = new ItemDataAdapter();
+			ida.open();
 			// Shouldn't be null since init'd in constructor. Check anyway.
 			if (this.items == null) {
 				this.items = new ArrayList<Item>();
 			}
 			ida.loadAllItemsWithListId(this.items, this.id);
 		}
+
+		switch (order) {
+		case STOCK:
+			Collections.sort(this.items, new CompareStockOrder());
+			break;
+		case SHOP:
+			Collections.sort(this.items, new CompareShopOrder());
+			break;
+		default:
+			// empty
+		}
+
 		return this.items;
+	}
+
+	private class CompareStockOrder implements Comparator<Item> {
+		@Override
+		public int compare(Item left, Item right) {
+			Integer leftIdx = new Integer(left.getStockIdx());
+			Integer rightIdx = new Integer(right.getStockIdx());
+			return leftIdx.compareTo(rightIdx);
+		}
+
+	}
+
+	private class CompareShopOrder implements Comparator<Item> {
+		@Override
+		public int compare(Item left, Item right) {
+			Integer leftIdx = new Integer(left.getShopIdx());
+			Integer rightIdx = new Integer(right.getShopIdx());
+			return leftIdx.compareTo(rightIdx);
+		}
 	}
 
 	/**

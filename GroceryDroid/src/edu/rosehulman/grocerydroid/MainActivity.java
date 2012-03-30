@@ -1,28 +1,42 @@
 package edu.rosehulman.grocerydroid;
 
+import java.util.ArrayList;
+
+import edu.rosehulman.grocerydroid.db.DatabaseHelper;
+import edu.rosehulman.grocerydroid.db.ItemDataAdapter;
+import edu.rosehulman.grocerydroid.db.ShoppingListDataAdapter;
+import edu.rosehulman.grocerydroid.model.Item;
+import edu.rosehulman.grocerydroid.model.ItemUnitLabel;
+import edu.rosehulman.grocerydroid.model.ShoppingList;
 import android.app.Activity;
 import android.os.Bundle;
 
 /**
  * The main screen displays all a user's shopping lists.
  * 
- * @author Matthew Boutell. 
- * 		   Created Mar 29, 2012.
+ * @author Matthew Boutell. Created Mar 29, 2012.
  */
 public class MainActivity extends Activity {
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        
-//		Log.d(MyApplication.GD, "Creating single instance of Database Helper in GDActivity");
-//		DatabaseHelper.createInstance(this.getApplicationContext(), true);
-//        
-//        Item item = new Item(17, "Bananas", 4, 2, 1.50f, 1, ItemUnitLabel.bag, true, 28, 4);
-//		ItemDataAdapter ida = new ItemDataAdapter();
-//		ida.open();
-//		ida.insertItem(item);
-//		ida.close();
-    }
+	private ShoppingListDataAdapter slda;
+	private ItemDataAdapter ida;
+
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+		initializeDatabase();
+
+	}
+
+	private void initializeDatabase() {
+		DatabaseHelper.createInstance(this);
+
+		this.slda = new ShoppingListDataAdapter();
+		this.slda.open();
+
+		this.ida = new ItemDataAdapter();
+		this.ida.open();
+	}
+
 }
