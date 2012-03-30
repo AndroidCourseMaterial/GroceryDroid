@@ -190,12 +190,9 @@ public class ItemTest extends
 		assertEquals(2, items.size());
 	}
 
-
 	/**
 	 * Tests the item operation.
 	 */
-	
-	
 	public void testDeleteAllItemsWithListId() {
 		purgeDb();
 		this.ida.insertItem(this.bananas);
