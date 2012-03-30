@@ -19,7 +19,7 @@ public class ItemDataAdapter extends TableAdapter {
 	static final String TABLE_GROCERY_ITEMS = "groceryItems";
 
 	/** ID */
-	static final String DB_KEY_ID = "_id";
+	static final String DB_KEY_ID = "id";
 
 	/** ID of the shopping list to which this item belongs */
 	static final String DB_KEY_LIST_ID = "listId";
@@ -84,10 +84,10 @@ public class ItemDataAdapter extends TableAdapter {
 		ContentValues newItemValues = this.toContentValues(item);
 
 		// Insert the row
-		long rowID = this.db.insert(TABLE_GROCERY_ITEMS, null, newItemValues);
+		long rowId = this.db.insert(TABLE_GROCERY_ITEMS, null, newItemValues);
 		// Update the ID if it changed
-		item.setId(rowID);
-		return rowID;
+		item.setId(rowId);
+		return rowId;
 	}
 
 	/**

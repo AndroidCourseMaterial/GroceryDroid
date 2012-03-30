@@ -17,7 +17,7 @@ public class ShoppingListDataAdapter extends TableAdapter {
 	static final String TABLE_SHOPPING_LISTS = "shoppingLists";
 
 	/** ID */
-	static final String DB_KEY_ID = "_id";
+	static final String DB_KEY_ID = "id";
 
 	/** Name */
 	static final String DB_KEY_NAME = "name";
@@ -47,10 +47,10 @@ public class ShoppingListDataAdapter extends TableAdapter {
 		ContentValues newListValues = this.toContentValues(list);
 
 		// Insert the row
-		long rowID = this.db.insert(TABLE_SHOPPING_LISTS, null, newListValues);
+		long rowId = this.db.insert(TABLE_SHOPPING_LISTS, null, newListValues);
 		// Update the ID if it changed
-		list.setId(rowID);
-		return rowID;
+		list.setId(rowId);
+		return rowId;
 	}
 
 	/**
