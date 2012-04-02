@@ -1,15 +1,16 @@
 package edu.rosehulman.grocerydroid.test;
 
-import java.util.ArrayList;
-
 import android.database.sqlite.SQLiteDatabase;
 import android.test.ActivityInstrumentationTestCase2;
+
 import edu.rosehulman.grocerydroid.MainActivity;
 import edu.rosehulman.grocerydroid.MyApplication;
 import edu.rosehulman.grocerydroid.db.DatabaseHelper;
 import edu.rosehulman.grocerydroid.db.ItemDataAdapter;
 import edu.rosehulman.grocerydroid.model.Item;
-import edu.rosehulman.grocerydroid.model.ItemUnitLabel;
+import edu.rosehulman.grocerydroid.model.Item.UnitLabel;
+
+import java.util.ArrayList;
 
 /**
  * Tests Item and ItemDataAdapter.
@@ -56,10 +57,10 @@ public class ItemTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		this.dbHelper = DatabaseHelper.createInstance(this.mActivity);
 
 		this.bananas = new Item(this.idToDelete, 1, "Bananas", 4, 2, 1.50f, 1,
-				ItemUnitLabel.bag, true, 28, 4);
+				UnitLabel.bag, true, 28, 4);
 		this.oranges = new Item(18, 1, "Oranges", 2, 2, 3.00f, 1,
-				ItemUnitLabel.bag, true, 27, 5);
-		this.beef = new Item(19, 2, "Beef", 3, 1, 4.50f, 1, ItemUnitLabel.lb,
+				UnitLabel.bag, true, 27, 5);
+		this.beef = new Item(19, 2, "Beef", 3, 1, 4.50f, 1, UnitLabel.lb,
 				true, 30, 8);
 
 		this.ida = new ItemDataAdapter();
@@ -85,7 +86,7 @@ public class ItemTest extends ActivityInstrumentationTestCase2<MainActivity> {
 		assertEquals(2, this.bananas.getnBuy());
 		assertEquals(1.50, this.bananas.getPrice(), EPSILON);
 		assertEquals(1, this.bananas.getUnitSize(), EPSILON);
-		assertEquals(ItemUnitLabel.bag, this.bananas.getUnitLabel());
+		assertEquals(UnitLabel.bag, this.bananas.getUnitLabel());
 		assertTrue(this.bananas.isBought());
 		assertEquals(28, this.bananas.getStockIdx());
 		assertEquals(4, this.bananas.getShopIdx());

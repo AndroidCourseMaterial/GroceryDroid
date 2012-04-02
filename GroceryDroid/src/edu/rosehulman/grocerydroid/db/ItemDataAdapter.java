@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import edu.rosehulman.grocerydroid.model.Item;
-import edu.rosehulman.grocerydroid.model.ItemUnitLabel;
+import edu.rosehulman.grocerydroid.model.Item.UnitLabel;
 import edu.rosehulman.grocerydroid.model.ShoppingList;
 
 /**
@@ -185,7 +185,7 @@ public class ItemDataAdapter extends TableAdapter {
 			int nToBuy = c.getInt(c.getColumnIndexOrThrow(DB_KEY_NUM_TO_BUY));
 			float price = c.getFloat(c.getColumnIndexOrThrow(DB_KEY_PRICE));
 			float size = c.getFloat(c.getColumnIndexOrThrow(DB_KEY_UNIT_SIZE));
-			ItemUnitLabel unit = ItemUnitLabel.values()[c.getInt(c
+			UnitLabel unit = UnitLabel.values()[c.getInt(c
 					.getColumnIndexOrThrow(DB_KEY_UNIT_LABEL))];
 			boolean isBought = c.getInt(c
 					.getColumnIndexOrThrow(DB_KEY_IS_BOUGHT)) == 1;

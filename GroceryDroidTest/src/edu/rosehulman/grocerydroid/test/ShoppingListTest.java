@@ -8,7 +8,7 @@ import edu.rosehulman.grocerydroid.db.DatabaseHelper;
 import edu.rosehulman.grocerydroid.db.ItemDataAdapter;
 import edu.rosehulman.grocerydroid.db.ShoppingListDataAdapter;
 import edu.rosehulman.grocerydroid.model.Item;
-import edu.rosehulman.grocerydroid.model.ItemUnitLabel;
+import edu.rosehulman.grocerydroid.model.Item.UnitLabel;
 import edu.rosehulman.grocerydroid.model.ShoppingList;
 
 import java.util.ArrayList;
@@ -62,10 +62,10 @@ public class ShoppingListTest extends
 		this.dbHelper = DatabaseHelper.createInstance(this.mActivity);
 
 		this.bananas = new Item(1, 1, "Bananas", 4, 2, 1.50f, 1,
-				ItemUnitLabel.bag, true, 28, 4);
+				UnitLabel.bag, true, 28, 4);
 		this.oranges = new Item(2, 1, "Oranges", 2, 2, 3.00f, 1,
-				ItemUnitLabel.bag, true, 27, 5);
-		this.beef = new Item(3, 2, "Beef", 3, 1, 4.50f, 1, ItemUnitLabel.lb,
+				UnitLabel.bag, true, 27, 5);
+		this.beef = new Item(3, 2, "Beef", 3, 1, 4.50f, 1, UnitLabel.lb,
 				true, 30, 2);
 		
 		this.list1 = new ShoppingList(1, "Shoprite");

@@ -19,7 +19,7 @@ public class Item {
 	// CONSIDER: should I have a simple Unit class that encapsulates unit size
 	// and label?
 	private float unitSize;
-	private ItemUnitLabel unitLabel;
+	private UnitLabel unitLabel;
 	private boolean isBought;
 	private int stockIdx;
 	private int shopIdx;
@@ -44,7 +44,7 @@ public class Item {
 	 * @param shopIdx
 	 */
 	public Item(long id, long listId, String name, int nStock, int nBuy,
-			float price, float size, ItemUnitLabel unit, boolean isBought,
+			float price, float size, UnitLabel unit, boolean isBought,
 			int stockIdx, int shopIdx) {
 		this.id = id;
 		this.listId = listId;
@@ -330,7 +330,7 @@ public class Item {
 	 * 
 	 * @return Returns the unitLabel.
 	 */
-	public ItemUnitLabel getUnitLabel() {
+	public UnitLabel getUnitLabel() {
 		return this.unitLabel;
 	}
 
@@ -340,7 +340,7 @@ public class Item {
 	 * @param unitLabel
 	 *            The unitLabel to set.
 	 */
-	public void setUnitLabel(ItemUnitLabel unitLabel) {
+	public void setUnitLabel(UnitLabel unitLabel) {
 		this.unitLabel = unitLabel;
 	}
 
@@ -399,5 +399,40 @@ public class Item {
 	 */
 	public void setShopIdx(int shopIdx) {
 		this.shopIdx = shopIdx;
+	}
+	
+	/**
+	 * A list of potential units that this item can be sold in.
+	 *
+	 * @author Matthew Boutell.
+	 *         Created Nov 7, 2011.
+	 */
+	public enum UnitLabel {
+		/** default */
+		unit,
+		
+		/** grams */
+		g,
+		
+		/** kilograms */
+		kg,
+
+		/** milliliters */
+		mL,
+
+		/** liters */
+		L,
+
+		/** pounds */
+		lb,
+
+		/** ounces */
+		oz,
+		
+		/** box */
+		box,
+		
+		/** bag */
+		bag
 	}
 }
