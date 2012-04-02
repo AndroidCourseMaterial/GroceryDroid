@@ -220,8 +220,8 @@ public class ShoppingListTest extends
 		}
 
 		// Update every item
-		this.bananas.setnStock(100);
-		this.oranges.setnBuy(101);
+		this.bananas.setNStock(100);
+		this.oranges.setNBuy(101);
 		this.beef.setPrice(8.00f);
 
 		int nUpdated = this.ida.updateAllItemsInList(this.list1);

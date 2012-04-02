@@ -59,8 +59,8 @@ public class ItemDataAdapter extends TableAdapter {
 		ContentValues newItemValues = new ContentValues();
 		newItemValues.put(DB_KEY_LIST_ID, item.getListId());
 		newItemValues.put(DB_KEY_NAME, item.getName());
-		newItemValues.put(DB_KEY_NUM_TO_STOCK, item.getnStock());
-		newItemValues.put(DB_KEY_NUM_TO_BUY, item.getnBuy());
+		newItemValues.put(DB_KEY_NUM_TO_STOCK, item.getNStock());
+		newItemValues.put(DB_KEY_NUM_TO_BUY, item.getNBuy());
 		newItemValues.put(DB_KEY_PRICE, item.getPrice());
 		newItemValues.put(DB_KEY_UNIT_SIZE, item.getUnitSize());
 		newItemValues.put(DB_KEY_UNIT_LABEL, item.getUnitLabel().ordinal());

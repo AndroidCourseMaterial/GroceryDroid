@@ -82,8 +82,8 @@ public class ItemTest extends ActivityInstrumentationTestCase2<MainActivity> {
 	public void testConstructFullItem() {
 		assertEquals(this.idToDelete, this.bananas.getId());
 		assertEquals("Bananas", this.bananas.getName());
-		assertEquals(4, this.bananas.getnStock());
-		assertEquals(2, this.bananas.getnBuy());
+		assertEquals(4, this.bananas.getNStock());
+		assertEquals(2, this.bananas.getNBuy());
 		assertEquals(1.50, this.bananas.getPrice(), EPSILON);
 		assertEquals(1, this.bananas.getUnitSize(), EPSILON);
 		assertEquals(UnitLabel.bag, this.bananas.getUnitLabel());
@@ -98,7 +98,7 @@ public class ItemTest extends ActivityInstrumentationTestCase2<MainActivity> {
 	public void testIncrement() {
 		this.bananas.incrementNumberToBuy();
 		this.bananas.incrementNumberToBuy();
-		assertEquals(4, this.bananas.getnBuy());
+		assertEquals(4, this.bananas.getNBuy());
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class ItemTest extends ActivityInstrumentationTestCase2<MainActivity> {
 	 */
 	public void testResetNumberToBuy() {
 		this.bananas.resetNumberToBuy();
-		assertEquals(0, this.bananas.getnBuy());
+		assertEquals(0, this.bananas.getNBuy());
 	}
 
 	/**

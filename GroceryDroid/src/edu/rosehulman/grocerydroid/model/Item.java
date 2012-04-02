@@ -273,7 +273,7 @@ public class Item {
 	 * 
 	 * @return Returns the nStock.
 	 */
-	public int getnStock() {
+	public int getNStock() {
 		return this.nStock;
 	}
 
@@ -283,7 +283,7 @@ public class Item {
 	 * @param nStock
 	 *            The nStock to set.
 	 */
-	public void setnStock(int nStock) {
+	public void setNStock(int nStock) {
 		this.nStock = nStock;
 	}
 
@@ -292,7 +292,7 @@ public class Item {
 	 * 
 	 * @return Returns the nBuy.
 	 */
-	public int getnBuy() {
+	public int getNBuy() {
 		return this.nBuy;
 	}
 
@@ -302,7 +302,7 @@ public class Item {
 	 * @param nBuy
 	 *            The nBuy to set.
 	 */
-	public void setnBuy(int nBuy) {
+	public void setNBuy(int nBuy) {
 		this.nBuy = nBuy;
 	}
 
