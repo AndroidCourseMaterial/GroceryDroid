@@ -36,20 +36,20 @@ public class GroceryDroidTest extends
 	}
 	
 	
+	/**
+	 * Test.
+	 *
+	 */
 	public void testPreconditions() {
 		assertNotNull(this.mView);
 	}
 	
+	/**
+	 * Test.
+	 *
+	 */
 	public void testText() {
 		assertEquals(this.resourceString, (String)this.mView.getText());
 	}
-	
-	public void testConstructItem() {
-		
-	}
-	
-	
-	
-	
 	
 }
