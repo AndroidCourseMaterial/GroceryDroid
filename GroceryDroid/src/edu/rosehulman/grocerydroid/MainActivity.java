@@ -18,7 +18,7 @@ package edu.rosehulman.grocerydroid;
 
 import android.app.Activity;
 import android.os.Bundle;
-import edu.rosehulman.grocerydroid.db.DatabaseHelper;
+
 import edu.rosehulman.grocerydroid.db.ItemDataAdapter;
 import edu.rosehulman.grocerydroid.db.ShoppingListDataAdapter;
 

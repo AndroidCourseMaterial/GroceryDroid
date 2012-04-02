@@ -41,7 +41,6 @@ public class ShoppingListTest extends
 	 */
 	public ShoppingListTest() {
 		super(MainActivity.class);
-//		super("edu.rosehulman.grocerydroid", MainActivity.class);
 	}
 
 	/**
@@ -162,8 +161,10 @@ public class ShoppingListTest extends
 		this.slda.insertList(this.list2);
 
 		ArrayList<ShoppingList> someLists = new ArrayList<ShoppingList>();
-		this.slda.loadAllLists(someLists);
-
+		for (ShoppingList list : slda.getAllLists()) {
+			someLists.add(list);
+		}
+		
 		// The first one in the DB should be the matching list.
 		// The IDs may not match, though, so we don't test them.
 		assertEquals(this.list1, someLists.get(0));

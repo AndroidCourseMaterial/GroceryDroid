@@ -1,9 +1,8 @@
 package edu.rosehulman.grocerydroid.db;
 
-import java.util.ArrayList;
-
 import android.content.ContentValues;
 import android.database.Cursor;
+
 import edu.rosehulman.grocerydroid.model.ShoppingList;
 
 /**
@@ -47,7 +46,7 @@ public class ShoppingListDataAdapter extends TableAdapter {
 		ContentValues newListValues = this.toContentValues(list);
 
 		// Insert the row
-		long rowId = this.db.insert(TABLE_SHOPPING_LISTS, null, newListValues);
+		long rowId = db.insert(TABLE_SHOPPING_LISTS, null, newListValues);
 		// Update the ID if it changed
 		list.setId(rowId);
 		return rowId;
@@ -63,8 +62,8 @@ public class ShoppingListDataAdapter extends TableAdapter {
 	public boolean updateList(ShoppingList list) {
 		ContentValues newListValues = toContentValues(list);
 
-		return this.db.update(TABLE_SHOPPING_LISTS, newListValues, DB_KEY_ID
-				+ "=" + list.getId(), null) == 1;
+		return db.update(TABLE_SHOPPING_LISTS, newListValues, DB_KEY_ID + "="
+				+ list.getId(), null) == 1;
 	}
 
 	/**
@@ -74,39 +73,45 @@ public class ShoppingListDataAdapter extends TableAdapter {
 	 * @return True iff one list was successfully removed.
 	 */
 	public boolean deleteList(ShoppingList list) {
-		return this.db.delete(TABLE_SHOPPING_LISTS,
-				DB_KEY_ID + "=" + list.getId(), null) == 1;
+		return db.delete(TABLE_SHOPPING_LISTS, DB_KEY_ID + "=" + list.getId(),
+				null) == 1;
 	}
 
 	/**
-	 * Loads all shopping lists into the given list of shopping lists.
+	 * Returns an iterator over all the lists in the table.
 	 * 
-	 * @param lists 
+	 * @return An iterator over the lists.
 	 */
-	public void loadAllLists(ArrayList<ShoppingList> lists) {
-		Cursor c = this.getCursorForAllItems();
-		lists.clear();
-		if (c.moveToFirst()) {
-			do {
-				long id = c.getLong(c.getColumnIndexOrThrow(DB_KEY_ID));
-				String name = c.getString(c.getColumnIndexOrThrow(DB_KEY_NAME));
-
-				ShoppingList list = new ShoppingList(id, name);
-				lists.add(list);
-			} while (c.moveToNext());
-		}
+	public ShoppingListDataAdapterIterator getAllLists() {
+		Cursor cursor = db.query(TABLE_SHOPPING_LISTS, null, null, null, null,
+				null, null);
+		return new ShoppingListDataAdapterIterator(cursor);
 	}
 
 	/**
-	 * @return A Cursor for all the items.
+	 * An iterator for the ShoppingListDataAdapter. Allows one to iterate over
+	 * the database to populate a list of lists.
+	 * 
+	 * @author Jimmy Theis, modified by Matt Boutell. Created Mar 30, 2012.
 	 */
-	private Cursor getCursorForAllItems() {
-		return this.db.query(TABLE_SHOPPING_LISTS, null, null, null, null,
-				null, null);
+	public class ShoppingListDataAdapterIterator extends
+			TableAdapterIterator<ShoppingList> {
 
-		/*
-		 * Second arg tells which column. Null = all. Could be new String[] {
-		 * DB_KEY_ID, DB_KEY_NAME}
+		/**
+		 * Creates a ShoppingListDataAdapterIterator with the given Cursor.
+		 * 
+		 * @param cursor
 		 */
+		public ShoppingListDataAdapterIterator(Cursor cursor) {
+			super(cursor);
+		}
+
+		@Override
+		protected ShoppingList getObjectFromNextRow() {
+			Cursor c = getCursor();
+			long id = c.getLong(c.getColumnIndexOrThrow(DB_KEY_ID));
+			String name = c.getString(c.getColumnIndexOrThrow(DB_KEY_NAME));
+			return new ShoppingList(id, name);
+		}
 	}
 }

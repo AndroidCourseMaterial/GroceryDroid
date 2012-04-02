@@ -35,7 +35,6 @@ public class GroceryDroidTest extends
 		this.resourceString = this.mActivity.getString(edu.rosehulman.grocerydroid.R.string.hello);
 	}
 	
-	
 	/**
 	 * Test.
 	 *

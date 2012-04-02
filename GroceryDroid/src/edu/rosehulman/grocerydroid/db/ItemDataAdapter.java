@@ -8,8 +8,6 @@ import edu.rosehulman.grocerydroid.model.Item;
 import edu.rosehulman.grocerydroid.model.ItemUnitLabel;
 import edu.rosehulman.grocerydroid.model.ShoppingList;
 
-import java.util.ArrayList;
-
 /**
  * All the operations needed to access the shopping list data in the database.
  * 
@@ -127,26 +125,6 @@ public class ItemDataAdapter extends TableAdapter {
 				+ "=" + listId, null);
 	}
 
-
-	/**
-	 * Return a Cursor over all items with the given list ID.
-	 * 
-	 * @param listId
-	 * @return A Cursor for all the items with the given list ID.
-	 */
-	public Cursor getCursorForAllItemsWithId(long listId) {
-		String where = DB_KEY_LIST_ID + "=" + listId;
-		return db.query(TABLE_GROCERY_ITEMS, null, where, null, null, null,
-				null);
-
-		/*
-		 * Second arg tells which column. Null = all. Could be new String[] {
-		 * DB_KEY_ID, DB_KEY_NAME, DB_KEY_NUM_TO_STOCK, DB_KEY_NUM_TO_BUY,
-		 * DB_KEY_PRICE, DB_KEY_UNIT_SIZE, DB_KEY_UNIT_LABEL, DB_KEY_IS_BOUGHT,
-		 * DB_KEY_STOCK_IDX, DB_KEY_SHOP_IDX }
-		 */
-	}
-
 	/**
 	 * For each item in the shopping list, update the corresponding item in the
 	 * database.
@@ -164,23 +142,24 @@ public class ItemDataAdapter extends TableAdapter {
 		return nUpdated;
 	}
 
-	
 	/**
-	 * Returns an iterator over the items with the given list ID.
-	 * Intended to be used in a foreach loop:
-	 * for (Item item: ida.getAllItemsWithListId(id)) {
-	 *		items.add(item);
-	 * }
-	 *
+	 * Returns an iterator over the items with the given list ID. Intended to be
+	 * used in a foreach loop:
+	 * 
+	 * for (Item item: ida.getAllItemsWithListId(id)) { items.add(item); }
+	 * 
 	 * @param listId
 	 * @return An iterator over the items with the given list ID.
 	 */
 	public ItemDataAdapterIterator getAllItemsWithListId(long listId) {
-		return new ItemDataAdapterIterator(getCursorForAllItemsWithId(listId));
+		String where = DB_KEY_LIST_ID + "=" + listId;
+		Cursor cursor = db.query(TABLE_GROCERY_ITEMS, null, where, null, null,
+				null, null);
+		return new ItemDataAdapterIterator(cursor);
 	}
-	
+
 	/**
-	 * An iterator for The ItemDataAdapter. Allows one to iterate over the
+	 * An iterator for the ItemDataAdapter. Allows one to iterate over the
 	 * database to populate an item or items.
 	 * 
 	 * @author Jimmy Theis, modified by Matt Boutell. Created Mar 30, 2012.

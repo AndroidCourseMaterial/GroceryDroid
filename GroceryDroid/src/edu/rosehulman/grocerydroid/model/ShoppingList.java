@@ -185,8 +185,10 @@ public class ShoppingList {
 			if (this.items == null) {
 				this.items = new ArrayList<Item>();
 			}
-		//	TODO: fix:
-		// ida.loadAllItemsWithListId(this.items, this.id);
+			this.items.clear();
+			for (Item item : ida.getAllItemsWithListId(this.id)) {
+				this.items.add(item);
+			}
 		}
 
 		switch (order) {
@@ -210,7 +212,6 @@ public class ShoppingList {
 			Integer rightIdx = new Integer(right.getStockIdx());
 			return leftIdx.compareTo(rightIdx);
 		}
-
 	}
 
 	private class CompareShopOrder implements Comparator<Item> {

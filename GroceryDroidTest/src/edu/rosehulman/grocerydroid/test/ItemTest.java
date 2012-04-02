@@ -34,7 +34,6 @@ public class ItemTest extends ActivityInstrumentationTestCase2<MainActivity> {
 	 * @param activityClass
 	 */
 	public ItemTest() {
-		// super("edu.rosehulman.grocerydroid", MainActivity.class);
 		super(MainActivity.class);
 	}
 
