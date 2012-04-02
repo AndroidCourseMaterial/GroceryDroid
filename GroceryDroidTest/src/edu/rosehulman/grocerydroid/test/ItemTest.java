@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.ActivityInstrumentationTestCase2;
 import edu.rosehulman.grocerydroid.MainActivity;
+import edu.rosehulman.grocerydroid.MyApplication;
 import edu.rosehulman.grocerydroid.db.DatabaseHelper;
 import edu.rosehulman.grocerydroid.db.ItemDataAdapter;
 import edu.rosehulman.grocerydroid.model.Item;
@@ -15,8 +16,7 @@ import edu.rosehulman.grocerydroid.model.ItemUnitLabel;
  * 
  * @author Matthew Boutell. Created Mar 26, 2012.
  */
-public class ItemTest extends
-		ActivityInstrumentationTestCase2<MainActivity> {
+public class ItemTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
 	private MainActivity mActivity;
 	private Item bananas;
@@ -34,7 +34,8 @@ public class ItemTest extends
 	 * @param activityClass
 	 */
 	public ItemTest() {
-		super("edu.rosehulman.grocerydroid", MainActivity.class);
+		// super("edu.rosehulman.grocerydroid", MainActivity.class);
+		super(MainActivity.class);
 	}
 
 	/**
@@ -46,7 +47,7 @@ public class ItemTest extends
 		this.dbHelper.onUpgrade(db, 0, 0);
 		db.setTransactionSuccessful();
 		db.endTransaction();
-		//db.close();
+		// db.close();
 	}
 
 	@Override
@@ -54,7 +55,7 @@ public class ItemTest extends
 		super.setUp();
 		this.mActivity = this.getActivity();
 		this.dbHelper = DatabaseHelper.createInstance(this.mActivity);
-		
+
 		this.bananas = new Item(this.idToDelete, 1, "Bananas", 4, 2, 1.50f, 1,
 				ItemUnitLabel.bag, true, 28, 4);
 		this.oranges = new Item(18, 1, "Oranges", 2, 2, 3.00f, 1,
@@ -64,6 +65,15 @@ public class ItemTest extends
 
 		this.ida = new ItemDataAdapter();
 		this.ida.open();
+	}
+
+	/**
+	 * Tests to see if the Application was instantiated, and thus also if the
+	 * singleon instance of DatabaseHelper was created.
+	 */
+	public void testApplicationInstantiated() {
+		assertNotNull(MyApplication.getInstance());
+		assertNotNull(this.dbHelper);
 	}
 
 	/**

@@ -40,7 +40,8 @@ public class ShoppingListTest extends
 	 * @param activityClass
 	 */
 	public ShoppingListTest() {
-		super("edu.rosehulman.grocerydroid", MainActivity.class);
+		super(MainActivity.class);
+//		super("edu.rosehulman.grocerydroid", MainActivity.class);
 	}
 
 	/**

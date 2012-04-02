@@ -23,7 +23,8 @@ public class GroceryDroidTest extends
 	 * @param activityClass
 	 */
 	public GroceryDroidTest() {
-		super("edu.rosehulman.grocerydroid", MainActivity.class);
+		super(MainActivity.class);
+//		super("edu.rosehulman.grocerydroid", MainActivity.class);
 	}
 
 	@Override
@@ -33,6 +34,7 @@ public class GroceryDroidTest extends
 		this.mView = (TextView)this.mActivity.findViewById(edu.rosehulman.grocerydroid.R.id.textview);
 		this.resourceString = this.mActivity.getString(edu.rosehulman.grocerydroid.R.string.hello);
 	}
+	
 	
 	public void testPreconditions() {
 		assertNotNull(this.mView);

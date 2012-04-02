@@ -3,8 +3,6 @@ package edu.rosehulman.grocerydroid.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-import edu.rosehulman.grocerydroid.MyApplication;
 
 /**
  * Manages the databases on the system.
@@ -37,7 +35,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * @return The single instance of DatabaseHelper
 	 */
 	public static synchronized DatabaseHelper createInstance(Context context) {
-		// CONSIDER should context be context.getApplicationContext()?
 		instance = new DatabaseHelper(context, MOCK ? MOCK_DATABASE_NAME
 				: DATABASE_NAME);
 		return instance;
@@ -50,12 +47,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 */
 	public static DatabaseHelper getInstance() {
 		assert (instance != null);
-		if (instance == null) {
-			Log.d(MyApplication.GD, "Getting null instance of DatabaseHelper");
-		} else {
-			Log.d(MyApplication.GD,
-					"Getting non-null instance of DataBaseHelper");
-		}
+		// if (instance == null) {
+		// Log.d(MyApplication.GD, "Getting null instance of DatabaseHelper");
+		// } else {
+		// Log.d(MyApplication.GD,
+		// "Getting non-null instance of DataBaseHelper");
+		// }
 		return instance;
 	}
 

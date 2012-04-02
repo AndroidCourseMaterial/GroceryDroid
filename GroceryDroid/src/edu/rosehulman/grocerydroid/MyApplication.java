@@ -22,7 +22,7 @@ public class MyApplication extends Application {
 	 */
 	public SQLiteOpenHelper dbHelper;
 	
-	private static MyApplication instance;
+	private static MyApplication instance = null;
 	
 	private static final boolean PURGE_DB = false;
 	

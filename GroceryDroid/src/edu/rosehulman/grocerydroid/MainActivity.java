@@ -41,8 +41,6 @@ public class MainActivity extends Activity {
 	}
 
 	private void initializeDatabase() {
-		DatabaseHelper.createInstance(this);
-
 		this.slda = new ShoppingListDataAdapter();
 		this.slda.open();
 
