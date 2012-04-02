@@ -69,7 +69,7 @@ public class ItemTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
 	/**
 	 * Tests to see if the Application was instantiated, and thus also if the
-	 * singleon instance of DatabaseHelper was created.
+	 * singleton instance of DatabaseHelper was created.
 	 */
 	public void testApplicationInstantiated() {
 		assertNotNull(MyApplication.getInstance());
