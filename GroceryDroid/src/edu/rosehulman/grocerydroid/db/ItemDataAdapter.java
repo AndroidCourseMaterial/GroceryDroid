@@ -1,13 +1,14 @@
 package edu.rosehulman.grocerydroid.db;
 
-import java.util.ArrayList;
-
 import android.content.ContentValues;
 import android.database.Cursor;
+
 import edu.rosehulman.grocerydroid.model.DisplayOrder;
 import edu.rosehulman.grocerydroid.model.Item;
 import edu.rosehulman.grocerydroid.model.ItemUnitLabel;
 import edu.rosehulman.grocerydroid.model.ShoppingList;
+
+import java.util.ArrayList;
 
 /**
  * All the operations needed to access the shopping list data in the database.
@@ -84,7 +85,7 @@ public class ItemDataAdapter extends TableAdapter {
 		ContentValues newItemValues = this.toContentValues(item);
 
 		// Insert the row
-		long rowId = this.db.insert(TABLE_GROCERY_ITEMS, null, newItemValues);
+		long rowId = db.insert(TABLE_GROCERY_ITEMS, null, newItemValues);
 		// Update the ID if it changed
 		item.setId(rowId);
 		return rowId;
@@ -100,8 +101,8 @@ public class ItemDataAdapter extends TableAdapter {
 	public boolean updateItem(Item item) {
 		ContentValues newItemValues = toContentValues(item);
 
-		return this.db.update(TABLE_GROCERY_ITEMS, newItemValues, DB_KEY_ID
-				+ "=" + item.getId(), null) == 1;
+		return db.update(TABLE_GROCERY_ITEMS, newItemValues, DB_KEY_ID + "="
+				+ item.getId(), null) == 1;
 	}
 
 	/**
@@ -111,8 +112,8 @@ public class ItemDataAdapter extends TableAdapter {
 	 * @return True iff one item was successfully removed.
 	 */
 	public boolean deleteItem(Item item) {
-		return this.db.delete(TABLE_GROCERY_ITEMS,
-				DB_KEY_ID + "=" + item.getId(), null) == 1;
+		return db.delete(TABLE_GROCERY_ITEMS, DB_KEY_ID + "=" + item.getId(),
+				null) == 1;
 	}
 
 	/**
@@ -122,56 +123,21 @@ public class ItemDataAdapter extends TableAdapter {
 	 * @return The number of items deleted.
 	 */
 	public int deleteAllItemsWithListId(long listId) {
-		return this.db.delete(ItemDataAdapter.TABLE_GROCERY_ITEMS,
-				DB_KEY_LIST_ID + "=" + listId, null);
+		return db.delete(ItemDataAdapter.TABLE_GROCERY_ITEMS, DB_KEY_LIST_ID
+				+ "=" + listId, null);
 	}
 
+
 	/**
-	 * Loads all items in the given shopping list (those having the given list
-	 * id) into the list of items.
+	 * Return a Cursor over all items with the given list ID.
 	 * 
-	 * @param items
-	 * @param listId
-	 */
-	public void loadAllItemsWithListId(ArrayList<Item> items, long listId) {
-		Cursor c = this.getCursorForAllItemsWithId(listId);
-		items.clear();
-		if (c.moveToFirst()) {
-			do {
-				long id = c.getLong(c.getColumnIndexOrThrow(DB_KEY_ID));
-				assert (listId == c.getLong(c
-						.getColumnIndexOrThrow(DB_KEY_LIST_ID)));
-				String name = c.getString(c.getColumnIndexOrThrow(DB_KEY_NAME));
-				int nToStock = c.getInt(c
-						.getColumnIndexOrThrow(DB_KEY_NUM_TO_STOCK));
-				int nToBuy = c.getInt(c
-						.getColumnIndexOrThrow(DB_KEY_NUM_TO_BUY));
-				float price = c.getFloat(c.getColumnIndexOrThrow(DB_KEY_PRICE));
-				float size = c.getFloat(c
-						.getColumnIndexOrThrow(DB_KEY_UNIT_SIZE));
-				ItemUnitLabel unit = ItemUnitLabel.values()[c.getInt(c
-						.getColumnIndexOrThrow(DB_KEY_UNIT_LABEL))];
-				boolean isBought = c.getInt(c
-						.getColumnIndexOrThrow(DB_KEY_IS_BOUGHT)) == 1;
-				int stockIdx = c.getInt(c
-						.getColumnIndexOrThrow(DB_KEY_STOCK_IDX));
-				int shopIdx = c
-						.getInt(c.getColumnIndexOrThrow(DB_KEY_SHOP_IDX));
-				Item item = new Item(id, listId, name, nToStock, nToBuy, price,
-						size, unit, isBought, stockIdx, shopIdx);
-				items.add(item);
-			} while (c.moveToNext());
-		}
-	}
-	
-	/**
 	 * @param listId
 	 * @return A Cursor for all the items with the given list ID.
 	 */
-	private Cursor getCursorForAllItemsWithId(long listId) {
+	public Cursor getCursorForAllItemsWithId(long listId) {
 		String where = DB_KEY_LIST_ID + "=" + listId;
-		return this.db.query(TABLE_GROCERY_ITEMS, null, where, null, null,
-				null, null);
+		return db.query(TABLE_GROCERY_ITEMS, null, where, null, null, null,
+				null);
 
 		/*
 		 * Second arg tells which column. Null = all. Could be new String[] {
@@ -184,17 +150,71 @@ public class ItemDataAdapter extends TableAdapter {
 	/**
 	 * For each item in the shopping list, update the corresponding item in the
 	 * database.
-	 *
+	 * 
 	 * @param list
 	 * @return The number of items which have been updated.
 	 */
 	public int updateAllItemsInList(ShoppingList list) {
-		// CONSIDER: is there a better way to do this, like using a 
+		// CONSIDER: is there a better way to do this, like using a
 		// Cursor or a transaction?
 		int nUpdated = 0;
 		for (Item item : list.getItems(DisplayOrder.AS_IS)) {
 			nUpdated += (updateItem(item) ? 1 : 0);
 		}
 		return nUpdated;
+	}
+
+	
+	/**
+	 * Returns an iterator over the items with the given list ID.
+	 * Intended to be used in a foreach loop:
+	 * for (Item item: ida.getAllItemsWithListId(id)) {
+	 *		items.add(item);
+	 * }
+	 *
+	 * @param listId
+	 * @return An iterator over the items with the given list ID.
+	 */
+	public ItemDataAdapterIterator getAllItemsWithListId(long listId) {
+		return new ItemDataAdapterIterator(getCursorForAllItemsWithId(listId));
+	}
+	
+	/**
+	 * An iterator for The ItemDataAdapter. Allows one to iterate over the
+	 * database to populate an item or items.
+	 * 
+	 * @author Jimmy Theis, modified by Matt Boutell. Created Mar 30, 2012.
+	 */
+	public class ItemDataAdapterIterator extends TableAdapterIterator<Item> {
+
+		/**
+		 * Creates an ItemDataAdapterIterator with the given Cursor.
+		 * 
+		 * @param cursor
+		 */
+		public ItemDataAdapterIterator(Cursor cursor) {
+			super(cursor);
+		}
+
+		@Override
+		protected Item getObjectFromNextRow() {
+			Cursor c = getCursor();
+			long id = c.getLong(c.getColumnIndexOrThrow(DB_KEY_ID));
+			long listId = c.getLong(c.getColumnIndexOrThrow(DB_KEY_LIST_ID));
+			String name = c.getString(c.getColumnIndexOrThrow(DB_KEY_NAME));
+			int nToStock = c.getInt(c
+					.getColumnIndexOrThrow(DB_KEY_NUM_TO_STOCK));
+			int nToBuy = c.getInt(c.getColumnIndexOrThrow(DB_KEY_NUM_TO_BUY));
+			float price = c.getFloat(c.getColumnIndexOrThrow(DB_KEY_PRICE));
+			float size = c.getFloat(c.getColumnIndexOrThrow(DB_KEY_UNIT_SIZE));
+			ItemUnitLabel unit = ItemUnitLabel.values()[c.getInt(c
+					.getColumnIndexOrThrow(DB_KEY_UNIT_LABEL))];
+			boolean isBought = c.getInt(c
+					.getColumnIndexOrThrow(DB_KEY_IS_BOUGHT)) == 1;
+			int stockIdx = c.getInt(c.getColumnIndexOrThrow(DB_KEY_STOCK_IDX));
+			int shopIdx = c.getInt(c.getColumnIndexOrThrow(DB_KEY_SHOP_IDX));
+			return new Item(id, listId, name, nToStock, nToBuy, price, size,
+					unit, isBought, stockIdx, shopIdx);
+		}
 	}
 }

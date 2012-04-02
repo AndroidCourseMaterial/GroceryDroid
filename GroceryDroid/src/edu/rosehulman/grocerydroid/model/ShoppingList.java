@@ -185,7 +185,8 @@ public class ShoppingList {
 			if (this.items == null) {
 				this.items = new ArrayList<Item>();
 			}
-			ida.loadAllItemsWithListId(this.items, this.id);
+		//	TODO: fix:
+		// ida.loadAllItemsWithListId(this.items, this.id);
 		}
 
 		switch (order) {

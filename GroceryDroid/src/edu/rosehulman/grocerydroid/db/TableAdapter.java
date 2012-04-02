@@ -3,9 +3,6 @@ package edu.rosehulman.grocerydroid.db;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Provide generic functionality to all database adapters
  * 
@@ -67,18 +64,27 @@ public abstract class TableAdapter {
 	 * connection to the database.
 	 */
 	public void close() {
-		this.db = null;
+		db = null;
 	}
 
+	/**
+	 * Adapter for database transactions.
+	 */
 	public void startTransaction() {
-		this.db.beginTransaction();
+		db.beginTransaction();
 	}
 
+	/**
+	 * Adapter for database transactions.
+	 */
 	public void commitTransaction() {
-		this.db.setTransactionSuccessful();
+		db.setTransactionSuccessful();
 	}
 
+	/**
+	 * Adapter for database transactions.
+	 */
 	public void finishTransaction() {
-		this.db.endTransaction();
+		db.endTransaction();
 	}
 }

@@ -190,7 +190,11 @@ public class ItemTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
 		ArrayList<Item> items = new ArrayList<Item>();
 		long shoppingListId = 1;
-		this.ida.loadAllItemsWithListId(items, shoppingListId);
+		
+		for (Item item: ida.getAllItemsWithListId(shoppingListId)) {
+			items.add(item); 
+		}
+		// this.ida.loadAllItemsWithListId(items, shoppingListId);
 
 		// The first one in the DB should be the matching item.
 		// The IDs may not match, though, so we don't test them.
