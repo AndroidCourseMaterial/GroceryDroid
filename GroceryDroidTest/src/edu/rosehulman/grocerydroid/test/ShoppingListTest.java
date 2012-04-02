@@ -1,17 +1,17 @@
 package edu.rosehulman.grocerydroid.test;
 
-import java.util.ArrayList;
-
 import android.database.sqlite.SQLiteDatabase;
 import android.test.ActivityInstrumentationTestCase2;
+
 import edu.rosehulman.grocerydroid.MainActivity;
 import edu.rosehulman.grocerydroid.db.DatabaseHelper;
 import edu.rosehulman.grocerydroid.db.ItemDataAdapter;
 import edu.rosehulman.grocerydroid.db.ShoppingListDataAdapter;
-import edu.rosehulman.grocerydroid.model.Order;
 import edu.rosehulman.grocerydroid.model.Item;
 import edu.rosehulman.grocerydroid.model.ItemUnitLabel;
 import edu.rosehulman.grocerydroid.model.ShoppingList;
+
+import java.util.ArrayList;
 
 /**
  * Tests ShoppingList and ShoppingListDataAdapter.
@@ -93,7 +93,7 @@ public class ShoppingListTest extends
 		String expected = "2 Walmart" + "\n  " + this.bananas + "\n  "
 				+ this.oranges + "\n  " + this.beef;
 		assertEquals(expected, this.list2.toString());
-		assertEquals(3, this.list2.getItems(ShoppingList.DisplayOrder.AS_IS).size());
+		assertEquals(3, this.list2.getItems(ShoppingList.Order.AS_IS).size());
 	}
 
 	/**
@@ -105,9 +105,9 @@ public class ShoppingListTest extends
 		this.list1.addItem(this.beef);
 		assertTrue(this.list1.deleteItem(this.bananas));
 		assertTrue(this.list1.deleteItem(this.beef));
-		assertEquals(1, this.list1.getItems(ShoppingList.DisplayOrder.AS_IS).size());
+		assertEquals(1, this.list1.getItems(ShoppingList.Order.AS_IS).size());
 		assertEquals(this.oranges,
-				this.list1.getItems(ShoppingList.DisplayOrder.AS_IS).get(0));
+				this.list1.getItems(ShoppingList.Order.AS_IS).get(0));
 	}
 
 	/**
@@ -215,7 +215,7 @@ public class ShoppingListTest extends
 		this.list1.addItem(this.bananas);
 		this.list1.addItem(this.oranges);
 		this.list1.addItem(this.beef);
-		for (Item item : this.list1.getItems(ShoppingList.DisplayOrder.AS_IS)) {
+		for (Item item : this.list1.getItems(ShoppingList.Order.AS_IS)) {
 			this.ida.insertItem(item);
 		}
 
@@ -240,13 +240,13 @@ public class ShoppingListTest extends
 		this.list1.addItem(this.beef);
 		// Inserting in a clearly non-stock order since their stock indices are
 		// 28, 27, 30
-		for (Item item : this.list1.getItems(ShoppingList.DisplayOrder.AS_IS)) {
+		for (Item item : this.list1.getItems(ShoppingList.Order.AS_IS)) {
 			this.ida.insertItem(item);
 		}
 		
 		this.list1.setPantryOrderToListOrder();
 		for (int i = 0; i < 3; i++) {
-			assertEquals(i, this.list1.getItems(ShoppingList.DisplayOrder.AS_IS).get(i)
+			assertEquals(i, this.list1.getItems(ShoppingList.Order.AS_IS).get(i)
 					.getStockIdx());
 		}
 
@@ -257,8 +257,8 @@ public class ShoppingListTest extends
 		
 		// Another check: read them without re-ordering into the list.
 		// Clearing first so it forces a re-load from the DB
-		this.list1.getItems(ShoppingList.DisplayOrder.AS_IS).clear();
-		ArrayList<Item> items = this.list1.getItems(ShoppingList.DisplayOrder.AS_IS);
+		this.list1.getItems(ShoppingList.Order.AS_IS).clear();
+		ArrayList<Item> items = this.list1.getItems(ShoppingList.Order.AS_IS);
 
 		assertEquals("Bananas", items.get(0).getName()); 
 		assertEquals("Oranges", items.get(1).getName()); 
@@ -277,13 +277,13 @@ public class ShoppingListTest extends
 		this.list1.addItem(this.beef);
 		// Inserting in a clearly non-store order since their shop indices are
 		// 4,5,2
-		for (Item item : this.list1.getItems(ShoppingList.DisplayOrder.AS_IS)) {
+		for (Item item : this.list1.getItems(ShoppingList.Order.AS_IS)) {
 			this.ida.insertItem(item);
 		}
 		
 		this.list1.setShoppingOrderToListOrder();
 		for (int i = 0; i < 3; i++) {
-			assertEquals(i, this.list1.getItems(ShoppingList.DisplayOrder.AS_IS).get(i)
+			assertEquals(i, this.list1.getItems(ShoppingList.Order.AS_IS).get(i)
 					.getShopIdx());
 		}
 		
@@ -294,7 +294,7 @@ public class ShoppingListTest extends
 		
 		// Another check: read them without re-ordering into the list.
 		// Clearing first so it forces a re-load from the DB
-		ArrayList<Item> items = this.list1.getItems(ShoppingList.DisplayOrder.AS_IS);
+		ArrayList<Item> items = this.list1.getItems(ShoppingList.Order.AS_IS);
 		assertEquals("Bananas", items.get(0).getName()); 
 		assertEquals("Oranges", items.get(1).getName()); 
 		assertEquals("Beef", items.get(2).getName()); 
@@ -313,7 +313,7 @@ public class ShoppingListTest extends
 		this.ida.insertItem(this.beef);
 
 		// Should load the items.
-		ArrayList<Item> items = this.list1.getItems(ShoppingList.DisplayOrder.AS_IS);
+		ArrayList<Item> items = this.list1.getItems(ShoppingList.Order.AS_IS);
 		assertEquals(this.bananas, items.get(0));
 		assertEquals(this.oranges, items.get(1));
 		assertEquals(this.beef, items.get(2));
@@ -332,7 +332,7 @@ public class ShoppingListTest extends
 		this.ida.insertItem(this.beef);
 
 		// Should load the items.
-		ArrayList<Item> items = this.list1.getItems(ShoppingList.DisplayOrder.STOCK);
+		ArrayList<Item> items = this.list1.getItems(ShoppingList.Order.STOCK);
 		assertEquals(this.oranges, items.get(0));
 		assertEquals(this.bananas, items.get(1));
 		assertEquals(this.beef, items.get(2));
@@ -351,7 +351,7 @@ public class ShoppingListTest extends
 		this.ida.insertItem(this.beef);
 
 		// Should load the items.
-		ArrayList<Item> items = this.list1.getItems(ShoppingList.DisplayOrder.SHOP);
+		ArrayList<Item> items = this.list1.getItems(ShoppingList.Order.SHOP);
 		assertEquals(this.beef, items.get(0));
 		assertEquals(this.bananas, items.get(1));
 		assertEquals(this.oranges, items.get(2));

@@ -3,7 +3,6 @@ package edu.rosehulman.grocerydroid.db;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import edu.rosehulman.grocerydroid.model.Order;
 import edu.rosehulman.grocerydroid.model.Item;
 import edu.rosehulman.grocerydroid.model.ItemUnitLabel;
 import edu.rosehulman.grocerydroid.model.ShoppingList;
@@ -136,7 +135,7 @@ public class ItemDataAdapter extends TableAdapter {
 		// CONSIDER: is there a better way to do this, like using a
 		// Cursor or a transaction?
 		int nUpdated = 0;
-		for (Item item : list.getItems(ShoppingList.DisplayOrder.AS_IS)) {
+		for (Item item : list.getItems(ShoppingList.Order.AS_IS)) {
 			nUpdated += (updateItem(item) ? 1 : 0);
 		}
 		return nUpdated;

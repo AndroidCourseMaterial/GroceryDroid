@@ -15,7 +15,7 @@ public class ShoppingList {
 	private long id;
 	private String name;
 	private ArrayList<Item> items;
-	
+
 	/**
 	 * Creates a ShoppingList from the given parameters.
 	 * 
@@ -176,6 +176,10 @@ public class ShoppingList {
 		this.items = items;
 	}
 
+	// CONSIDER: since we access AS_IS primarily just for testing, does it
+	// make sense to have an overloaded getItems() method that calls
+	// getItems(Order.AS_IS)?
+
 	/**
 	 * 
 	 * Lazy-loads the items if needed.
@@ -186,7 +190,7 @@ public class ShoppingList {
 	 *            The item data adapter
 	 * @return The list of Items
 	 */
-	public ArrayList<Item> getItems(DisplayOrder order) {
+	public ArrayList<Item> getItems(Order order) {
 		if (this.items == null || this.items.size() == 0) {
 			// If items isn't, then lazy-load it.
 			ItemDataAdapter ida = new ItemDataAdapter();
@@ -239,13 +243,13 @@ public class ShoppingList {
 	 * 
 	 * @author boutell. Created Mar 30, 2012.
 	 */
-	public enum DisplayOrder {
+	public enum Order {
 		/** default */
 		AS_IS,
-		
+
 		/** pantry order */
 		STOCK,
-		
+
 		/** store order */
 		SHOP
 	}
