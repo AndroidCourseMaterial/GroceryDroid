@@ -167,6 +167,16 @@ public class ShoppingList {
 	}
 
 	/**
+	 * Sets the field called 'items' to the given value.
+	 * 
+	 * @param items
+	 *            The items to set.
+	 */
+	public void setItems(ArrayList<Item> items) {
+		this.items = items;
+	}
+
+	/**
 	 * 
 	 * Lazy-loads the items if needed.
 	 * 
@@ -224,12 +234,19 @@ public class ShoppingList {
 	}
 
 	/**
-	 * Sets the field called 'items' to the given value.
+	 * Whether the list should be displayed in the order the items appear in the
+	 * pantry, the order they appear in the store, or neither.
 	 * 
-	 * @param items
-	 *            The items to set.
+	 * @author boutell. Created Mar 30, 2012.
 	 */
-	public void setItems(ArrayList<Item> items) {
-		this.items = items;
+	public enum DisplayOrder {
+		/** default */
+		AS_IS,
+		
+		/** pantry order */
+		STOCK,
+		
+		/** store order */
+		SHOP
 	}
 }
