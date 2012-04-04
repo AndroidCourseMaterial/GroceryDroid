@@ -31,7 +31,7 @@ public class GroceryDroidTest extends
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.mActivity = this.getActivity();
-		this.mView = (TextView)this.mActivity.findViewById(edu.rosehulman.grocerydroid.R.id.textview);
+		this.mView = (TextView)this.mActivity.findViewById(edu.rosehulman.grocerydroid.R.id.add_list);
 		this.resourceString = this.mActivity.getString(edu.rosehulman.grocerydroid.R.string.hello);
 	}
 	

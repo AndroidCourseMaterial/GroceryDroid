@@ -3,5 +3,10 @@
 
     <string name="hello">Hello World, GroceryDroidActivity!</string>
     <string name="app_name">GroceryDroid</string>
+    <string name="main_screen_prompt_default">Tap + above to start</string>
+    <string name="main_screen_prompt_lists_present">Choose a list</string>
+    <string name="add_list_prompt">Enter name of list</string>
+    <string name="save">Save</string>
+    <string name="add_list_name_hint">Name of list</string>
 
 </resources>

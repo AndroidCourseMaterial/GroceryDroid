@@ -27,11 +27,6 @@ public class MyApplication extends Application {
 	private static final boolean PURGE_DB = false;
 	
 	/**
-	 * Should we check for intensive work on the UI thread?
-	 */
-	public static boolean CHECK_UI_THREAD = false;
-	
-	/**
 	 * Get the globally accessible application instance
 	 * 
 	 * @return The one instance of MyApplication

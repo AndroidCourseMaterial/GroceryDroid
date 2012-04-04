@@ -12,10 +12,12 @@ import edu.rosehulman.grocerydroid.db.ItemDataAdapter;
  * @author Matthew Boutell. Created Nov 7, 2011.
  */
 public class ShoppingList {
+	private static final long DEFAULT_ID = 0;
 	private long id;
 	private String name;
 	private ArrayList<Item> items;
 
+	
 	/**
 	 * Creates a ShoppingList from the given parameters.
 	 * 
@@ -25,6 +27,18 @@ public class ShoppingList {
 	 */
 	public ShoppingList(long id, String name) {
 		this.id = id;
+		this.name = name;
+		this.items = new ArrayList<Item>();
+	}
+
+	/**
+	 * Creates a ShoppingList from the given parameters.
+	 * 
+	 * @param name
+	 * 
+	 */
+	public ShoppingList(String name) {
+		this.id = DEFAULT_ID;
 		this.name = name;
 		this.items = new ArrayList<Item>();
 	}

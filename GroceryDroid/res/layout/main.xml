@@ -5,9 +5,12 @@
     android:orientation="vertical" >
 
     <TextView
-        android:id = "@+id/textview"
+        android:id="@+id/main_screen_prompt"
+        android:layout_marginTop="20dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello" />
+        android:gravity="center"
+        android:text="@string/main_screen_prompt_default"
+        android:textSize="24sp"/>
 
 </LinearLayout>
