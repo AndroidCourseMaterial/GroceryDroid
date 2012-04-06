@@ -9,6 +9,8 @@ public class Item {
 
 	/** For debugging */
 	public static final String GD = "GD";
+	// CONSIDER: use a BigDecimal for the price and unitSize so that comparisons
+	// are easier.
 	private static final float EPSILON = 0.000001f;
 	private long id;
 	private long listId; // the list to which it belongs

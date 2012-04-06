@@ -20,7 +20,7 @@ public class MyApplication extends Application {
 	/**
 	 * The global database helper
 	 */
-	public SQLiteOpenHelper dbHelper;
+	public SQLiteOpenHelper mDbHelper;
 	
 	private static MyApplication instance = null;
 	
@@ -41,7 +41,7 @@ public class MyApplication extends Application {
 		
 		Context context = getApplicationContext();
 		Log.d(GD, "Creating single instance of Database Helper in MyApplication");
-		this.dbHelper = DatabaseHelper.createInstance(context);
+		this.mDbHelper = DatabaseHelper.createInstance(context);
 		instance = this;
 		
 		//start with a fresh database every run
@@ -55,9 +55,9 @@ public class MyApplication extends Application {
 	 * Purges the database
 	 */
 	public void purgeDb() {
-		SQLiteDatabase db = this.dbHelper.getWritableDatabase();
+		SQLiteDatabase db = this.mDbHelper.getWritableDatabase();
 		db.beginTransaction();
-		this.dbHelper.onUpgrade(db, 0, 0);
+		this.mDbHelper.onUpgrade(db, 0, 0);
 		db.setTransactionSuccessful();
 		db.endTransaction();
 		db.close();

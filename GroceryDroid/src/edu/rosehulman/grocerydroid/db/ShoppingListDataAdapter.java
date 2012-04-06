@@ -29,7 +29,9 @@ public class ShoppingListDataAdapter extends TableAdapter {
 	 */
 	private ContentValues toContentValues(ShoppingList list) {
 		ContentValues newItemValues = new ContentValues();
-		newItemValues.put(DB_KEY_ID, list.getId());
+		// TODO: when I put an id that was already in the table, it gave me 
+		// a sqlite error (code 19). But don't I want to insert by list ID?
+		//newItemValues.put(DB_KEY_ID, list.getId());
 		newItemValues.put(DB_KEY_NAME, list.getName());
 		return newItemValues;
 	}

@@ -16,11 +16,18 @@
 
 package edu.rosehulman.grocerydroid;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import edu.rosehulman.grocerydroid.db.ItemDataAdapter;
@@ -35,21 +42,25 @@ import com.actionbarsherlock.view.MenuItem;
 import java.util.ArrayList;
 
 /**
- * The main screen displays all a user's shopping lists.
+ * The main screen displays all the user's shopping lists.
  * 
  * @author Matthew Boutell. Created Mar 29, 2012.
  */
 public class MainActivity extends SherlockActivity {
 	private static final int DIALOG_ID_ADD_SHOPPING_LIST = 0;
-	private ShoppingListDataAdapter slda;
-	private ItemDataAdapter ida;
-	private ArrayList<ShoppingList> shoppingLists = null;
+	private static final int DIALOG_ID_LIST_SELECTED = 1;
+	private static final int DIALOG_ID_CONFIRM_DELETE_LIST = 2;
+	private ShoppingListDataAdapter mSlda;
+	private ItemDataAdapter mIda;
+	private ArrayList<ShoppingList> mShoppingLists = null;
+	private ShoppingList mSelectedList;
+	// private ArrayAdapter<String> mAdapter;
+	private MainShoppingListAdapter mAdapter;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		setTheme(R.style.Theme_Sherlock);// _ForceOverflow); // ABS, must come
-											// first
+		setTheme(R.style.Theme_Sherlock_ForceOverflow); // ABS, must come first
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		getSupportActionBar().setIcon(R.drawable.ic_list); // needs to be in
@@ -58,31 +69,47 @@ public class MainActivity extends SherlockActivity {
 		getSupportActionBar().setSubtitle("Welcome");
 
 		initializeDatabase();
-
 		initializeShoppingLists();
+
+		ListView lv = (ListView) findViewById(R.id.main_shopping_list_view);
+		mAdapter = new MainShoppingListAdapter(this, R.layout.main_list,
+				mShoppingLists);
+		lv.setAdapter(mAdapter);
+
+		lv.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View v, int pos,
+					long id) {
+				mSelectedList = MainActivity.this.mShoppingLists.get(pos);
+				showDialog(DIALOG_ID_LIST_SELECTED);
+			}
+		});
+	}
+
+	private void initializeDatabase() {
+		this.mSlda = new ShoppingListDataAdapter();
+		this.mSlda.open();
+
+		this.mIda = new ItemDataAdapter();
+		this.mIda.open();
 	}
 
 	private void initializeShoppingLists() {
-		this.shoppingLists = new ArrayList<ShoppingList>();
-		for (ShoppingList list : slda.getAllLists()) {
-			this.shoppingLists.add(list);
+		this.mShoppingLists = new ArrayList<ShoppingList>();
+		for (ShoppingList list : mSlda.getAllLists()) {
+			this.mShoppingLists.add(list);
 		}
 		updateMainPrompt();
 	}
 
 	private void updateMainPrompt() {
-		if (this.shoppingLists.size() > 0) {
-			TextView tv = (TextView)findViewById(R.id.main_screen_prompt);
+		TextView tv = (TextView) findViewById(R.id.main_screen_prompt);
+		Log.d(MyApplication.GD, "There are " + mShoppingLists.size() + " lists");
+		if (this.mShoppingLists.size() > 0) {
 			tv.setText(R.string.main_screen_prompt_lists_present);
+		} else {
+			tv.setText(R.string.main_screen_prompt_default);
 		}
-	}
-
-	private void initializeDatabase() {
-		this.slda = new ShoppingListDataAdapter();
-		this.slda.open();
-
-		this.ida = new ItemDataAdapter();
-		this.ida.open();
 	}
 
 	@Override
@@ -131,20 +158,90 @@ public class MainActivity extends SherlockActivity {
 				public void onClick(View v) {
 					EditText et = (EditText) addListDialog
 							.findViewById(R.id.add_list_name_edit_text);
-					ShoppingList newList = new ShoppingList(et.getText()
-							.toString());
-					slda.insertList(newList);
-					// TODO: add list to screen and refresh
-					// It does save it to the DB. :)
-
-					updateMainPrompt();
-					addListDialog.dismiss();
+					String newListName = et.getText().toString();
+					if (!newListName.equals("")) {
+						ShoppingList newList = new ShoppingList(newListName);
+						mSlda.insertList(newList);
+						mShoppingLists.add(newList);
+						mAdapter.notifyDataSetChanged();
+						updateMainPrompt();
+						addListDialog.dismiss();
+					}
 				}
 			});
 			dialog = addListDialog;
 			break;
+		case DIALOG_ID_LIST_SELECTED:
+			Log.d(MyApplication.GD, "List selected");
+			AlertDialog.Builder listSelectedBuilder = new AlertDialog.Builder(
+					this);
+			listSelectedBuilder
+					.setTitle("What would you like to do with this list?");
+			listSelectedBuilder.setItems(R.array.list_selected_options,
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							Intent intent = null;
+							switch (which) {
+							case 0:
+								Log.d(MyApplication.GD, String.format(
+										"Stock list for %s",
+										mSelectedList.getName()));
+								// intent = new Intent(MainActivity.this,
+								// StockActivity.class);
+								// intent.putExtra(MainActivity.KEY_SELECTED_LIST,
+								// MainActivity.this.selectedList);
+								// startActivity(intent);
+								break;
+							case 1:
+								Log.d(MyApplication.GD, String.format(
+										"Shop at %s", mSelectedList));
+								// intent = new Intent(MainActivity.this,
+								// ShopActivity.class);
+								// intent.putExtra(MainActivity.KEY_SELECTED_LIST,
+								// MainActivity.this.selectedList);
+								// startActivity(intent);
+								break;
+							case 2:
+								MainActivity.this
+										.showDialog(DIALOG_ID_CONFIRM_DELETE_LIST);
+							}
+							dialog.dismiss();
+						}
+					});
+			dialog = listSelectedBuilder.create();
+			break;
+		case DIALOG_ID_CONFIRM_DELETE_LIST:
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage(R.string.confirm_delete_list)
+					.setCancelable(false)
+					.setPositiveButton(R.string.ok,
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface di,
+										int dialogId) {
+									mShoppingLists.remove(mSelectedList);
+									mSlda.deleteList(mSelectedList);
+									// TODO: test this once I can add items to
+									// lists.
+									mIda.deleteAllItemsWithListId(mSelectedList
+											.getId());
+									mAdapter.notifyDataSetChanged();
+									updateMainPrompt();
+									di.dismiss();
+								}
+							})
+					.setNegativeButton(R.string.cancel,
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface di,
+										int dialogId) {
+									di.cancel();
+								}
+							});
+
+			dialog = builder.create();
 		}
 		return dialog;
 	}
-
 }
