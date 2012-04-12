@@ -16,17 +16,13 @@
 
 package edu.rosehulman.grocerydroid;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,7 +30,7 @@ import edu.rosehulman.grocerydroid.db.ItemDataAdapter;
 import edu.rosehulman.grocerydroid.db.ShoppingListDataAdapter;
 import edu.rosehulman.grocerydroid.model.ShoppingList;
 
-import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -46,16 +42,13 @@ import java.util.ArrayList;
  * 
  * @author Matthew Boutell. Created Mar 29, 2012.
  */
-public class MainActivity extends SherlockActivity {
-	private static final int DIALOG_ID_ADD_SHOPPING_LIST = 0;
-	private static final int DIALOG_ID_LIST_SELECTED = 1;
-	private static final int DIALOG_ID_CONFIRM_DELETE_LIST = 2;
+public class MainActivity extends SherlockFragmentActivity {
 	private ShoppingListDataAdapter mSlda;
 	private ItemDataAdapter mIda;
 	private ArrayList<ShoppingList> mShoppingLists = null;
 	private ShoppingList mSelectedList;
-	// private ArrayAdapter<String> mAdapter;
 	private MainShoppingListAdapter mAdapter;
+	public static final String KEY_SELECTED_LIST = "KEY_SELECTED_LIST";
 
 	/** Called when the activity is first created. */
 	@Override
@@ -81,7 +74,8 @@ public class MainActivity extends SherlockActivity {
 			public void onItemClick(AdapterView<?> parent, View v, int pos,
 					long id) {
 				mSelectedList = MainActivity.this.mShoppingLists.get(pos);
-				showDialog(DIALOG_ID_LIST_SELECTED);
+				DialogFragment df = ChooseActionDialogFragment.newInstance();
+				df.show(getSupportFragmentManager(), "choose_action");
 			}
 		});
 	}
@@ -94,6 +88,7 @@ public class MainActivity extends SherlockActivity {
 		this.mIda.open();
 	}
 
+	/** Loads all of the shopping lists from the database */
 	private void initializeShoppingLists() {
 		this.mShoppingLists = new ArrayList<ShoppingList>();
 		for (ShoppingList list : mSlda.getAllLists()) {
@@ -102,6 +97,7 @@ public class MainActivity extends SherlockActivity {
 		updateMainPrompt();
 	}
 
+	/** Use because the prompt is different if there are no lists. */
 	private void updateMainPrompt() {
 		TextView tv = (TextView) findViewById(R.id.main_screen_prompt);
 		Log.d(MyApplication.GD, "There are " + mShoppingLists.size() + " lists");
@@ -110,6 +106,31 @@ public class MainActivity extends SherlockActivity {
 		} else {
 			tv.setText(R.string.main_screen_prompt_default);
 		}
+	}
+
+	/**
+	 * Adds the given list to the activity.
+	 * 
+	 * @param listName
+	 */
+	void addList(String listName) {
+		ShoppingList newList = new ShoppingList(listName);
+		mSlda.insertList(newList);
+		mShoppingLists.add(newList);
+		mAdapter.notifyDataSetChanged();
+		updateMainPrompt();
+	}
+
+	/**
+	 * Deletes the list and all its items.
+	 */
+	void deleteList() {
+		mShoppingLists.remove(mSelectedList);
+		mSlda.deleteList(mSelectedList);
+		// TODO: test this once I can add items to lists.
+		mIda.deleteAllItemsWithListId(mSelectedList.getId());
+		mAdapter.notifyDataSetChanged();
+		updateMainPrompt();
 	}
 
 	@Override
@@ -124,7 +145,8 @@ public class MainActivity extends SherlockActivity {
 		// handle item selection
 		switch (item.getItemId()) {
 		case R.id.add_list:
-			this.showDialog(DIALOG_ID_ADD_SHOPPING_LIST);
+			DialogFragment newFragment = AddListDialogFragment.newInstance();
+			newFragment.show(getSupportFragmentManager(), "add_list");
 			return true;
 		case android.R.id.home:
 			finish();
@@ -134,114 +156,28 @@ public class MainActivity extends SherlockActivity {
 		}
 	}
 
-	// CONSIDER: Dialogs are now deprecated. I am supposed to use a
-	// DialogFragment. For pre-Honeycomb phones (like mine currently), it would
-	// have to be accessible via the compatibility library. Do I want to mix
-	// that and Sherlock?
-	//
-	// ActionBarSherlock says it provides a SherlockDialogFragment
-	// http://actionbarsherlock.com/faq.html
-	// but I can't find it in the library.
-	@Override
-	protected Dialog onCreateDialog(int id) {
-		Dialog dialog = null;
-		switch (id) {
-		case DIALOG_ID_ADD_SHOPPING_LIST:
-			final Dialog addListDialog = new Dialog(this);
-			addListDialog.setContentView(R.layout.dialog_add_list);
-			// customDialog.setTitle("Rose-Hulman");
+	/**
+	 * Launches the stock activity.
+	 * 
+	 */
+	void launchStockActivity() {
+		Log.d(MyApplication.GD,
+				String.format("Stock list for %s", mSelectedList));
+		Intent intent = new Intent(MainActivity.this, StockActivity.class);
+		intent.putExtra(MainActivity.KEY_SELECTED_LIST, mSelectedList.getId());
+		startActivity(intent);
+	}
 
-			Button saveButton = (Button) addListDialog
-					.findViewById(R.id.add_list_save_button);
-			saveButton.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					EditText et = (EditText) addListDialog
-							.findViewById(R.id.add_list_name_edit_text);
-					String newListName = et.getText().toString();
-					if (!newListName.equals("")) {
-						ShoppingList newList = new ShoppingList(newListName);
-						mSlda.insertList(newList);
-						mShoppingLists.add(newList);
-						mAdapter.notifyDataSetChanged();
-						updateMainPrompt();
-						addListDialog.dismiss();
-					}
-				}
-			});
-			dialog = addListDialog;
-			break;
-		case DIALOG_ID_LIST_SELECTED:
-			Log.d(MyApplication.GD, "List selected");
-			AlertDialog.Builder listSelectedBuilder = new AlertDialog.Builder(
-					this);
-			listSelectedBuilder
-					.setTitle("What would you like to do with this list?");
-			listSelectedBuilder.setItems(R.array.list_selected_options,
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							Intent intent = null;
-							switch (which) {
-							case 0:
-								Log.d(MyApplication.GD, String.format(
-										"Stock list for %s",
-										mSelectedList.getName()));
-								// intent = new Intent(MainActivity.this,
-								// StockActivity.class);
-								// intent.putExtra(MainActivity.KEY_SELECTED_LIST,
-								// MainActivity.this.selectedList);
-								// startActivity(intent);
-								break;
-							case 1:
-								Log.d(MyApplication.GD, String.format(
-										"Shop at %s", mSelectedList));
-								// intent = new Intent(MainActivity.this,
-								// ShopActivity.class);
-								// intent.putExtra(MainActivity.KEY_SELECTED_LIST,
-								// MainActivity.this.selectedList);
-								// startActivity(intent);
-								break;
-							case 2:
-								MainActivity.this
-										.showDialog(DIALOG_ID_CONFIRM_DELETE_LIST);
-							}
-							dialog.dismiss();
-						}
-					});
-			dialog = listSelectedBuilder.create();
-			break;
-		case DIALOG_ID_CONFIRM_DELETE_LIST:
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage(R.string.confirm_delete_list)
-					.setCancelable(false)
-					.setPositiveButton(R.string.ok,
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface di,
-										int dialogId) {
-									mShoppingLists.remove(mSelectedList);
-									mSlda.deleteList(mSelectedList);
-									// TODO: test this once I can add items to
-									// lists.
-									mIda.deleteAllItemsWithListId(mSelectedList
-											.getId());
-									mAdapter.notifyDataSetChanged();
-									updateMainPrompt();
-									di.dismiss();
-								}
-							})
-					.setNegativeButton(R.string.cancel,
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface di,
-										int dialogId) {
-									di.cancel();
-								}
-							});
-
-			dialog = builder.create();
-		}
-		return dialog;
+	/**
+	 * Launches the shop activity.
+	 * 
+	 */
+	void launchShopActivity() {
+		Log.d(MyApplication.GD, String.format("Shop at %s", mSelectedList));
+		// intent = new Intent(MainActivity.this,
+		// ShopActivity.class);
+		// intent.putExtra(MainActivity.KEY_SELECTED_LIST,
+		// MainActivity.this.selectedList);
+		// startActivity(intent);
 	}
 }

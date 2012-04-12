@@ -4,14 +4,14 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
 	<Button
-		android:id="@+id/addStockButton"
+		android:id="@+id/add_stock_button"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentLeft="true"
 		android:text="Add"
   		/>
 	<Button
-		android:id="@+id/resetStockButton"
+		android:id="@+id/reset_stock_button"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentRight="true"
@@ -21,22 +21,19 @@
   		android:id="@+id/stockItemName"
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:layout_toRightOf="@+id/addStockButton"
-		android:layout_toLeftOf="@+id/resetStockButton"
+		android:layout_toRightOf="@+id/add_stock_button"
+		android:layout_toLeftOf="@+id/reset_stock_button"
 		android:text="item"
 		android:textSize="18sp"
   		/>
     <TextView
-        android:id="@+id/stockItemInfo"
+        android:id="@+id/stock_item_info"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/addStockButton"
-        android:layout_toLeftOf="@+id/resetStockButton"
-        android:layout_below="@+id/stockItemName"
+        android:layout_toRightOf="@+id/add_stock_button"
+        android:layout_toLeftOf="@+id/reset_stock_button"
+        android:layout_below="@+id/stock_item_name"
         android:text="item"
         android:textSize="14sp"
         />
-  		
-  	
-  	
 </RelativeLayout>

@@ -135,6 +135,17 @@ public class Item {
 	}
 
 	/**
+	 * Returns information useful to display when stocking the item.
+	 * 
+	 * @return A string representation of some of this item's information.
+	 */
+	public String getStockInfo() {
+		// TODO: unit-test this.
+		return String.format("Stock %d @ %.0fK/%.1f %s", this.nStock,
+				this.price, this.unitSize, this.unitLabel);
+	}
+
+	/**
 	 * Returns true if the given item is an Item that equals this Item.
 	 */
 	@Override
@@ -143,16 +154,15 @@ public class Item {
 			return false;
 		}
 		Item other = (Item) object;
-		return this.id == other.id 
-			&& this.listId == other.listId
-			&& this.name.equals(other.name) && this.nBuy == other.nBuy
-			&& this.nStock == other.nStock
-			&& Math.abs(this.price - other.price) < EPSILON
-			&& Math.abs(this.unitSize - other.unitSize) < EPSILON
-			&& this.unitLabel == other.unitLabel
-			&& this.isBought == other.isBought
-			&& this.stockIdx == other.stockIdx
-			&& this.shopIdx == other.shopIdx;
+		return this.id == other.id && this.listId == other.listId
+				&& this.name.equals(other.name) && this.nBuy == other.nBuy
+				&& this.nStock == other.nStock
+				&& Math.abs(this.price - other.price) < EPSILON
+				&& Math.abs(this.unitSize - other.unitSize) < EPSILON
+				&& this.unitLabel == other.unitLabel
+				&& this.isBought == other.isBought
+				&& this.stockIdx == other.stockIdx
+				&& this.shopIdx == other.shopIdx;
 	}
 
 	// id, listId, name, nStock, nBuy, price, unitSize, unitLabel, isBought,
@@ -402,20 +412,19 @@ public class Item {
 	public void setShopIdx(int shopIdx) {
 		this.shopIdx = shopIdx;
 	}
-	
+
 	/**
 	 * A list of potential units that this item can be sold in.
-	 *
-	 * @author Matthew Boutell.
-	 *         Created Nov 7, 2011.
+	 * 
+	 * @author Matthew Boutell. Created Nov 7, 2011.
 	 */
 	public enum UnitLabel {
 		/** default */
 		unit,
-		
+
 		/** grams */
 		g,
-		
+
 		/** kilograms */
 		kg,
 
@@ -430,11 +439,12 @@ public class Item {
 
 		/** ounces */
 		oz,
-		
+
 		/** box */
 		box,
-		
+
 		/** bag */
 		bag
 	}
+
 }

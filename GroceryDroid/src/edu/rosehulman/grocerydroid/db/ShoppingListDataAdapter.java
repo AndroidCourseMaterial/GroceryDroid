@@ -79,6 +79,22 @@ public class ShoppingListDataAdapter extends TableAdapter {
 				null) == 1;
 	}
 
+	/** 
+	 * Gets the list with the given id.
+	 * 
+	 * @param id
+	 * @return The shopping list with the given id.
+	 */
+	public ShoppingList getList(long id) {
+		//TODO: unit-test this 
+		String where = DB_KEY_ID + "=" + id;
+		Cursor c = db.query(TABLE_SHOPPING_LISTS, null, where, null, null,
+				null, null);
+		String name = c.getString(c.getColumnIndexOrThrow(DB_KEY_NAME));
+		return new ShoppingList(id, name);
+	}
+	
+	
 	/**
 	 * Returns an iterator over all the lists in the table.
 	 * 
