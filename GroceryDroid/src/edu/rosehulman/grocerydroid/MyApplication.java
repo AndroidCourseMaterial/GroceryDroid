@@ -40,7 +40,7 @@ public class MyApplication extends Application {
 		instance = this;
 		
 		Context context = getApplicationContext();
-		Log.d(GD, "Creating single instance of Database Helper in MyApplication");
+		//Log.d(GD, "Creating single instance of Database Helper in MyApplication");
 		this.mDbHelper = DatabaseHelper.createInstance(context);
 		instance = this;
 		

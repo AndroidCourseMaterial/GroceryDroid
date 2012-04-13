@@ -48,6 +48,7 @@ public class MainActivity extends SherlockFragmentActivity {
 	private ArrayList<ShoppingList> mShoppingLists = null;
 	private ShoppingList mSelectedList;
 	private MainShoppingListAdapter mAdapter;
+	/** Used for passing data via an Intent */
 	public static final String KEY_SELECTED_LIST = "KEY_SELECTED_LIST";
 
 	/** Called when the activity is first created. */

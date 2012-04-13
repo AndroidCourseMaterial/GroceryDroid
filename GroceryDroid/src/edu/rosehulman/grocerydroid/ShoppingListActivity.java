@@ -36,10 +36,9 @@ public abstract class ShoppingListActivity extends SherlockFragmentActivity {
 	/**
 	 * Deletes the given item from the list
 	 * 
+	 * @param item 
 	 */
 	public void deleteItem(Item item) {
 		// empty
 	}
-	
-	
 }

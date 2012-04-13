@@ -11,6 +11,7 @@ import edu.rosehulman.grocerydroid.model.Item;
 import edu.rosehulman.grocerydroid.model.ShoppingList;
 import edu.rosehulman.grocerydroid.model.ShoppingList.Order;
 
+
 /**
  * The activity used to manage the creation and restocking of the items in a
  * list.
@@ -36,10 +37,6 @@ public class StockActivity extends ShoppingListActivity {
 		Log.d(MyApplication.GD, "stocking with list " + listId);
 		
 		initializeDatabase();
-		// TODO: start here with debugging. Problem when getting a single list 
-		// from the DB. Should actually write unit test for hte new method first
-		// to see if the method is buggy or if I am using it in a buggy way in 
-		// this method.
 		initializeShoppingList(listId);
 
 		getSupportActionBar().setSubtitle(mList.getName());
@@ -75,7 +72,10 @@ public class StockActivity extends ShoppingListActivity {
 
 	/** Loads the shopping list and all of its items from the database */
 	private void initializeShoppingList(long listId) {
+		Log.d(MyApplication.GD, "Before call getList");
 		mList = mSlda.getList(listId);
+		Log.d(MyApplication.GD, "After call getList");
+
 		for (Item item : mIda.getAllItemsWithListId(listId)) {
 			mList.addItem(item);
 		}
