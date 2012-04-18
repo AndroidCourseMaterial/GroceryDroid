@@ -6,6 +6,12 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 
+/**
+ * A custom dialog for alerts.
+ *
+ * @author boutell.
+ *         Created Apr 18, 2012.
+ */
 public class AlertDialogFragment extends DialogFragment {
 
 //	@Override
@@ -16,6 +22,12 @@ public class AlertDialogFragment extends DialogFragment {
 //		setStyle(style, theme);
 //	}
 
+    /**
+     * Creates a new instance of the AlertDialogFragment with the given title.
+     *
+     * @param title
+     * @return A new instance of the AlertDialogFragment with the given title.
+     */
     public static AlertDialogFragment newInstance(int title) {
         AlertDialogFragment frag = new AlertDialogFragment();
         Bundle args = new Bundle();

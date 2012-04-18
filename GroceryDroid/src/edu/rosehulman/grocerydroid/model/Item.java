@@ -1,5 +1,9 @@
 package edu.rosehulman.grocerydroid.model;
 
+import android.util.Log;
+
+import edu.rosehulman.grocerydroid.MyApplication;
+
 /**
  * A single grocery item.
  * 
@@ -11,8 +15,12 @@ public class Item {
 	public static final String GD = "GD";
 	// CONSIDER: use a BigDecimal for the price and unitSize so that comparisons
 	// are easier.
+
 	private static final float EPSILON = 0.000001f;
+	private static final long DEFAULT_ID = 0;
+
 	private long id;
+
 	private long listId; // the list to which it belongs
 	private String name;
 	private int nStock;
@@ -50,6 +58,7 @@ public class Item {
 			int stockIdx, int shopIdx) {
 		this.id = id;
 		this.listId = listId;
+		setName(name);
 		this.name = name;
 		this.nStock = nStock;
 		this.nBuy = nBuy;
@@ -59,6 +68,16 @@ public class Item {
 		this.isBought = isBought;
 		this.stockIdx = stockIdx;
 		this.shopIdx = shopIdx;
+	}
+
+	/**
+	 * Creates a Item from the given parameters.
+	 * 
+	 * @param listId
+	 */
+	public Item(long listId) {
+		this(DEFAULT_ID, listId, "", 1, 0, 0.0f, 1.0f, UnitLabel.unit, false,
+				0, 0);
 	}
 
 	// /**
@@ -271,13 +290,22 @@ public class Item {
 	}
 
 	/**
-	 * Sets the field called 'name' to the given value.
+	 * Sets the field called 'name' to the given value, trimmed and capitalized.
 	 * 
 	 * @param name
 	 *            The name to set.
 	 */
 	public void setName(String name) {
 		this.name = name;
+		if (this.name != null) {
+			this.name = this.name.trim();
+			if (this.name.length() > 0) {
+				Log.d(MyApplication.GD, "Capitalizing " + this.name);
+				this.name = Character.toUpperCase(this.name.charAt(0))
+						+ this.name.substring(1);
+			}
+		}
+		Log.d(MyApplication.GD, "Name is " + this.name + " item at " + this.hashCode());
 	}
 
 	/**

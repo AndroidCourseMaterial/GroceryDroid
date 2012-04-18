@@ -17,6 +17,11 @@ import android.widget.EditText;
 public class AddListDialogFragment extends DialogFragment {
 
 	
+	/**
+	 * Returns a new instance of the AddList dialog
+	 *
+	 * @return A new instance of the AddList dialog.
+	 */
 	static AddListDialogFragment newInstance() {
 		return new AddListDialogFragment();
 	}

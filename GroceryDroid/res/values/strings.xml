@@ -1,28 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="hello">Hello World, GroceryDroidActivity!</string>
     <string name="app_name">GroceryDroid</string>
     <string name="main_screen_prompt_default">Tap + above to start</string>
     <string name="main_screen_prompt_lists_present">Choose a list</string>
+    <string name="shopping_list_prompt_default">Tap + to add an item</string>
+    <string name="shopping_list_prompt_lists_present">Choose an item</string>
     <string name="add_list_prompt">Enter name of list</string>
     <string name="save">Save</string>
     <string name="add_list_name_hint">Name of list</string>
     <string name="confirm_delete_list">Are you sure you want to delete this whole list?</string>
-
     <string name="total_spent">Total spent:</string>
-    <string name="shopping_list_title">Shopping List - </string>
-    <string name="number_to_stock_prompt">Number to stock:</string>
-    <string name="unit_prompt">Unit:</string>
+    <string name="shopping_list_title">Shopping list - </string>
+    <string name="item_name">Item name</string>
+    <string name="item_number_to_stock_prompt">Number to stock:</string>
+    <string name="item_unit_size_prompt">Size:</string>
+    <string name="item_unit_label_prompt">Unit:</string>
     <string name="reset">Reset</string>
     <string name="add">Add</string>
-    <string name="add_item">Add Item</string>
-    <string name="stock_title">Stock List</string>
+    <string name="add_item">Add item</string>
+    <string name="stock_title">Stock list</string>
     <string name="confirm_delete">Are you sure you want to delete this item?</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="main_instructions">Choose a shopping list</string>
-    <string name="show_all">Show All</string>
-    <string name="hide_bought">Hide Bought</string>
+    <string name="show_all">Show all</string>
+    <string name="hide_bought">Hide bought</string>
     <string name="choose_action_for_list">What would you like to do with this list?</string>
 </resources>

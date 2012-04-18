@@ -4,7 +4,14 @@
   	android:layout_width="fill_parent"
   	android:layout_height="fill_parent"
   	android:orientation="vertical">
-  	<ListView
+    <TextView
+        android:id="@+id/stock_list_prompt"
+        android:layout_marginTop="20dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="24sp"/>
+    <ListView
   		android:id="@+id/stock_list_view"
   		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"

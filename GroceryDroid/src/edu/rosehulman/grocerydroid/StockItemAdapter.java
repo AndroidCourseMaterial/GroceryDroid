@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,7 +19,7 @@ import java.util.List;
  * 
  * @author Matthew Boutell. Created Nov 7, 2011.
  */
-public class StockItemAdapter extends ArrayAdapter<Item> {
+public class StockItemAdapter extends ItemAdapter {
 
 	private int resourceId;
 	private StockActivity stockActivity;
@@ -85,7 +84,6 @@ public class StockItemAdapter extends ArrayAdapter<Item> {
 		final Button resetButton = (Button) stockItemView
 				.findViewById(R.id.reset_stock_button);
 		resetButton.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				Log.d(MyApplication.GD, "" + v.getId() + " " + position);
@@ -96,12 +94,13 @@ public class StockItemAdapter extends ArrayAdapter<Item> {
 
 		TextView nameView = (TextView) stockItemView
 				.findViewById(R.id.stock_item_name);
+
 		nameView.setText(item.getName());
 
 		TextView infoView = (TextView) stockItemView
 				.findViewById(R.id.stock_item_info);
 		infoView.setText(item.getStockInfo());
-		
+
 		infoView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
