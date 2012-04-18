@@ -18,10 +18,10 @@ import com.actionbarsherlock.view.MenuItem;
  * @author Matthew Boutell. Created Apr 12, 2012.
  */
 public class StockActivity extends ShoppingListActivity {
-//	private AutoCompleteTextView mNameBox;
-//	private ImageView mEditIcon;
-//	private ArrayAdapter<String> mAutoAdapter;
-	
+	// private AutoCompleteTextView mNameBox;
+	// private ImageView mEditIcon;
+	// private ArrayAdapter<String> mAutoAdapter;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setTheme(R.style.Theme_Sherlock_ForceOverflow);
@@ -40,8 +40,10 @@ public class StockActivity extends ShoppingListActivity {
 		updateMainPrompt(R.id.stock_list_prompt);
 
 		setListView((ListView) findViewById(R.id.stock_list_view));
-		setItemAdapter(new StockItemAdapter(this, R.layout.stock_item,
-				getShoppingList().getItems(Order.STOCK)));
+		StockItemAdapter sia = new StockItemAdapter(this, R.layout.stock_item,
+				getShoppingList().getItems(Order.STOCK));
+		setItemAdapter(sia);
+		sia.setStockActivity(this);
 		
 		// lv.setOnItemClickListener(new OnItemClickListener() {
 		// @Override
@@ -88,17 +90,15 @@ public class StockActivity extends ShoppingListActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getSupportMenuInflater();
 		inflater.inflate(R.menu.stock, menu);
-// TODO: add this back in once I get autocomplte working:		
-//	    <item
-//        android:id="@+id/add_name_menu_item"
-//        android:icon="@drawable/ic_action_plus"
-//        android:showAsAction="collapseActionView|always"
-//        android:title="@string/add_item"
-//        android:actionLayout="@layout/add_name_group"
-//        />
+		// TODO: add this back in once I get autocomplte working:
+		// <item
+		// android:id="@+id/add_name_menu_item"
+		// android:icon="@drawable/ic_action_plus"
+		// android:showAsAction="collapseActionView|always"
+		// android:title="@string/add_item"
+		// android:actionLayout="@layout/add_name_group"
+		// />
 
-		
-		
 		return true;
 	}
 

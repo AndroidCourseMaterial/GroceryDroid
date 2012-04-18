@@ -158,6 +158,17 @@ public abstract class ShoppingListActivity extends SherlockFragmentActivity {
 	}
 
 	/**
+	 * Updates the given item in the database.
+	 *
+	 * @param item
+	 */
+	protected void updateItem(Item item) {
+		mIda.updateItem(item);
+	}
+
+	
+	
+	/**
 	 * Launches a dialog to edit the given item.
 	 * 
 	 * @param item

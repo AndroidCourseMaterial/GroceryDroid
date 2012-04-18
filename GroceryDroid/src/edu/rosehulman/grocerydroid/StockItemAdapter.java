@@ -21,8 +21,8 @@ import java.util.List;
  */
 public class StockItemAdapter extends ItemAdapter {
 
-	private int resourceId;
-	private StockActivity stockActivity;
+	private int mResourceId;
+	private StockActivity mStockActivity;
 
 	/**
 	 * Creates a StockItemAdapter from the given parameters.
@@ -36,7 +36,7 @@ public class StockItemAdapter extends ItemAdapter {
 		super(context, textViewResourceId, objects);
 
 		// Save the resource so I can inflate it later
-		this.resourceId = textViewResourceId;
+		this.mResourceId = textViewResourceId;
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class StockItemAdapter extends ItemAdapter {
 	public StockItemAdapter(Context context, int resource,
 			int textViewResourceId, List<Item> objects) {
 		super(context, resource, textViewResourceId, objects);
-		this.resourceId = textViewResourceId;
+		this.mResourceId = textViewResourceId;
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class StockItemAdapter extends ItemAdapter {
 			String inflater = Context.LAYOUT_INFLATER_SERVICE;
 			LayoutInflater vi = (LayoutInflater) getContext().getSystemService(
 					inflater);
-			vi.inflate(this.resourceId, stockItemView, true);
+			vi.inflate(this.mResourceId, stockItemView, true);
 		} else {
 			stockItemView = (RelativeLayout) convertView;
 		}
@@ -78,6 +78,7 @@ public class StockItemAdapter extends ItemAdapter {
 				Log.d(MyApplication.GD, "" + v.getId() + " " + position);
 				item.incrementNumberToBuy();
 				addStockButton.setText("Buy " + item.getNBuy());
+				mStockActivity.updateItem(item);
 			}
 		});
 
@@ -89,6 +90,7 @@ public class StockItemAdapter extends ItemAdapter {
 				Log.d(MyApplication.GD, "" + v.getId() + " " + position);
 				item.resetNumberToBuy();
 				addStockButton.setText("Buy " + item.getNBuy());
+				mStockActivity.updateItem(item);
 			}
 		});
 
@@ -104,7 +106,7 @@ public class StockItemAdapter extends ItemAdapter {
 		infoView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				StockItemAdapter.this.stockActivity.editItem(item);
+				StockItemAdapter.this.mStockActivity.editItem(item);
 			}
 		});
 
@@ -117,6 +119,6 @@ public class StockItemAdapter extends ItemAdapter {
 	 * @param stockActivity
 	 */
 	protected void setStockActivity(StockActivity stockActivity) {
-		this.stockActivity = stockActivity;
+		this.mStockActivity = stockActivity;
 	}
 }
