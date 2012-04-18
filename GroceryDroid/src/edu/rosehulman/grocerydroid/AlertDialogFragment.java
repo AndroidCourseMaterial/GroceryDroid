@@ -9,7 +9,7 @@ import android.support.v4.app.DialogFragment;
 /**
  * A custom dialog for alerts.
  *
- * @author boutell.
+ * @author Matthew Boutell.
  *         Created Apr 18, 2012.
  */
 public class AlertDialogFragment extends DialogFragment {

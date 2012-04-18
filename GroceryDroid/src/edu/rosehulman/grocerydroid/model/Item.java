@@ -59,7 +59,6 @@ public class Item {
 		this.id = id;
 		this.listId = listId;
 		setName(name);
-		this.name = name;
 		this.nStock = nStock;
 		this.nBuy = nBuy;
 		this.price = price;
@@ -68,6 +67,7 @@ public class Item {
 		this.isBought = isBought;
 		this.stockIdx = stockIdx;
 		this.shopIdx = shopIdx;
+		Log.d(MyApplication.GD, "Name is " + this.name + " item at " + this.hashCode());
 	}
 
 	/**
@@ -289,6 +289,19 @@ public class Item {
 		return this.name;
 	}
 
+	private static String capitalString(String word) {
+		String capWord = word;
+		if (capWord != null) {
+			capWord = capWord.trim();
+			if (capWord.length() > 0) {
+				Log.d(MyApplication.GD, "Capitalizing " + word);
+				capWord = Character.toUpperCase(capWord.charAt(0))
+						+ capWord.substring(1);
+			}
+		}
+		return capWord;
+	}
+	
 	/**
 	 * Sets the field called 'name' to the given value, trimmed and capitalized.
 	 * 
@@ -296,16 +309,7 @@ public class Item {
 	 *            The name to set.
 	 */
 	public void setName(String name) {
-		this.name = name;
-		if (this.name != null) {
-			this.name = this.name.trim();
-			if (this.name.length() > 0) {
-				Log.d(MyApplication.GD, "Capitalizing " + this.name);
-				this.name = Character.toUpperCase(this.name.charAt(0))
-						+ this.name.substring(1);
-			}
-		}
-		Log.d(MyApplication.GD, "Name is " + this.name + " item at " + this.hashCode());
+		this.name = capitalString(name);
 	}
 
 	/**
