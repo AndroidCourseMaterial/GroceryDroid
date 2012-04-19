@@ -6,7 +6,6 @@ import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import edu.rosehulman.grocerydroid.model.Item;
 import edu.rosehulman.grocerydroid.model.ShoppingList.Order;
 
 import com.actionbarsherlock.view.Menu;
