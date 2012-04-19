@@ -1,20 +1,16 @@
 package edu.rosehulman.grocerydroid;
 
-import android.app.LauncherActivity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
 import edu.rosehulman.grocerydroid.model.Item;
-import edu.rosehulman.grocerydroid.model.ShoppingList.Order;
 
 import java.util.List;
 
