@@ -2,8 +2,10 @@ package edu.rosehulman.grocerydroid.test;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.test.ActivityInstrumentationTestCase2;
+import android.util.Log;
 
 import edu.rosehulman.grocerydroid.MainActivity;
+import edu.rosehulman.grocerydroid.MyApplication;
 import edu.rosehulman.grocerydroid.db.DatabaseHelper;
 import edu.rosehulman.grocerydroid.db.ItemDataAdapter;
 import edu.rosehulman.grocerydroid.db.ShoppingListDataAdapter;
@@ -11,7 +13,7 @@ import edu.rosehulman.grocerydroid.model.Item;
 import edu.rosehulman.grocerydroid.model.Item.UnitLabel;
 import edu.rosehulman.grocerydroid.model.ShoppingList;
 
-import java.util.ArrayList;
+import java.util.ArrayList; 
 
 /**
  * Tests ShoppingList and ShoppingListDataAdapter.
@@ -57,8 +59,11 @@ public class ShoppingListTest extends
 
 	@Override
 	protected void setUp() throws Exception {
+		Log.d(MyApplication.GD, "Setup before got main activity");
 		super.setUp();
 		this.mActivity = this.getActivity();
+		Log.d(MyApplication.GD, "Got main activity");
+//		assertNotNull(this.mActivity);
 		this.dbHelper = DatabaseHelper.createInstance(this.mActivity);
 
 		this.bananas = new Item(1, 1, "Bananas", 4, 2, 1.50f, 1,
@@ -152,6 +157,17 @@ public class ShoppingListTest extends
 		assertTrue(this.slda.deleteList(this.list1));
 	}
 
+	/**
+	 * Tests the list operation.
+	 */
+//	public void testGetList(long id) {
+//		purgeDb();
+//		this.slda.insertList(this.list1);
+//		
+//		ShoppingList list = this.slda.getList(this.list1.getId());
+//		assertEquals(this.list1, list);
+//	}
+	
 	/**
 	 * Tests the list operation.
 	 */
