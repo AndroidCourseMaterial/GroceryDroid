@@ -10,58 +10,49 @@ import edu.rosehulman.grocerydroid.model.Item;
 
 /**
  * A custom dialog for alerts.
- *
- * @author Matthew Boutell.
- *         Created Apr 18, 2012.
+ * 
+ * @author Matthew Boutell. Created Apr 18, 2012.
  */
 public class ConfirmDeleteItemDialogFragment extends DialogFragment {
 
-	private static Item item;
-	
-    /**
-     * Creates a new instance of the AlertDialogFragment with the given title.
-     *
-     * @param title
-     * @return A new instance of the AlertDialogFragment with the given title.
-     */
-    public static ConfirmDeleteItemDialogFragment newInstance() {
-        ConfirmDeleteItemDialogFragment frag = new ConfirmDeleteItemDialogFragment();
-        return frag;
-    }
+	// CONSIDER: I used a constructor and stored instance data.
+	// The Android examples show dialogs as static. I'm not sure why they need
+	// to be.
+	private Item mItem;
 
-    /**
-     * Sets this fragment's item to the given item.
-     *
-     * @param itemToDelete
-     */
-    protected static void setItem(Item itemToDelete) {
-    	ConfirmDeleteItemDialogFragment.item = itemToDelete;
-    }
-    
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return new AlertDialog.Builder(getActivity())
-//	                .setIcon(R.drawable.alert_dialog_icon)
-                .setTitle(R.string.confirm_delete_item)
-                // setMessage()
-                .setCancelable(false)
-                .setPositiveButton(R.string.ok,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-						public void onClick(DialogInterface dialog, int whichButton) {
-                            ((ShoppingListActivity)getActivity()).deleteItem(item);
-                            dialog.dismiss();
-                        }
-                    }
-                )
-                .setNegativeButton(R.string.cancel,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-						public void onClick(DialogInterface dialog, int whichButton) {
-                        	dialog.cancel();
-                        }
-                    }
-                )
-                .create();
-    }
+	/**
+	 * Sets this fragment's item to the given item.
+	 * 
+	 * @param itemToDelete
+	 */
+	protected void setItem(Item itemToDelete) {
+		mItem = itemToDelete;
+	}
+
+	@Override
+	public Dialog onCreateDialog(Bundle savedInstanceState) {
+		return new AlertDialog.Builder(getActivity())
+				// .setIcon(R.drawable.alert_dialog_icon)
+				.setTitle(R.string.confirm_delete_item)
+				// setMessage()
+				.setCancelable(false)
+				.setPositiveButton(R.string.ok,
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
+								((ShoppingListActivity) getActivity())
+										.deleteItem(mItem);
+								dialog.dismiss();
+							}
+						})
+				.setNegativeButton(R.string.cancel,
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
+								dialog.cancel();
+							}
+						}).create();
+	}
 }

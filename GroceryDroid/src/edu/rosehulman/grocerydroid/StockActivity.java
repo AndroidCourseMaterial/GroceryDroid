@@ -23,7 +23,6 @@ public class StockActivity extends ShoppingListActivity {
 	// private AutoCompleteTextView mNameBox;
 	// private ImageView mEditIcon;
 	// private ArrayAdapter<String> mAutoAdapter;
-	private Item mSelectedItem;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

@@ -153,9 +153,8 @@ public class ItemDialogFragment extends DialogFragment {
 			@Override
 			public void onClick(View v) {
 				if (mMode == Mode.EDIT) { 
-					ConfirmDeleteItemDialogFragment df = ConfirmDeleteItemDialogFragment
-							.newInstance();
-					ConfirmDeleteItemDialogFragment.setItem(mItem);
+			        ConfirmDeleteItemDialogFragment df = new ConfirmDeleteItemDialogFragment();
+			        df.setItem(mItem);
 					df.show(getActivity().getSupportFragmentManager(),
 							"confirm");
 				} 

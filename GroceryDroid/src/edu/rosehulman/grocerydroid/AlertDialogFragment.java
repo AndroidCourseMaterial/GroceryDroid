@@ -14,6 +14,10 @@ import android.support.v4.app.DialogFragment;
  */
 public class AlertDialogFragment extends DialogFragment {
 
+	// CONSIDER: Both this and my confirmDeleteItemDialogFragment are the same
+	// except for a title and the listener in the positive button.
+	// I could pass them in on construction and reuse this class.
+	
 //	@Override
 //	public void onCreate(Bundle savedInstanceState) {
 //		super.onCreate(savedInstanceState);
@@ -46,7 +50,7 @@ public class AlertDialogFragment extends DialogFragment {
                 // setMessage()
                 .setCancelable(false)
                 .setPositiveButton(R.string.ok,
-                    new DialogInterface.OnClickListener() {
+                	new DialogInterface.OnClickListener() {
                         @Override
 						public void onClick(DialogInterface dialog, int whichButton) {
                             ((MainActivity)getActivity()).deleteList();
