@@ -17,7 +17,6 @@ public class ShoppingList {
 	private String name;
 	private ArrayList<Item> items;
 
-	
 	/**
 	 * Creates a ShoppingList from the given parameters.
 	 * 
@@ -60,6 +59,25 @@ public class ShoppingList {
 	 */
 	public boolean deleteItem(Item item) {
 		return this.items.remove(item);
+	}
+
+	/**
+	 * Replaces with the given item, the list item that has the same ID.
+	 * 
+	 * @param item
+	 * @return True iff the list contains an item with the same ID as the given
+	 *         item.
+	 */
+	public boolean updateItem(Item item) {
+		// TODO: Unit test this
+		for (int i = 0; i < this.items.size(); i++) {
+			Item currentItem = this.items.get(i);
+			if (item.getId() == currentItem.getId()) {
+				this.items.set(i, item);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	// id, name, items

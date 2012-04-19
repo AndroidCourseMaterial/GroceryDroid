@@ -7,7 +7,7 @@
         android:id="@+id/dialog_confirm_prompt"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/confirm_delete"
+        android:text="@string/confirm_delete_list"
         />
 
     <Button 

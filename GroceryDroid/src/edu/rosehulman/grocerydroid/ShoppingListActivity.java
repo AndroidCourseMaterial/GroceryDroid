@@ -2,13 +2,12 @@ package edu.rosehulman.grocerydroid;
 
 import android.util.Log;
 import android.widget.ListView;
-import android.widget.TextView;
 
+import edu.rosehulman.grocerydroid.ItemDialogFragment.Mode;
 import edu.rosehulman.grocerydroid.db.ItemDataAdapter;
 import edu.rosehulman.grocerydroid.db.ShoppingListDataAdapter;
 import edu.rosehulman.grocerydroid.model.Item;
 import edu.rosehulman.grocerydroid.model.ShoppingList;
-import edu.rosehulman.grocerydroid.model.ShoppingList.Order;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
@@ -57,17 +56,8 @@ public abstract class ShoppingListActivity extends SherlockFragmentActivity {
 
 	/**
 	 * Updates the prompt depending on if any items are present.
-	 * 
-	 * @param resId
 	 */
-	protected void updateMainPrompt(int resId) {
-		TextView tv = (TextView) findViewById(resId);
-		if (this.mShoppingList.getItems(Order.STOCK).size() > 0) {
-			tv.setText(R.string.shopping_list_prompt_lists_present);
-		} else {
-			tv.setText(R.string.shopping_list_prompt_default);
-		}
-	}
+	protected abstract void updateMainPrompt();
 
 	/**
 	 * Returns the value of the field called 'mShoppingList'.
@@ -84,7 +74,7 @@ public abstract class ShoppingListActivity extends SherlockFragmentActivity {
 	 * @param mShoppingList
 	 *            The mShoppingList to set.
 	 */
-	public void setShoppingList(ShoppingList mShoppingList) {
+	protected void setShoppingList(ShoppingList mShoppingList) {
 		this.mShoppingList = mShoppingList;
 	}
 
@@ -93,7 +83,7 @@ public abstract class ShoppingListActivity extends SherlockFragmentActivity {
 	 * 
 	 * @return Returns the mListView.
 	 */
-	public ListView getListView() {
+	protected ListView getListView() {
 		return this.mListView;
 	}
 
@@ -103,7 +93,7 @@ public abstract class ShoppingListActivity extends SherlockFragmentActivity {
 	 * @param mListView
 	 *            The mListView to set.
 	 */
-	public void setListView(ListView mListView) {
+	protected void setListView(ListView mListView) {
 		this.mListView = mListView;
 	}
 
@@ -112,7 +102,7 @@ public abstract class ShoppingListActivity extends SherlockFragmentActivity {
 	 * 
 	 * @return Returns the mItemAdapter.
 	 */
-	public ItemAdapter getItemAdapter() {
+	protected ItemAdapter getItemAdapter() {
 		return this.mItemAdapter;
 	}
 
@@ -122,21 +112,34 @@ public abstract class ShoppingListActivity extends SherlockFragmentActivity {
 	 * @param itemAdapter
 	 *            The itemAdapter to set.
 	 */
-	public void setItemAdapter(ItemAdapter itemAdapter) {
+	protected void setItemAdapter(ItemAdapter itemAdapter) {
 		this.mItemAdapter = itemAdapter;
 		mListView.setAdapter(mItemAdapter);
 	}
 
 	/**
-	 * Launches a dialog to add the name of the given item. Details must be
-	 * added via the edit item method.
+	 * Launches a dialog to create a new item for editing.
 	 */
-	void launchItemDialog() {
+	protected void launchNewItemDialog() {
 		// CONSIDER: Do I even need to call the static newInstance?
 		// DialogFragment newFragment = ItemDialogFragment.newInstance();
 		ItemDialogFragment newFragment = new ItemDialogFragment();
 		newFragment.initializeItem(mShoppingList.getId());
+		newFragment.setMode(Mode.ADD);
 		newFragment.show(getSupportFragmentManager(), "add_item");
+	}
+
+	/**
+	 * Launches a dialog to edit the given item. Details must be
+	 * added via the edit item method.
+	 * 
+	 * @param item 
+	 */
+	protected void launchEditItemDialog(Item item) {
+		ItemDialogFragment newFragment = new ItemDialogFragment();
+		newFragment.setItem(item);
+		newFragment.setMode(Mode.EDIT);
+		newFragment.show(getSupportFragmentManager(), "edit_item");
 	}
 
 	/**
@@ -145,16 +148,11 @@ public abstract class ShoppingListActivity extends SherlockFragmentActivity {
 	 * 
 	 * @param item
 	 */
-	void addItem(Item item) {
-		Log.d(MyApplication.GD, "Starting activity addItem");
-
-		Log.d(MyApplication.GD, "Name is " + item.getName() + " item at " + item.hashCode());
+	protected void addItem(Item item) {
 		mShoppingList.addItem(item);
 		mIda.insertItem(item);
-		Log.d(MyApplication.GD, "About to notify array adapter");
-
+		updateMainPrompt();
 		mItemAdapter.notifyDataSetChanged();
-		Log.d(MyApplication.GD, "Finished activity addItem");
 	}
 
 	/**
@@ -163,26 +161,24 @@ public abstract class ShoppingListActivity extends SherlockFragmentActivity {
 	 * @param item
 	 */
 	protected void updateItem(Item item) {
+		mShoppingList.updateItem(item);
 		mIda.updateItem(item);
+		mItemAdapter.notifyDataSetChanged();
 	}
 
 	
 	
-	/**
-	 * Launches a dialog to edit the given item.
-	 * 
-	 * @param item
-	 */
-	public void editItem(Item item) {
-		// empty
-	}
-
 	/**
 	 * Deletes the given item from the list
 	 * 
 	 * @param item
 	 */
-	public void deleteItem(Item item) {
-		// empty
+	protected void deleteItem(Item item) {
+		Log.d(MyApplication.GD, "Deleting from list the item " + item);
+		this.mShoppingList.deleteItem(item);
+		Log.d(MyApplication.GD, "Deleting from Db the item " + item);
+		mIda.deleteItem(item);
+		updateMainPrompt();
+		mItemAdapter.notifyDataSetChanged();
 	}
 }

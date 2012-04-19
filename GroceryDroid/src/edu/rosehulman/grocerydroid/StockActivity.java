@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import edu.rosehulman.grocerydroid.model.Item;
 import edu.rosehulman.grocerydroid.model.ShoppingList.Order;
 
 import com.actionbarsherlock.view.Menu;
@@ -21,7 +23,8 @@ public class StockActivity extends ShoppingListActivity {
 	// private AutoCompleteTextView mNameBox;
 	// private ImageView mEditIcon;
 	// private ArrayAdapter<String> mAutoAdapter;
-
+	private Item mSelectedItem;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setTheme(R.style.Theme_Sherlock_ForceOverflow);
@@ -37,38 +40,63 @@ public class StockActivity extends ShoppingListActivity {
 		initializeDatabase();
 		initializeShoppingList(listId);
 		getSupportActionBar().setSubtitle(getShoppingList().getName());
-		updateMainPrompt(R.id.stock_list_prompt);
+		updateMainPrompt();
 
 		setListView((ListView) findViewById(R.id.stock_list_view));
 		StockItemAdapter sia = new StockItemAdapter(this, R.layout.stock_item,
 				getShoppingList().getItems(Order.STOCK));
 		setItemAdapter(sia);
 		sia.setStockActivity(this);
-		
-		// lv.setOnItemClickListener(new OnItemClickListener() {
-		// @Override
-		// public void onItemClick(AdapterView<?> parent, View v, int pos,
-		// long id) {
-		// mSelectedItem = mList.getItems(Order.STOCK).get(pos);
-		// DialogFragment df = EditItemFragment.newInstance();
-		// df.show(getSupportFragmentManager(), "choose_action");
-		// }
-		// });
 
+//		getListView().setOnItemClickListener(new OnItemClickListener() {
+//			@Override
+//			public void onItemClick(AdapterView<?> parent, View v, int pos,
+//					long id) {
+//				mSelectedItem = getShoppingList().getItems(Order.STOCK).get(pos);
+//				// Is this just launchItemDialog();
+//
+//				ItemDialogFragment df = new ItemDialogFragment();
+//				df.setItem(mSelectedItem);
+//				df.show(getSupportFragmentManager(), "choose_action");
+//			}
+//		});
+
+//		getListView().setOnItemSelectedListener(new OnItemSelectedListener() {
+//
+//			@Override
+//			public void onItemSelected(AdapterView<?> parent, View v, int pos,
+//					long id) {
+//				mSelectedItem = getShoppingList().getItems(Order.STOCK).get(pos);
+//				// Is this just launchItemDialog();
+//
+//				ItemDialogFragment df = new ItemDialogFragment();
+//				df.setItem(mSelectedItem);
+//				df.show(getSupportFragmentManager(), "choose_action");
+//			}
+//
+//			@Override
+//			public void onNothingSelected(AdapterView<?> arg0) {
+//				// TODO Auto-generated method stub.
+//				
+//			}
+//			
+//		});
+		
 		// TODO: display icons for shopping, adding an item, and
 		// rearranging stock order.
 
-//		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//		View layout = inflater.inflate(R.layout.add_name_group, null);
-//		mNameBox = (AutoCompleteTextView) layout
-//				.findViewById(R.id.add_name_autocomplete);
-//		mEditIcon = (ImageView) layout.findViewById(R.id.edit_icon);
-//		mNameBox.setCompletionHint(this.getString(R.string.item_name));
-//		String[] names = new String[] { "bob", "joe", "caleb", "jonathan",
-//				"elise" };
-//		mAutoAdapter = new ArrayAdapter<String>(this,
-//				android.R.layout.simple_list_item_1, names);
-//		mNameBox.setAdapter(mAutoAdapter);
+		// LayoutInflater inflater = (LayoutInflater)
+		// getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		// View layout = inflater.inflate(R.layout.add_name_group, null);
+		// mNameBox = (AutoCompleteTextView) layout
+		// .findViewById(R.id.add_name_autocomplete);
+		// mEditIcon = (ImageView) layout.findViewById(R.id.edit_icon);
+		// mNameBox.setCompletionHint(this.getString(R.string.item_name));
+		// String[] names = new String[] { "bob", "joe", "caleb", "jonathan",
+		// "elise" };
+		// mAutoAdapter = new ArrayAdapter<String>(this,
+		// android.R.layout.simple_list_item_1, names);
+		// mNameBox.setAdapter(mAutoAdapter);
 
 		// mEditIcon.setOnKeyListener(new OnKeyListener() {
 		// @Override
@@ -84,6 +112,19 @@ public class StockActivity extends ShoppingListActivity {
 		// }
 		// });
 
+	}
+
+	/**
+	 * Updates the prompt depending on if any items are present.
+	 */
+	@Override
+	protected void updateMainPrompt() {
+		TextView tv = (TextView) findViewById(R.id.stock_list_prompt);
+		if (getShoppingList().getItems(Order.STOCK).size() > 0) {
+			tv.setText(R.string.shopping_list_prompt_items_present);
+		} else {
+			tv.setText(R.string.shopping_list_prompt_default);
+		}
 	}
 
 	@Override
@@ -103,14 +144,23 @@ public class StockActivity extends ShoppingListActivity {
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected(MenuItem menuItem) {
 		// handle item selection
-		switch (item.getItemId()) {
+		switch (menuItem.getItemId()) {
 		case R.id.add_name_menu_item:
-			launchItemDialog();
-			return super.onOptionsItemSelected(item);
+			launchNewItemDialog();
+			return super.onOptionsItemSelected(menuItem);
+			// TODO: add reset all button.
+			// case foo:
+			// for (Item item : getShoppingList().getItems(Order.AS_IS)) {
+			// item.resetNumberToBuy();
+			// }
+			// super.onOptionsItemSelected(menuItem);
+			// move to ShoppingListActivity: int nChanged =
+			// mIda.updateAllItemsInList(getShoppingList());
+			// return true;
 		default:
-			return super.onOptionsItemSelected(item);
+			return super.onOptionsItemSelected(menuItem);
 		}
 	}
 

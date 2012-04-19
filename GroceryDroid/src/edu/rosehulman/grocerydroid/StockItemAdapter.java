@@ -1,16 +1,20 @@
 package edu.rosehulman.grocerydroid;
 
+import android.app.LauncherActivity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 import edu.rosehulman.grocerydroid.model.Item;
+import edu.rosehulman.grocerydroid.model.ShoppingList.Order;
 
 import java.util.List;
 
@@ -103,13 +107,22 @@ public class StockItemAdapter extends ItemAdapter {
 				.findViewById(R.id.stock_item_info);
 		infoView.setText(item.getStockInfo());
 
-		infoView.setOnClickListener(new OnClickListener() {
+//		nameView.setOnClickListener(new OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				StockItemAdapter.this.mStockActivity.editItem(item);
+//			}
+//		});
+
+		stockItemView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				StockItemAdapter.this.mStockActivity.editItem(item);
+				mStockActivity.launchEditItemDialog(item);
 			}
 		});
-
+		
+		
+		
 		return stockItemView;
 	}
 

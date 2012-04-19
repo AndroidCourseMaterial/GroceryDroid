@@ -19,6 +19,7 @@ import edu.rosehulman.grocerydroid.model.Item;
  */
 public class ItemDialogFragment extends DialogFragment {
 	private Item mItem;
+	private Mode mMode;
 
 	/**
 	 * Gets a new instance of the dialog.
@@ -126,7 +127,13 @@ public class ItemDialogFragment extends DialogFragment {
 						numStock, mItem.getNBuy(), price, size, Item.UnitLabel
 								.values()[unitIndex], mItem.isBought(), mItem
 								.getStockIdx(), mItem.getShopIdx());
-				((ShoppingListActivity) getActivity()).addItem(mItem);
+				if (mMode == Mode.ADD) {
+					((ShoppingListActivity) getActivity()).addItem(mItem);
+				} else if (mMode == Mode.EDIT) {
+					((ShoppingListActivity)getActivity()).updateItem(mItem);
+				} else {
+					// shouldn't get here.
+				}
 				dismiss();
 			}
 		});
@@ -136,6 +143,28 @@ public class ItemDialogFragment extends DialogFragment {
 		cancelButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				dismiss();
+			}
+		});
+
+		Button deleteButton = (Button) view
+				.findViewById(R.id.item_delete_button);
+		deleteButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (mMode == Mode.EDIT) { 
+					ConfirmDeleteItemDialogFragment df = ConfirmDeleteItemDialogFragment
+							.newInstance();
+					ConfirmDeleteItemDialogFragment.setItem(mItem);
+					df.show(getActivity().getSupportFragmentManager(),
+							"confirm");
+				} 
+				// Otherwise, we are adding this item, so we don't need to delete it.
+				// TODO: Remove modes altogether once autocomplete works, since 
+				// every item here will exist and be beging added. 
+				// CONSIDER: at that point, I will need to make sure that items 
+				// that have a name only (from autocomplete) have been saved in the DB
+				// and have a unique ID so they can be deleted.
 				dismiss();
 			}
 		});
@@ -171,4 +200,43 @@ public class ItemDialogFragment extends DialogFragment {
 	void initializeItem(long listId) {
 		mItem = new Item(listId);
 	}
+
+	/**
+	 * Sets this fragment's item to the given item.
+	 * 
+	 * @param item
+	 */
+	void setItem(Item item) {
+		mItem = item;
+	}
+
+	/**
+	 * Returns the value of the field called 'mode'.
+	 * 
+	 * @return Returns the mode.
+	 */
+	public Mode getMode() {
+		return this.mMode;
+	}
+
+	/**
+	 * Sets the field called 'mode' to the given value.
+	 * 
+	 * @param mode
+	 *            The mode to set.
+	 */
+	public void setMode(Mode mode) {
+		this.mMode = mode;
+	}
+
+	/**
+	 * This fragment can be used to edit existing items or to create items.
+	 */
+	enum Mode {
+		/** Add a new item */
+		ADD,
+		/** Edit an existing item */
+		EDIT
+	}
+
 }
