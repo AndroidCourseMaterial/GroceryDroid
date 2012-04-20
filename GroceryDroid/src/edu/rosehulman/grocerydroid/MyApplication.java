@@ -22,7 +22,7 @@ public class MyApplication extends Application {
 	 */
 	public SQLiteOpenHelper mDbHelper;
 	
-	private static MyApplication instance = null;
+	private static MyApplication mSingleton = null;
 	
 	private static final boolean PURGE_DB = false;
 	
@@ -32,17 +32,17 @@ public class MyApplication extends Application {
 	 * @return The one instance of MyApplication
 	 */
 	public static MyApplication getInstance() {
-		return instance;
+		return mSingleton;
 	}
 	
 	@Override
 	public void onCreate() {
-		instance = this;
+		mSingleton = this;
 		
 		Context context = getApplicationContext();
 		//Log.d(GD, "Creating single instance of Database Helper in MyApplication");
 		this.mDbHelper = DatabaseHelper.createInstance(context);
-		instance = this;
+		mSingleton = this;
 		
 		//start with a fresh database every run
 		if (PURGE_DB) {

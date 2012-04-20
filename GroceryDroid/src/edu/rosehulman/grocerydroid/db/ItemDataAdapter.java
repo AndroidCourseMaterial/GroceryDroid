@@ -79,10 +79,10 @@ public class ItemDataAdapter extends TableAdapter {
 	 */
 	public long insertItem(Item item) {
 		// Create a new row of values to insert
-		ContentValues newItemValues = this.toContentValues(item);
+		ContentValues newItemValues = toContentValues(item);
 
 		// Insert the row
-		long rowId = db.insert(TABLE_GROCERY_ITEMS, null, newItemValues);
+		long rowId = sDb.insert(TABLE_GROCERY_ITEMS, null, newItemValues);
 		// Update the ID if it changed
 		item.setId(rowId);
 		return rowId;
@@ -98,7 +98,7 @@ public class ItemDataAdapter extends TableAdapter {
 	public boolean updateItem(Item item) {
 		ContentValues newItemValues = toContentValues(item);
 
-		return db.update(TABLE_GROCERY_ITEMS, newItemValues, DB_KEY_ID + "="
+		return sDb.update(TABLE_GROCERY_ITEMS, newItemValues, DB_KEY_ID + "="
 				+ item.getId(), null) == 1;
 	}
 
@@ -109,7 +109,7 @@ public class ItemDataAdapter extends TableAdapter {
 	 * @return True iff one item was successfully removed.
 	 */
 	public boolean deleteItem(Item item) {
-		return db.delete(TABLE_GROCERY_ITEMS, DB_KEY_ID + "=" + item.getId(),
+		return sDb.delete(TABLE_GROCERY_ITEMS, DB_KEY_ID + "=" + item.getId(),
 				null) == 1;
 	}
 
@@ -120,7 +120,7 @@ public class ItemDataAdapter extends TableAdapter {
 	 * @return The number of items deleted.
 	 */
 	public int deleteAllItemsWithListId(long listId) {
-		return db.delete(ItemDataAdapter.TABLE_GROCERY_ITEMS, DB_KEY_LIST_ID
+		return sDb.delete(ItemDataAdapter.TABLE_GROCERY_ITEMS, DB_KEY_LIST_ID
 				+ "=" + listId, null);
 	}
 
@@ -152,7 +152,7 @@ public class ItemDataAdapter extends TableAdapter {
 	 */
 	public ItemDataAdapterIterator getAllItemsWithListId(long listId) {
 		String where = DB_KEY_LIST_ID + "=" + listId;
-		Cursor cursor = db.query(TABLE_GROCERY_ITEMS, null, where, null, null,
+		Cursor cursor = sDb.query(TABLE_GROCERY_ITEMS, null, where, null, null,
 				null, null);
 		return new ItemDataAdapterIterator(cursor);
 	}
@@ -161,7 +161,7 @@ public class ItemDataAdapter extends TableAdapter {
 	 * An iterator for the ItemDataAdapter. Allows one to iterate over the
 	 * database to populate an item or items.
 	 * 
-	 * @author Jimmy Theis, modified by Matt Boutell. Created Mar 30, 2012.
+	 * @author Jimmy Theis, modified by Matthew Boutell. Created Mar 30, 2012.
 	 */
 	public class ItemDataAdapterIterator extends TableAdapterIterator<Item> {
 

@@ -14,7 +14,7 @@ import android.widget.EditText;
  * @author Matthew Boutell.
  *         Created Apr 11, 2012.
  */
-public class AddListDialogFragment extends DialogFragment {
+class AddListDialogFragment extends DialogFragment {
 
 	
 	/**

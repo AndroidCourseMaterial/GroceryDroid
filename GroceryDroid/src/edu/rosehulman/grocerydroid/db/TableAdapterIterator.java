@@ -60,7 +60,7 @@ public abstract class TableAdapterIterator<T> implements Iterator<T>,
 	@Override
 	public T next() {
 		/* To make this an Iterator */
-		// Jimmy: I had to swap the order of the statements. moveToFirst was
+		// CONSIDER: Jimmy: I had to swap the order of the statements. moveToFirst was
 		// already pointing to the first object, so I need to get it first, then
 		// move to the next one.
 		T data = getObjectFromNextRow();

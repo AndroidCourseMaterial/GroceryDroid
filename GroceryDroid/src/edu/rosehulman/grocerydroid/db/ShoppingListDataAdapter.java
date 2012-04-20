@@ -8,7 +8,7 @@ import edu.rosehulman.grocerydroid.model.ShoppingList;
 /**
  * All the operations needed to access the shopping list table in the database.
  * 
- * @author Matt Boutell. Created Mar 22, 2012.
+ * @author Matthew Boutell. Created Mar 22, 2012.
  */
 public class ShoppingListDataAdapter extends TableAdapter {
 
@@ -48,7 +48,7 @@ public class ShoppingListDataAdapter extends TableAdapter {
 		ContentValues newListValues = this.toContentValues(list);
 
 		// Insert the row
-		long rowId = db.insert(TABLE_SHOPPING_LISTS, null, newListValues);
+		long rowId = sDb.insert(TABLE_SHOPPING_LISTS, null, newListValues);
 		// Update the ID if it changed
 		list.setId(rowId);
 		return rowId;
@@ -64,7 +64,7 @@ public class ShoppingListDataAdapter extends TableAdapter {
 	public boolean updateList(ShoppingList list) {
 		ContentValues newListValues = toContentValues(list);
 
-		return db.update(TABLE_SHOPPING_LISTS, newListValues, DB_KEY_ID + "="
+		return sDb.update(TABLE_SHOPPING_LISTS, newListValues, DB_KEY_ID + "="
 				+ list.getId(), null) == 1;
 	}
 
@@ -75,7 +75,7 @@ public class ShoppingListDataAdapter extends TableAdapter {
 	 * @return True iff one list was successfully removed.
 	 */
 	public boolean deleteList(ShoppingList list) {
-		return db.delete(TABLE_SHOPPING_LISTS, DB_KEY_ID + "=" + list.getId(),
+		return sDb.delete(TABLE_SHOPPING_LISTS, DB_KEY_ID + "=" + list.getId(),
 				null) == 1;
 	}
 
@@ -88,7 +88,7 @@ public class ShoppingListDataAdapter extends TableAdapter {
 	public ShoppingList getList(long id) {
 		//TODO: unit-test this 
 		String where = DB_KEY_ID + "=" + id;
-		Cursor c = db.query(TABLE_SHOPPING_LISTS, null, where, null, null,
+		Cursor c = sDb.query(TABLE_SHOPPING_LISTS, null, where, null, null,
 				null, null);
 		c.moveToFirst();
 		String name = c.getString(c.getColumnIndexOrThrow(DB_KEY_NAME));
@@ -102,7 +102,7 @@ public class ShoppingListDataAdapter extends TableAdapter {
 	 * @return An iterator over the lists.
 	 */
 	public ShoppingListDataAdapterIterator getAllLists() {
-		Cursor cursor = db.query(TABLE_SHOPPING_LISTS, null, null, null, null,
+		Cursor cursor = sDb.query(TABLE_SHOPPING_LISTS, null, null, null, null,
 				null, null);
 		return new ShoppingListDataAdapterIterator(cursor);
 	}

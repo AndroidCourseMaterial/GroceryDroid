@@ -19,7 +19,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
 	private static final int DATABASE_VERSION = 3;
-	private static DatabaseHelper instance = null;
+	private static DatabaseHelper sSingleton = null;
 	private static final String DATABASE_NAME = "shopping_items.db";
 	private static final String MOCK_DATABASE_NAME = "mock_shopping_items.db";
 	private static final boolean MOCK = true;
@@ -35,9 +35,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * @return The single instance of DatabaseHelper
 	 */
 	public static synchronized DatabaseHelper createInstance(Context context) {
-		instance = new DatabaseHelper(context, MOCK ? MOCK_DATABASE_NAME
+		sSingleton = new DatabaseHelper(context, MOCK ? MOCK_DATABASE_NAME
 				: DATABASE_NAME);
-		return instance;
+		return sSingleton;
 	}
 
 	/**
@@ -46,14 +46,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	 * @return The single instance of DatabaseHelper
 	 */
 	public static DatabaseHelper getInstance() {
-		assert (instance != null);
+		assert (sSingleton != null);
 		// if (instance == null) {
 		// Log.d(MyApplication.GD, "Getting null instance of DatabaseHelper");
 		// } else {
 		// Log.d(MyApplication.GD,
 		// "Getting non-null instance of DataBaseHelper");
 		// }
-		return instance;
+		return sSingleton;
 	}
 
 	private DatabaseHelper(Context context, String dbName) {
@@ -92,10 +92,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// Log.w(MainActivity.GD, "Upgrading from version " + oldVersion
-		// + " to " + newVersion
-		// + ", which will destroy all old data.");
-
 		db.execSQL("DROP TABLE IF EXISTS "
 				+ ItemDataAdapter.TABLE_GROCERY_ITEMS);
 		db.execSQL("DROP TABLE IF EXISTS "
@@ -103,5 +99,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 		this.onCreate(db);
 	}
-
 }

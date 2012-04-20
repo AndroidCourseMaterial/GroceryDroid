@@ -12,10 +12,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 public abstract class TableAdapter {
 
 
-	private SQLiteOpenHelper dbOpenHelper;
+	private SQLiteOpenHelper mDbOpenHelper;
 
 	/** Shared db connection: static and singleton */
-	protected static SQLiteDatabase db;
+	protected static SQLiteDatabase sDb;
 
 	/**
 	 * Retrieves the instance of SQLiteDatabase
@@ -24,17 +24,17 @@ public abstract class TableAdapter {
 	 */
 	protected SQLiteDatabase getDb() {
 		// CONSIDER: remove this? It's not used currently.
-		if (db == null) {
+		if (sDb == null) {
 			open();
 		}
-		return db;
+		return sDb;
 	}
 
 	/**
 	 * Creates a new TableAdapter
 	 */
 	public TableAdapter() {
-		this.dbOpenHelper = DatabaseHelper.getInstance();
+		mDbOpenHelper = DatabaseHelper.getInstance();
 	}
 
 	/**
@@ -44,17 +44,17 @@ public abstract class TableAdapter {
 	 *            The database connection to use
 	 */
 	public TableAdapter(SQLiteDatabase db) {
-		TableAdapter.db = db;
+		TableAdapter.sDb = db;
 	}
 
 	/**
 	 * Open a writable version of the database
 	 */
 	public void open() {
-		if (TableAdapter.db != null) {
-			TableAdapter.db = null;
+		if (TableAdapter.sDb != null) {
+			TableAdapter.sDb = null;
 		}
-		TableAdapter.db = this.dbOpenHelper.getWritableDatabase();
+		TableAdapter.sDb = mDbOpenHelper.getWritableDatabase();
 	}
 
 	/**
@@ -64,27 +64,27 @@ public abstract class TableAdapter {
 	 * connection to the database.
 	 */
 	public void close() {
-		db = null;
+		sDb = null;
 	}
 
 	/**
 	 * Adapter for database transactions.
 	 */
 	public void startTransaction() {
-		db.beginTransaction();
+		sDb.beginTransaction();
 	}
 
 	/**
 	 * Adapter for database transactions.
 	 */
 	public void commitTransaction() {
-		db.setTransactionSuccessful();
+		sDb.setTransactionSuccessful();
 	}
 
 	/**
 	 * Adapter for database transactions.
 	 */
 	public void finishTransaction() {
-		db.endTransaction();
+		sDb.endTransaction();
 	}
 }

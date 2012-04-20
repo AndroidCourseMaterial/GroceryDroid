@@ -12,20 +12,12 @@ import android.support.v4.app.DialogFragment;
  * @author Matthew Boutell.
  *         Created Apr 18, 2012.
  */
-public class AlertDialogFragment extends DialogFragment {
+class AlertDialogFragment extends DialogFragment {
 
 	// CONSIDER: Both this and my confirmDeleteItemDialogFragment are the same
 	// except for a title and the listener in the positive button.
 	// I could pass them in on construction and reuse this class.
 	
-//	@Override
-//	public void onCreate(Bundle savedInstanceState) {
-//		super.onCreate(savedInstanceState);
-//		int theme = R.style.Theme_Sherlock_Dialog;
-//		int style = DialogFragment.STYLE_NO_TITLE;
-//		setStyle(style, theme);
-//	}
-
     /**
      * Creates a new instance of the AlertDialogFragment with the given title.
      *
@@ -47,7 +39,6 @@ public class AlertDialogFragment extends DialogFragment {
         return new AlertDialog.Builder(getActivity())
 //	                .setIcon(R.drawable.alert_dialog_icon)
                 .setTitle(title)
-                // setMessage()
                 .setCancelable(false)
                 .setPositiveButton(R.string.ok,
                 	new DialogInterface.OnClickListener() {

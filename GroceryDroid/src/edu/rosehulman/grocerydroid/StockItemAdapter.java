@@ -96,19 +96,11 @@ public class StockItemAdapter extends ItemAdapter {
 
 		TextView nameView = (TextView) stockItemView
 				.findViewById(R.id.stock_item_name);
-
 		nameView.setText(item.getName());
 
 		TextView infoView = (TextView) stockItemView
 				.findViewById(R.id.stock_item_info);
 		infoView.setText(item.getStockInfo());
-
-//		nameView.setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				StockItemAdapter.this.mStockActivity.editItem(item);
-//			}
-//		});
 
 		stockItemView.setOnClickListener(new OnClickListener() {
 			@Override
@@ -116,9 +108,7 @@ public class StockItemAdapter extends ItemAdapter {
 				mStockActivity.launchEditItemDialog(item);
 			}
 		});
-		
-		
-		
+
 		return stockItemView;
 	}
 

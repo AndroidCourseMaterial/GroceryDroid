@@ -59,27 +59,6 @@ public class StockActivity extends ShoppingListActivity {
 //			}
 //		});
 
-//		getListView().setOnItemSelectedListener(new OnItemSelectedListener() {
-//
-//			@Override
-//			public void onItemSelected(AdapterView<?> parent, View v, int pos,
-//					long id) {
-//				mSelectedItem = getShoppingList().getItems(Order.STOCK).get(pos);
-//				// Is this just launchItemDialog();
-//
-//				ItemDialogFragment df = new ItemDialogFragment();
-//				df.setItem(mSelectedItem);
-//				df.show(getSupportFragmentManager(), "choose_action");
-//			}
-//
-//			@Override
-//			public void onNothingSelected(AdapterView<?> arg0) {
-//				// TODO Auto-generated method stub.
-//				
-//			}
-//			
-//		});
-		
 		// TODO: display icons for shopping, adding an item, and
 		// rearranging stock order.
 
@@ -149,7 +128,7 @@ public class StockActivity extends ShoppingListActivity {
 			launchNewItemDialog();
 			return super.onOptionsItemSelected(menuItem);
 			// TODO: add reset all button.
-			// case foo:
+			// case :
 			// for (Item item : getShoppingList().getItems(Order.AS_IS)) {
 			// item.resetNumberToBuy();
 			// }
@@ -161,5 +140,4 @@ public class StockActivity extends ShoppingListActivity {
 			return super.onOptionsItemSelected(menuItem);
 		}
 	}
-
 }

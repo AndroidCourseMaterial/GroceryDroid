@@ -165,8 +165,6 @@ public abstract class ShoppingListActivity extends SherlockFragmentActivity {
 		mIda.updateItem(item);
 		mItemAdapter.notifyDataSetChanged();
 	}
-
-	
 	
 	/**
 	 * Deletes the given item from the list

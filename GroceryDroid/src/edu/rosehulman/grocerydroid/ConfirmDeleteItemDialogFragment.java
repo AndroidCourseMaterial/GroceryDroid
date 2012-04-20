@@ -13,7 +13,7 @@ import edu.rosehulman.grocerydroid.model.Item;
  * 
  * @author Matthew Boutell. Created Apr 18, 2012.
  */
-public class ConfirmDeleteItemDialogFragment extends DialogFragment {
+class ConfirmDeleteItemDialogFragment extends DialogFragment {
 
 	// CONSIDER: I used a constructor and stored instance data.
 	// The Android examples show dialogs as static. I'm not sure why they need
@@ -25,7 +25,7 @@ public class ConfirmDeleteItemDialogFragment extends DialogFragment {
 	 * 
 	 * @param itemToDelete
 	 */
-	protected void setItem(Item itemToDelete) {
+	public void setItem(Item itemToDelete) {
 		mItem = itemToDelete;
 	}
 
@@ -34,7 +34,6 @@ public class ConfirmDeleteItemDialogFragment extends DialogFragment {
 		return new AlertDialog.Builder(getActivity())
 				// .setIcon(R.drawable.alert_dialog_icon)
 				.setTitle(R.string.confirm_delete_item)
-				// setMessage()
 				.setCancelable(false)
 				.setPositiveButton(R.string.ok,
 						new DialogInterface.OnClickListener() {

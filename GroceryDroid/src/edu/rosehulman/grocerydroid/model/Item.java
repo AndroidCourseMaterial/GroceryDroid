@@ -11,28 +11,24 @@ import edu.rosehulman.grocerydroid.MyApplication;
  */
 public class Item {
 
-	/** For debugging */
-	public static final String GD = "GD";
 	// CONSIDER: use a BigDecimal for the price and unitSize so that comparisons
 	// are easier.
-
 	private static final float EPSILON = 0.000001f;
+
 	private static final long DEFAULT_ID = 0;
-
-	private long id;
-
-	private long listId; // the list to which it belongs
-	private String name;
-	private int nStock;
-	private int nBuy;
-	private float price;
+	private long mId;
+	private long mListId; // the list to which it belongs
+	private String mName;
+	private int mNumStock;
+	private int mNumBuy;
+	private float mPrice;
 	// CONSIDER: should I have a simple Unit class that encapsulates unit size
 	// and label?
-	private float unitSize;
-	private UnitLabel unitLabel;
-	private boolean isBought;
-	private int stockIdx;
-	private int shopIdx;
+	private float mUnitSize;
+	private UnitLabel mUnitLabel;
+	private boolean mIsBought;
+	private int mStockIdx;
+	private int mShopIdx;
 
 	// id, listId, name, nStock, nBuy, price, unitSize, unitLabel, isBought,
 	// stockIdx,
@@ -56,18 +52,17 @@ public class Item {
 	public Item(long id, long listId, String name, int nStock, int nBuy,
 			float price, float size, UnitLabel unit, boolean isBought,
 			int stockIdx, int shopIdx) {
-		this.id = id;
-		this.listId = listId;
+		this.mId = id;
+		this.mListId = listId;
 		setName(name);
-		this.nStock = nStock;
-		this.nBuy = nBuy;
-		this.price = price;
-		this.unitSize = size;
-		this.unitLabel = unit;
-		this.isBought = isBought;
-		this.stockIdx = stockIdx;
-		this.shopIdx = shopIdx;
-		Log.d(MyApplication.GD, "Name is " + this.name + " item at " + this.hashCode());
+		this.mNumStock = nStock;
+		this.mNumBuy = nBuy;
+		this.mPrice = price;
+		this.mUnitSize = size;
+		this.mUnitLabel = unit;
+		this.mIsBought = isBought;
+		this.mStockIdx = stockIdx;
+		this.mShopIdx = shopIdx;
 	}
 
 	/**
@@ -80,68 +75,15 @@ public class Item {
 				0, 0);
 	}
 
-	// /**
-	// * Creates a Item from the given parameters.
-	// *
-	// * @param id
-	// * @param listId
-	// * @param name
-	// * @param nStock
-	// * @param price
-	// * @param size
-	// * @param unit
-	// */
-	// public Item(long id, long listId, String name, int nStock, float price,
-	// float size,
-	// ItemUnitLabel unit) {
-	// this(id, listId, name, nStock, 0, price, size, unit, false, -1, -1);
-	// }
-
-	// CONSIDER: may not need next 2 methods any more. Update if I do.
-	// /**
-	// * Creates a Item from the given parameters.
-	// *
-	// * @param data
-	// */
-	// public Item(Intent data) {
-	// this.id = data.getLongExtra(KEY_ID, 0); // probably uses the default.
-	// if (this.id == 0) {
-	// Log.d(Item.GD, "Creating item with id = 0");
-	// }
-	// this.name = data.getStringExtra(KEY_NAME);
-	// this.nStock = data.getIntExtra(KEY_NUM_TO_STOCK, 0);
-	// this.nBuy = 0;
-	// this.price = data.getFloatExtra(KEY_PRICE, 0.0f);
-	// this.unitSize = data.getFloatExtra(KEY_SIZE, 0.0f);
-	// this.unitLabel = ItemUnit.values()[data.getIntExtra(KEY_UNIT, 0)];
-	// this.isBought = false;
-	// }
-
-	// /**
-	// * Adds this object's data to the intent.
-	// *
-	// * @param intent
-	// */
-	// protected void addToIntent(Intent intent) {
-	// intent.putExtra(KEY_ID, this.id);
-	// intent.putExtra(KEY_NAME, this.name);
-	// intent.putExtra(KEY_NUM_TO_STOCK, this.nStock);
-	// intent.putExtra(KEY_NUM_TO_BUY, this.nBuy);
-	// intent.putExtra(KEY_PRICE, this.price);
-	// intent.putExtra(KEY_SIZE, this.unitSize);
-	// intent.putExtra(KEY_UNIT, this.unitLabel.ordinal());
-	// intent.putExtra(KEY_IS_BOUGHT, this.isBought);
-	// }
-
 	@Override
 	public String toString() {
 		// CONSIDER: have String format be locale dependent
 		// USA: String s = String.format("%s (%d) $%.2f/%.1f %s", this.name,
 		// this.nToStock, this.price, this.size, this.unit.toString());
 		String s = String.format("%d %d %s (%d/%d) %.0fK/%.1f %s %s %d %d",
-				this.id, this.listId, this.name, this.nBuy, this.nStock,
-				this.price, this.unitSize, this.unitLabel, this.isBought ? "B"
-						: "N", this.stockIdx, this.shopIdx);
+				this.mId, this.mListId, this.mName, this.mNumBuy, this.mNumStock,
+				this.mPrice, this.mUnitSize, this.mUnitLabel, this.mIsBought ? "B"
+						: "N", this.mStockIdx, this.mShopIdx);
 		return s;
 	}
 
@@ -149,8 +91,8 @@ public class Item {
 	 * @return A short string for this item: name and unit
 	 */
 	public String toShortString() {
-		return String.format("%s, %.1f %s", this.name, this.unitSize,
-				this.unitLabel);
+		return String.format("%s, %.1f %s", this.mName, this.mUnitSize,
+				this.mUnitLabel);
 	}
 
 	/**
@@ -160,8 +102,8 @@ public class Item {
 	 */
 	public String getStockInfo() {
 		// TODO: unit-test this.
-		return String.format("Stock %d @ %.0fK/%.1f %s", this.nStock,
-				this.price, this.unitSize, this.unitLabel);
+		return String.format("Stock %d @ %.0fK/%.1f %s", this.mNumStock,
+				this.mPrice, this.mUnitSize, this.mUnitLabel);
 	}
 
 	/**
@@ -173,34 +115,30 @@ public class Item {
 			return false;
 		}
 		Item other = (Item) object;
-		return this.id == other.id && this.listId == other.listId
-				&& this.name.equals(other.name) && this.nBuy == other.nBuy
-				&& this.nStock == other.nStock
-				&& Math.abs(this.price - other.price) < EPSILON
-				&& Math.abs(this.unitSize - other.unitSize) < EPSILON
-				&& this.unitLabel == other.unitLabel
-				&& this.isBought == other.isBought
-				&& this.stockIdx == other.stockIdx
-				&& this.shopIdx == other.shopIdx;
+		return this.mId == other.mId && this.mListId == other.mListId
+				&& this.mName.equals(other.mName) && this.mNumBuy == other.mNumBuy
+				&& this.mNumStock == other.mNumStock
+				&& Math.abs(this.mPrice - other.mPrice) < EPSILON
+				&& Math.abs(this.mUnitSize - other.mUnitSize) < EPSILON
+				&& this.mUnitLabel == other.mUnitLabel
+				&& this.mIsBought == other.mIsBought
+				&& this.mStockIdx == other.mStockIdx
+				&& this.mShopIdx == other.mShopIdx;
 	}
-
-	// id, listId, name, nStock, nBuy, price, unitSize, unitLabel, isBought,
-	// stockIdx,
-	// shopIdx
 
 	/**
 	 * Adds one to the number to be bought.
 	 * 
 	 */
 	public void incrementNumberToBuy() {
-		this.nBuy++;
+		this.mNumBuy++;
 	}
 
 	/**
 	 * Sets the number to buy back to 0.
 	 */
 	public void resetNumberToBuy() {
-		this.nBuy = 0;
+		this.mNumBuy = 0;
 	}
 
 	// id, name, nStock, nBuy, cost, unitSize, unitLabel, isBought,
@@ -210,7 +148,7 @@ public class Item {
 	 * @return The total amount spent on this item: 0 if not yet bought.
 	 */
 	public double totalSpent() {
-		return this.isBought ? totalPrice() : 0;
+		return this.mIsBought ? totalPrice() : 0;
 	}
 
 	/**
@@ -218,10 +156,10 @@ public class Item {
 	 *         bought.
 	 */
 	public double totalPrice() {
-		return this.nBuy * this.price;
+		return this.mNumBuy * this.mPrice;
 	}
 
-	// CONSIDER: removing the setters/getters.
+	// CONSIDER: removing unused setters/getters.
 
 	/**
 	 * Returns the value of the field called 'price'.
@@ -229,7 +167,7 @@ public class Item {
 	 * @return Returns the price.
 	 */
 	public float getPrice() {
-		return this.price;
+		return this.mPrice;
 	}
 
 	/**
@@ -239,7 +177,7 @@ public class Item {
 	 *            The price to set.
 	 */
 	public void setPrice(float price) {
-		this.price = price;
+		this.mPrice = price;
 	}
 
 	/**
@@ -248,7 +186,7 @@ public class Item {
 	 * @return Returns the id.
 	 */
 	public long getId() {
-		return this.id;
+		return this.mId;
 	}
 
 	/**
@@ -258,7 +196,7 @@ public class Item {
 	 *            The id to set.
 	 */
 	public void setId(long id) {
-		this.id = id;
+		this.mId = id;
 	}
 
 	/**
@@ -267,7 +205,7 @@ public class Item {
 	 * @return Returns the listId.
 	 */
 	public long getListId() {
-		return this.listId;
+		return this.mListId;
 	}
 
 	/**
@@ -277,7 +215,7 @@ public class Item {
 	 *            The listId to set.
 	 */
 	public void setListId(long listId) {
-		this.listId = listId;
+		this.mListId = listId;
 	}
 
 	/**
@@ -286,7 +224,7 @@ public class Item {
 	 * @return Returns the name.
 	 */
 	public String getName() {
-		return this.name;
+		return this.mName;
 	}
 
 	private static String capitalString(String word) {
@@ -309,7 +247,7 @@ public class Item {
 	 *            The name to set.
 	 */
 	public void setName(String name) {
-		this.name = capitalString(name);
+		this.mName = capitalString(name);
 	}
 
 	/**
@@ -318,7 +256,7 @@ public class Item {
 	 * @return Returns the nStock.
 	 */
 	public int getNStock() {
-		return this.nStock;
+		return this.mNumStock;
 	}
 
 	/**
@@ -328,7 +266,7 @@ public class Item {
 	 *            The nStock to set.
 	 */
 	public void setNStock(int nStock) {
-		this.nStock = nStock;
+		this.mNumStock = nStock;
 	}
 
 	/**
@@ -337,7 +275,7 @@ public class Item {
 	 * @return Returns the nBuy.
 	 */
 	public int getNBuy() {
-		return this.nBuy;
+		return this.mNumBuy;
 	}
 
 	/**
@@ -347,7 +285,7 @@ public class Item {
 	 *            The nBuy to set.
 	 */
 	public void setNBuy(int nBuy) {
-		this.nBuy = nBuy;
+		this.mNumBuy = nBuy;
 	}
 
 	/**
@@ -356,7 +294,7 @@ public class Item {
 	 * @return Returns the unitSize.
 	 */
 	public float getUnitSize() {
-		return this.unitSize;
+		return this.mUnitSize;
 	}
 
 	/**
@@ -366,7 +304,7 @@ public class Item {
 	 *            The unitSize to set.
 	 */
 	public void setUnitSize(float unitSize) {
-		this.unitSize = unitSize;
+		this.mUnitSize = unitSize;
 	}
 
 	/**
@@ -375,7 +313,7 @@ public class Item {
 	 * @return Returns the unitLabel.
 	 */
 	public UnitLabel getUnitLabel() {
-		return this.unitLabel;
+		return this.mUnitLabel;
 	}
 
 	/**
@@ -385,7 +323,7 @@ public class Item {
 	 *            The unitLabel to set.
 	 */
 	public void setUnitLabel(UnitLabel unitLabel) {
-		this.unitLabel = unitLabel;
+		this.mUnitLabel = unitLabel;
 	}
 
 	/**
@@ -394,7 +332,7 @@ public class Item {
 	 * @return Returns the isBought.
 	 */
 	public boolean isBought() {
-		return this.isBought;
+		return this.mIsBought;
 	}
 
 	/**
@@ -404,7 +342,7 @@ public class Item {
 	 *            The isBought to set.
 	 */
 	public void setBought(boolean isBought) {
-		this.isBought = isBought;
+		this.mIsBought = isBought;
 	}
 
 	/**
@@ -413,7 +351,7 @@ public class Item {
 	 * @return Returns the stockIdx.
 	 */
 	public int getStockIdx() {
-		return this.stockIdx;
+		return this.mStockIdx;
 	}
 
 	/**
@@ -423,7 +361,7 @@ public class Item {
 	 *            The stockIdx to set.
 	 */
 	public void setStockIdx(int stockIdx) {
-		this.stockIdx = stockIdx;
+		this.mStockIdx = stockIdx;
 	}
 
 	/**
@@ -432,7 +370,7 @@ public class Item {
 	 * @return Returns the shopIdx.
 	 */
 	public int getShopIdx() {
-		return this.shopIdx;
+		return this.mShopIdx;
 	}
 
 	/**
@@ -442,7 +380,7 @@ public class Item {
 	 *            The shopIdx to set.
 	 */
 	public void setShopIdx(int shopIdx) {
-		this.shopIdx = shopIdx;
+		this.mShopIdx = shopIdx;
 	}
 
 	/**
@@ -478,5 +416,4 @@ public class Item {
 		/** bag */
 		bag
 	}
-
 }

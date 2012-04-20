@@ -13,9 +13,9 @@ import edu.rosehulman.grocerydroid.db.ItemDataAdapter;
  */
 public class ShoppingList {
 	private static final long DEFAULT_ID = 0;
-	private long id;
-	private String name;
-	private ArrayList<Item> items;
+	private long mId;
+	private String mName;
+	private ArrayList<Item> mItems;
 
 	/**
 	 * Creates a ShoppingList from the given parameters.
@@ -25,9 +25,9 @@ public class ShoppingList {
 	 * 
 	 */
 	public ShoppingList(long id, String name) {
-		this.id = id;
-		this.name = name;
-		this.items = new ArrayList<Item>();
+		mId = id;
+		mName = name;
+		mItems = new ArrayList<Item>();
 	}
 
 	/**
@@ -37,9 +37,9 @@ public class ShoppingList {
 	 * 
 	 */
 	public ShoppingList(String name) {
-		this.id = DEFAULT_ID;
-		this.name = name;
-		this.items = new ArrayList<Item>();
+		this.mId = DEFAULT_ID;
+		this.mName = name;
+		this.mItems = new ArrayList<Item>();
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class ShoppingList {
 	 * @param item
 	 */
 	public void addItem(Item item) {
-		this.items.add(item);
+		this.mItems.add(item);
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class ShoppingList {
 	 * @return True iff the item was removed.
 	 */
 	public boolean deleteItem(Item item) {
-		return this.items.remove(item);
+		return this.mItems.remove(item);
 	}
 
 	/**
@@ -70,10 +70,10 @@ public class ShoppingList {
 	 */
 	public boolean updateItem(Item item) {
 		// TODO: Unit test this
-		for (int i = 0; i < this.items.size(); i++) {
-			Item currentItem = this.items.get(i);
+		for (int i = 0; i < this.mItems.size(); i++) {
+			Item currentItem = this.mItems.get(i);
 			if (item.getId() == currentItem.getId()) {
-				this.items.set(i, item);
+				this.mItems.set(i, item);
 				return true;
 			}
 		}
@@ -84,8 +84,8 @@ public class ShoppingList {
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder();
-		result.append(String.format("%d %s", this.id, this.name));
-		for (Item item : this.items) {
+		result.append(String.format("%d %s", this.mId, this.mName));
+		for (Item item : this.mItems) {
 			result.append("\n  " + item);
 		}
 		return result.toString();
@@ -101,7 +101,7 @@ public class ShoppingList {
 			return false;
 		}
 		ShoppingList other = (ShoppingList) object;
-		return this.id == other.id && this.name.equals(other.name);
+		return this.mId == other.mId && this.mName.equals(other.mName);
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class ShoppingList {
 	 */
 	public double totalSpent() {
 		double total = 0;
-		for (Item item : this.items) {
+		for (Item item : this.mItems) {
 			total += item.totalSpent();
 		}
 		return total;
@@ -125,7 +125,7 @@ public class ShoppingList {
 	 */
 	public double totalPrice() {
 		double total = 0;
-		for (Item item : this.items) {
+		for (Item item : this.mItems) {
 			total += item.totalPrice();
 		}
 		return total;
@@ -138,10 +138,10 @@ public class ShoppingList {
 	 * be stored in the DB.
 	 */
 	public void setPantryOrderToListOrder() {
-		for (int i = 0; i < this.items.size(); i++) {
+		for (int i = 0; i < this.mItems.size(); i++) {
 			// CONSIDER: switch order backwards so that adding an item to the
 			// top doesn't affect the order of every item in the list.
-			this.items.get(i).setStockIdx(i);
+			this.mItems.get(i).setStockIdx(i);
 		}
 
 	}
@@ -153,10 +153,10 @@ public class ShoppingList {
 	 * be stored in the DB.
 	 */
 	public void setShoppingOrderToListOrder() {
-		for (int i = 0; i < this.items.size(); i++) {
+		for (int i = 0; i < this.mItems.size(); i++) {
 			// CONSIDER: switch order backwards so that adding an item to the
 			// top doesn't affect the order of every item in the list.
-			this.items.get(i).setShopIdx(i);
+			this.mItems.get(i).setShopIdx(i);
 		}
 	}
 
@@ -166,7 +166,7 @@ public class ShoppingList {
 	 * @return Returns the name.
 	 */
 	public String getName() {
-		return this.name;
+		return this.mName;
 	}
 
 	/**
@@ -176,7 +176,7 @@ public class ShoppingList {
 	 *            The name to set.
 	 */
 	public void setName(String name) {
-		this.name = name;
+		this.mName = name;
 	}
 
 	/**
@@ -185,7 +185,7 @@ public class ShoppingList {
 	 * @return Returns the id.
 	 */
 	public long getId() {
-		return this.id;
+		return this.mId;
 	}
 
 	/**
@@ -195,7 +195,7 @@ public class ShoppingList {
 	 *            The id to set.
 	 */
 	public void setId(long id) {
-		this.id = id;
+		this.mId = id;
 	}
 
 	/**
@@ -205,7 +205,7 @@ public class ShoppingList {
 	 *            The items to set.
 	 */
 	public void setItems(ArrayList<Item> items) {
-		this.items = items;
+		this.mItems = items;
 	}
 
 	// CONSIDER: since we access AS_IS primarily just for testing, does it
@@ -223,32 +223,32 @@ public class ShoppingList {
 	 * @return The list of Items
 	 */
 	public ArrayList<Item> getItems(Order order) {
-		if (this.items == null || this.items.size() == 0) {
+		if (this.mItems == null || this.mItems.size() == 0) {
 			// If items isn't, then lazy-load it.
 			ItemDataAdapter ida = new ItemDataAdapter();
 			ida.open();
 			// Shouldn't be null since init'd in constructor. Check anyway.
-			if (this.items == null) {
-				this.items = new ArrayList<Item>();
+			if (this.mItems == null) {
+				this.mItems = new ArrayList<Item>();
 			}
-			this.items.clear();
-			for (Item item : ida.getAllItemsWithListId(this.id)) {
-				this.items.add(item);
+			this.mItems.clear();
+			for (Item item : ida.getAllItemsWithListId(this.mId)) {
+				this.mItems.add(item);
 			}
 		}
 
 		switch (order) {
 		case STOCK:
-			Collections.sort(this.items, new CompareStockOrder());
+			Collections.sort(this.mItems, new CompareStockOrder());
 			break;
 		case SHOP:
-			Collections.sort(this.items, new CompareShopOrder());
+			Collections.sort(this.mItems, new CompareShopOrder());
 			break;
 		default:
 			// empty
 		}
 
-		return this.items;
+		return this.mItems;
 	}
 
 	private class CompareStockOrder implements Comparator<Item> {
@@ -273,7 +273,7 @@ public class ShoppingList {
 	 * Whether the list should be displayed in the order the items appear in the
 	 * pantry, the order they appear in the store, or neither.
 	 * 
-	 * @author boutell. Created Mar 30, 2012.
+	 * @author Matthew Boutell. Created Mar 30, 2012.
 	 */
 	public enum Order {
 		/** default */
