@@ -71,7 +71,7 @@ public class Item {
 	 * @param listId
 	 */
 	public Item(long listId) {
-		this(DEFAULT_ID, listId, "", 1, 0, 0.0f, 1.0f, UnitLabel.unit, false,
+		this(DEFAULT_ID, listId, "", 1, 1, 0.0f, 1.0f, UnitLabel.unit, false,
 				0, 0);
 	}
 

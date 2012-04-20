@@ -68,14 +68,10 @@ public class ItemDialogFragment extends DialogFragment {
 			nameBox.setText(mItem.getName());
 
 			// TODO: complete this for starting with activity
-			// EditText priceBox = (EditText) findViewById(R.id.priceBox);
-			// etPrice.setText(Float.toString(item.getPrice()));
-			//
-			// EditText etSize = (EditText) findViewById(R.id.sizeBox);
-			// etSize.setText(Float.toString(item.getSize()));
-			//
-			// unitSpinner.setSelection(item.getUnit().ordinal());
-			// numToStockSpinner.setSelection(item.getNToStock());
+			EditText priceBox = (EditText)view.findViewById(R.id.item_price_box);
+			priceBox.setText(Float.toString(mItem.getPrice()));
+			
+			unitSpinner.setSelection(mItem.getUnitLabel().ordinal());
 		}
 
 		Button incrementNumStockButton = (Button) view
