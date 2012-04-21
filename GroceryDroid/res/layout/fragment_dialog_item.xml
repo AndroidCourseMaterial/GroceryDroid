@@ -133,3 +133,27 @@
         android:layout_alignParentRight="true"
         />
 </RelativeLayout>
+
+<!-- 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal" >
+        <Button
+            android:id="@+id/add_course_dialog_fragment_cancel_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:text="@string/add_course_dialog_fragment_cancel_button" />
+        <Button
+            android:id="@+id/add_course_dialog_fragment_create_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:text="@string/add_course_dialog_fragment_create_course_button" />
+    </LinearLayout>
+</LinearLayout>
+ -->    

@@ -49,8 +49,7 @@ class ChooseActionDialogFragment extends DialogFragment {
 							activity.launchShopActivity();
 							break;
 						case 2:
-							DialogFragment df = AlertDialogFragment
-									.newInstance(R.string.confirm_delete_list);
+							DialogFragment df = new ConfirmDeleteListDialogFragment();
 							df.show(activity.getSupportFragmentManager(),
 									"confirm");
 							break;

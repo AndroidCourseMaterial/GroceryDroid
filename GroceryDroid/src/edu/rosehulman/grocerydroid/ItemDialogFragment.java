@@ -21,15 +21,6 @@ public class ItemDialogFragment extends DialogFragment {
 	private Item mItem;
 	private Mode mMode;
 
-	/**
-	 * Gets a new instance of the dialog.
-	 * 
-	 * @return A new AddItemDialogFragment
-	 */
-	static ItemDialogFragment newInstance() {
-		return new ItemDialogFragment();
-	}
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

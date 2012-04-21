@@ -15,17 +15,6 @@ import android.widget.EditText;
  *         Created Apr 11, 2012.
  */
 class AddListDialogFragment extends DialogFragment {
-
-	
-	/**
-	 * Returns a new instance of the AddList dialog
-	 *
-	 * @return A new instance of the AddList dialog.
-	 */
-	static AddListDialogFragment newInstance() {
-		return new AddListDialogFragment();
-	}
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

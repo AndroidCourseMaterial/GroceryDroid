@@ -146,7 +146,7 @@ public class MainActivity extends SherlockFragmentActivity {
 		// handle item selection
 		switch (item.getItemId()) {
 		case R.id.add_list:
-			DialogFragment newFragment = AddListDialogFragment.newInstance();
+			DialogFragment newFragment = new AddListDialogFragment();
 			newFragment.show(getSupportFragmentManager(), "add_list");
 			return true;
 		case android.R.id.home:
