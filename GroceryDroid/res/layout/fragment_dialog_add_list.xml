@@ -5,7 +5,8 @@
     android:orientation="vertical" >
 
 <TextView 
-    android:text="@string/add_list_prompt"    
+    android:text="@string/add_list_prompt"
+    android:layout_margin="5dp"    
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     />
@@ -13,6 +14,7 @@
 <EditText
     android:id="@+id/add_list_name_edit_text"
     android:hint="@string/add_list_name_hint"
+    android:layout_margin="5dp"    
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     />
@@ -20,6 +22,7 @@
 <Button 
     android:id="@+id/add_list_save_button"
     android:text="@string/save"
+    android:layout_margin="5dp"    
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     />

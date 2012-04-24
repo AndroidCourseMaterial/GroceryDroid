@@ -7,18 +7,25 @@
         android:id="@+id/item_name_prompt"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"    
+        android:layout_marginLeft="5dp"    
+        android:layout_marginRight="5dp"    
         android:text="Name:"
         />
     <EditText
         android:id="@+id/item_name_box"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"    
+        android:layout_marginRight="5dp"    
         android:layout_below="@+id/item_name_prompt"
         />
     <TextView
         android:id="@+id/item_price_prompt"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"    
+        android:layout_marginRight="5dp"    
         android:layout_below="@+id/item_name_box"
         android:text="Price:"
         />
@@ -27,12 +34,16 @@
         android:numeric="decimal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"    
+        android:layout_marginRight="5dp"    
         android:layout_below="@+id/item_price_prompt"
         />
     <TextView
         android:id="@+id/item_unit_size_prompt"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"    
+        android:layout_marginRight="5dp"    
         android:layout_below="@+id/item_price_box"
         android:text="Size:"
         />
@@ -41,12 +52,16 @@
         android:numeric="decimal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"    
+        android:layout_marginRight="5dp"    
         android:layout_below="@+id/item_unit_size_prompt"
         />
     <TextView
         android:id="@+id/item_unit_label_prompt"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"    
+        android:layout_marginRight="5dp"    
         android:layout_below="@+id/item_unit_size_box"
         android:text="@string/item_unit_label_prompt"
         />
@@ -54,6 +69,8 @@
         android:id="@+id/item_unit_label_spinner"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"    
+        android:layout_marginRight="5dp"    
         android:layout_below="@+id/item_unit_label_prompt"
         android:prompt="@string/item_unit_label_prompt"
         android:drawSelectorOnTop="true"
@@ -62,6 +79,8 @@
         android:id="@+id/item_num_stock_prompt"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"    
+        android:layout_marginRight="5dp"    
         android:layout_below="@+id/item_unit_label_spinner"
         android:text="@string/item_number_to_stock_prompt"
         />
@@ -69,13 +88,16 @@
         android:id="@+id/item_decrement_num_stock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
+        android:layout_marginLeft="5dp"    
         android:text="-"
+        android:textSize="20dp"
         android:layout_below="@+id/item_num_stock_prompt"/>
     <EditText
         android:id="@+id/item_num_stock"
         android:numeric="decimal"
         android:text="  "
+        android:textSize="20dp"
+        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/item_num_stock_prompt"
@@ -85,8 +107,8 @@
         android:id="@+id/item_increment_num_stock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
         android:text="+"
+        android:textSize="20dp"
         android:layout_below="@+id/item_num_stock_prompt"
         android:layout_toRightOf="@+id/item_num_stock"
         />
@@ -99,39 +121,43 @@
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
         />
-    <Button
-        android:id="@+id/item_cancel_button"
-        android:layout_width="wrap_content"
+    <LinearLayout 
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:text="Cancel"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
+        android:orientation="horizontal"            
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="5dp"
         android:layout_below="@+id/button_separator"
-        android:layout_centerHorizontal="true"
-        />
-    <Button
-        android:id="@+id/item_save_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:text="Save"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:layout_below="@+id/button_separator"
-        android:layout_alignParentLeft="true"
-        />
-    <Button
-        android:id="@+id/item_delete_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:text="Delete"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:layout_below="@+id/button_separator"
-        android:layout_alignParentRight="true"
-        />
+    >
+	    <Button
+	        android:id="@+id/item_save_button"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+	        android:textSize="20dp"
+	        android:text="Save"
+            android:gravity="center"
+	        />
+        <Button
+            android:id="@+id/item_cancel_button"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textSize="20dp"
+            android:text="Cancel"
+            android:gravity="center"
+            />
+	    <Button
+	        android:id="@+id/item_delete_button"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+	        android:textSize="20dp"
+	        android:text="Delete"
+            android:gravity="center"
+	        />
+    </LinearLayout>
+    
 </RelativeLayout>
 
 <!-- 

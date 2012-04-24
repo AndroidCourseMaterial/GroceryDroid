@@ -1,5 +1,7 @@
 package edu.rosehulman.grocerydroid.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import edu.rosehulman.grocerydroid.MyApplication;
@@ -9,7 +11,7 @@ import edu.rosehulman.grocerydroid.MyApplication;
  * 
  * @author Matthew Boutell. Created Nov 7, 2011.
  */
-public class Item {
+public class Item implements Parcelable {
 
 	// CONSIDER: use a BigDecimal for the price and unitSize so that comparisons
 	// are easier.
@@ -416,4 +418,55 @@ public class Item {
 		/** bag */
 		bag
 	}
+
+	@Override
+	public int describeContents() {
+		// Since no special objects in the marchalled representation
+		return 0;
+	}
+
+     @Override
+	public void writeToParcel(Parcel out, int flags) {
+         out.writeLong(mId);
+         out.writeLong(mListId);
+         out.writeString(mName);
+         out.writeInt(mNumStock);
+         out.writeInt(mNumBuy);
+         out.writeFloat(mPrice);
+         out.writeFloat(mUnitSize);
+         out.writeInt(mUnitLabel.ordinal());
+         out.writeInt(mIsBought ? 1 : 0);
+         out.writeInt(mStockIdx);
+         out.writeInt(mShopIdx);
+     }
+
+     /**
+     * The CREATOR, required by the parcelable interface.
+     */
+    public static final Parcelable.Creator<Item> CREATOR
+             = new Parcelable.Creator<Item>() {
+         @Override
+		public Item createFromParcel(Parcel in) {
+             return new Item(in);
+         }
+
+		@Override
+		public Item[] newArray(int size) {
+             return new Item[size];
+         }
+     };
+     
+     private Item(Parcel in) {
+    	 mId = in.readLong();
+    	 mListId = in.readLong();
+    	 mName = in.readString();
+    	 mNumStock = in.readInt();
+         mNumBuy = in.readInt();
+         mPrice = in.readFloat();
+         mUnitSize = in.readFloat();
+         mUnitLabel = UnitLabel.values()[in.readInt()];
+         mIsBought = in.readInt() == 1;
+    	 mStockIdx = in.readInt();
+         mShopIdx = in.readInt();
+     }
 }

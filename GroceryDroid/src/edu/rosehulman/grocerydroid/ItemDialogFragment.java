@@ -2,6 +2,8 @@ package edu.rosehulman.grocerydroid;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.InputType;
+import android.text.method.DigitsKeyListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +37,18 @@ public class ItemDialogFragment extends DialogFragment {
 		final View view = inflater.inflate(R.layout.fragment_dialog_item,
 				container, false);
 
+		EditText nameBox = (EditText) view.findViewById(R.id.item_name_box);
+		nameBox.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+
+		EditText priceBox = (EditText) view.findViewById(R.id.item_price_box);
+		priceBox.setInputType(InputType.TYPE_CLASS_PHONE);
+		// priceBox.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
+		
+		
+		// first true : is signed, second one : is decimal
+		priceBox.setKeyListener(new DigitsKeyListener(false, true));
+
 		EditText sizeBox = (EditText) view
 				.findViewById(R.id.item_unit_size_box);
 		sizeBox.setText("" + mItem.getUnitSize());
@@ -55,13 +69,10 @@ public class ItemDialogFragment extends DialogFragment {
 		// item, then we use the item passed in the intent to populate the
 		// spinners and edit text boxes.
 		if (!mItem.getName().equals("")) {
-			EditText nameBox = (EditText) view.findViewById(R.id.item_name_box);
 			nameBox.setText(mItem.getName());
 
-			// TODO: complete this for starting with activity
-			EditText priceBox = (EditText)view.findViewById(R.id.item_price_box);
 			priceBox.setText(Float.toString(mItem.getPrice()));
-			
+
 			unitSpinner.setSelection(mItem.getUnitLabel().ordinal());
 		}
 
@@ -117,7 +128,7 @@ public class ItemDialogFragment extends DialogFragment {
 				if (mMode == Mode.ADD) {
 					((ShoppingListActivity) getActivity()).addItem(mItem);
 				} else if (mMode == Mode.EDIT) {
-					((ShoppingListActivity)getActivity()).updateItem(mItem);
+					((ShoppingListActivity) getActivity()).updateItem(mItem);
 				} else {
 					// shouldn't get here.
 				}
@@ -139,17 +150,19 @@ public class ItemDialogFragment extends DialogFragment {
 		deleteButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (mMode == Mode.EDIT) { 
-			        ConfirmDeleteItemDialogFragment df = new ConfirmDeleteItemDialogFragment();
-			        df.setItem(mItem);
+				if (mMode == Mode.EDIT) {
+					ConfirmDeleteItemDialogFragment df = new ConfirmDeleteItemDialogFragment();
+					df.setItem(mItem);
 					df.show(getActivity().getSupportFragmentManager(),
 							"confirm");
-				} 
-				// Otherwise, we are adding this item, so we don't need to delete it.
-				// TODO: Remove modes altogether once autocomplete works, since 
-				// every item here will exist and be beging added. 
-				// CONSIDER: at that point, I will need to make sure that items 
-				// that have a name only (from autocomplete) have been saved in the DB
+				}
+				// Otherwise, we are adding this item, so we don't need to
+				// delete it.
+				// TODO: Remove modes altogether once autocomplete works, since
+				// every item here will exist and be beging added.
+				// CONSIDER: at that point, I will need to make sure that items
+				// that have a name only (from autocomplete) have been saved in
+				// the DB
 				// and have a unique ID so they can be deleted.
 				dismiss();
 			}
