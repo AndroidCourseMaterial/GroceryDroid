@@ -1,6 +1,7 @@
 package edu.rosehulman.grocerydroid;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -11,7 +12,6 @@ import android.widget.TextView;
 
 import edu.rosehulman.grocerydroid.model.Item;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -77,6 +77,7 @@ public class ShopItemAdapter extends ItemAdapter {
 			@Override
 			public void onClick(View v) {
 				item.setBought(!item.isBought());
+				Log.d(MyApplication.GD, "Clicked on item " + item.toString());
 				mShopActivity.refreshDisplay();
 			}
 		});

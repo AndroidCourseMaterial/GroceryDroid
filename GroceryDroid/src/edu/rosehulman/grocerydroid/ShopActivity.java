@@ -21,8 +21,9 @@ import java.util.ArrayList;
  * @author Matthew Boutell. Created Apr 25, 2012.
  */
 public class ShopActivity extends ShoppingListActivity {
+	/** a temporary list for this screen only (so can hide bought items). */
 	private ArrayList<Item> mItemsToDisplay;
-	private boolean showAll = true;
+	private boolean showAll = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +40,8 @@ public class ShopActivity extends ShoppingListActivity {
 		initializeDatabase();
 		initializeShoppingList(listId);
 		getSupportActionBar().setSubtitle(getShoppingList().getName());
-		updateMainPrompt();
 
-		// Copy into temporary list for this screen only (so can toggle which
-		// are displayed).
 		mItemsToDisplay = new ArrayList<Item>();
-		for (Item item : getShoppingList().getItems(Order.SHOP)) {
-			mItemsToDisplay.add(item);
-		}
 
 		setListView((ListView) findViewById(R.id.shop_list_view));
 		ShopItemAdapter sia = new ShopItemAdapter(this, R.layout.shop_item,
@@ -63,7 +58,7 @@ public class ShopActivity extends ShoppingListActivity {
 	@Override
 	protected void updateMainPrompt() {
 		TextView tv = (TextView) findViewById(R.id.shop_list_prompt);
-		if (getShoppingList().getItems(Order.STOCK).size() > 0) {
+		if (mItemsToDisplay.size() > 0) {
 			tv.setText(R.string.shopping_list_prompt_items_present);
 		} else {
 			tv.setText(R.string.shopping_list_prompt_default);
@@ -82,13 +77,13 @@ public class ShopActivity extends ShoppingListActivity {
 		super.onPrepareOptionsMenu(menu);
 		// TODO add showHide:
 		// // Note: similar to findViewById()
-		// MenuItem showHide = menu.findItem(R.id.shopMenuShowHide);
-		// // Toggle the menu title. If current current status is to show, then
-		// // the menu asks, "Hide?" and vice-versa
-		// String text = this.showAll ? getString(R.string.hide_bought)
-		// : getString(R.string.show_all);
-		// showHide.setTitleCondensed(text);
-		// showHide.setTitle(text);
+		 MenuItem showHide = menu.findItem(R.id.shop_menu_show_hide);
+		 // Toggle the menu title. If current current status is to show, then
+		 // the menu asks, "Hide?" and vice-versa
+		 String text = this.showAll ? getString(R.string.shop_menu_hide_bought_items)
+		 : getString(R.string.shop_menu_show_bought_items);
+		 showHide.setTitleCondensed(text);
+		 showHide.setTitle(text);
 		return true;
 	}
 
@@ -98,21 +93,20 @@ public class ShopActivity extends ShoppingListActivity {
 		case R.id.shop_menu_item_add_name:
 			launchNewItemDialog();
 			return super.onOptionsItemSelected(menuItem);
-			
 		case R.id.shop_menu_item_reset_all:
 			resetBoughtForAllItems();
 			return true;
-			// case R.id.shopMenuShowHide:
-			// this.showAll = !this.showAll;
-			// updateDisplayList();
-			// this.sia.notifyDataSetChanged();
-			// break;
-			// case R.id.shopMenuDone:
-			// for (Item itm : this.shoppingList.getItems()) {
-			// itm.setBought(false);
-			// }
-			// this.finish();
-			// }
+		case R.id.shop_menu_show_hide:
+			this.showAll = !this.showAll;
+			refreshDisplay();
+			return true;
+		// TODO: At some point in the flow, I should set hte items as unbought. 
+		// case R.id.shopMenuDone:
+		// for (Item itm : this.shoppingList.getItems()) {
+		// itm.setBought(false);
+		// }
+		// this.finish();
+		// }
 		default:
 			return super.onOptionsItemSelected(menuItem);
 		}
@@ -138,7 +132,6 @@ public class ShopActivity extends ShoppingListActivity {
 	 */
 	@Override
 	protected void refreshDisplay() {
-		updateMainPrompt();
 		mItemsToDisplay.clear();
 		for (Item item : getShoppingList().getItems(Order.SHOP)) {
 			if (item.getNBuy() > 0) {
@@ -147,6 +140,7 @@ public class ShopActivity extends ShoppingListActivity {
 				}
 			}
 		}
+		updateMainPrompt();
 
 		TextView totalSpentTV = (TextView) findViewById(R.id.shop_layout_total_spent_text);
 		// CONSIDER: read format string from resources?

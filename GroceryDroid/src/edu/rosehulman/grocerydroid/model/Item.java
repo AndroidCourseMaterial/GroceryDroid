@@ -246,7 +246,6 @@ public class Item implements Parcelable {
 		if (capWord != null) {
 			capWord = capWord.trim();
 			if (capWord.length() > 0) {
-				Log.d(MyApplication.GD, "Capitalizing " + word);
 				capWord = Character.toUpperCase(capWord.charAt(0))
 						+ capWord.substring(1);
 			}
