@@ -58,8 +58,6 @@ public abstract class ShoppingListActivity extends SherlockFragmentActivity {
 		for (Item item : mIda.getAllItemsWithListId(listId)) {
 			getShoppingList().addItem(item);
 		}
-		// TODO: update the display (notifyDataSetChanged)
-		// mAdapter.notifyDataSetChanged();
 	}
 
 	/**
@@ -129,8 +127,6 @@ public abstract class ShoppingListActivity extends SherlockFragmentActivity {
 	 * Launches a dialog to create a new item for editing.
 	 */
 	protected void launchNewItemDialog() {
-		// CONSIDER: Do I even need to call the static newInstance?
-		// DialogFragment newFragment = ItemDialogFragment.newInstance();
 		ItemDialogFragment newFragment = new ItemDialogFragment();
 		newFragment.initializeItem(mShoppingList.getId());
 		newFragment.setMode(Mode.ADD);
@@ -159,10 +155,15 @@ public abstract class ShoppingListActivity extends SherlockFragmentActivity {
 	protected void addItem(Item item) {
 		mShoppingList.addItem(item);
 		mIda.insertItem(item);
-		updateMainPrompt();
-		mItemAdapter.notifyDataSetChanged();
+		refreshDisplay();
 	}
 
+	/**
+	 * Updates the pertinent information in the display.
+	 *
+	 */
+	protected abstract void refreshDisplay();
+	
 	/**
 	 * Updates the given item in the database.
 	 *
@@ -171,7 +172,7 @@ public abstract class ShoppingListActivity extends SherlockFragmentActivity {
 	protected void updateItem(Item item) {
 		mShoppingList.updateItem(item);
 		mIda.updateItem(item);
-		mItemAdapter.notifyDataSetChanged();
+		refreshDisplay();
 	}
 	
 	/**
@@ -184,7 +185,6 @@ public abstract class ShoppingListActivity extends SherlockFragmentActivity {
 		this.mShoppingList.deleteItem(item);
 		Log.d(MyApplication.GD, "Deleting from Db the item " + item);
 		mIda.deleteItem(item);
-		updateMainPrompt();
-		mItemAdapter.notifyDataSetChanged();
+		refreshDisplay();
 	}
 }

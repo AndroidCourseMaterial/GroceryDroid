@@ -7,8 +7,6 @@ import edu.rosehulman.grocerydroid.model.Item;
 import edu.rosehulman.grocerydroid.model.Item.UnitLabel;
 import edu.rosehulman.grocerydroid.model.ShoppingList;
 
-import java.util.ArrayList;
-
 /**
  * All the operations needed to access the shopping list data in the database.
  * 

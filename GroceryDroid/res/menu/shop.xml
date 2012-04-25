@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/shop_menu_item_add_name"
+        android:icon="@drawable/ic_action_plus"
+        android:showAsAction="always"
+        android:title="@string/shop_menu_item_add_item"
+        />
+    <item
+        android:id="@+id/shop_menu_item_reset_all"
+        android:icon="@drawable/ic_launcher"
+        android:showAsAction="ifRoom"
+        android:title="@string/shop_menu_item_reset_all"
+        />
+</menu>

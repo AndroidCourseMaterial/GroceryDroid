@@ -7,6 +7,12 @@
         android:title="@string/stock_menu_item_add_item"
         />
     <item
+        android:id="@+id/stock_menu_item_go_shopping"
+        android:icon="@drawable/ic_action_shop"
+        android:showAsAction="ifRoom"
+        android:title="@string/stock_menu_item_go_shopping"
+        />
+    <item
         android:id="@+id/stock_menu_item_reset_all"
         android:icon="@drawable/ic_launcher"
         android:showAsAction="ifRoom"

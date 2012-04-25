@@ -83,9 +83,9 @@ public class Item implements Parcelable {
 		// USA: String s = String.format("%s (%d) $%.2f/%.1f %s", this.name,
 		// this.nToStock, this.price, this.size, this.unit.toString());
 		String s = String.format("%d %d %s (%d/%d) %.0fK/%.1f %s %s %d %d",
-				this.mId, this.mListId, this.mName, this.mNumBuy, this.mNumStock,
-				this.mPrice, this.mUnitSize, this.mUnitLabel, this.mIsBought ? "B"
-						: "N", this.mStockIdx, this.mShopIdx);
+				this.mId, this.mListId, this.mName, this.mNumBuy,
+				this.mNumStock, this.mPrice, this.mUnitSize, this.mUnitLabel,
+				this.mIsBought ? "B" : "N", this.mStockIdx, this.mShopIdx);
 		return s;
 	}
 
@@ -109,6 +109,17 @@ public class Item implements Parcelable {
 	}
 
 	/**
+	 * Returns information useful to display when shopping for the item.
+	 * 
+	 * @return A string representation of some of this item's information.
+	 */
+	public String getShopInfo() {
+		// TODO: unit-test this.
+		return String.format("%.0fK/%.1f %s", this.mPrice, this.mUnitSize,
+				this.mUnitLabel);
+	}
+
+	/**
 	 * Returns true if the given item is an Item that equals this Item.
 	 */
 	@Override
@@ -118,7 +129,8 @@ public class Item implements Parcelable {
 		}
 		Item other = (Item) object;
 		return this.mId == other.mId && this.mListId == other.mListId
-				&& this.mName.equals(other.mName) && this.mNumBuy == other.mNumBuy
+				&& this.mName.equals(other.mName)
+				&& this.mNumBuy == other.mNumBuy
 				&& this.mNumStock == other.mNumStock
 				&& Math.abs(this.mPrice - other.mPrice) < EPSILON
 				&& Math.abs(this.mUnitSize - other.mUnitSize) < EPSILON
@@ -241,7 +253,7 @@ public class Item implements Parcelable {
 		}
 		return capWord;
 	}
-	
+
 	/**
 	 * Sets the field called 'name' to the given value, trimmed and capitalized.
 	 * 
@@ -425,48 +437,47 @@ public class Item implements Parcelable {
 		return 0;
 	}
 
-     @Override
+	@Override
 	public void writeToParcel(Parcel out, int flags) {
-         out.writeLong(mId);
-         out.writeLong(mListId);
-         out.writeString(mName);
-         out.writeInt(mNumStock);
-         out.writeInt(mNumBuy);
-         out.writeFloat(mPrice);
-         out.writeFloat(mUnitSize);
-         out.writeInt(mUnitLabel.ordinal());
-         out.writeInt(mIsBought ? 1 : 0);
-         out.writeInt(mStockIdx);
-         out.writeInt(mShopIdx);
-     }
+		out.writeLong(mId);
+		out.writeLong(mListId);
+		out.writeString(mName);
+		out.writeInt(mNumStock);
+		out.writeInt(mNumBuy);
+		out.writeFloat(mPrice);
+		out.writeFloat(mUnitSize);
+		out.writeInt(mUnitLabel.ordinal());
+		out.writeInt(mIsBought ? 1 : 0);
+		out.writeInt(mStockIdx);
+		out.writeInt(mShopIdx);
+	}
 
-     /**
-     * The CREATOR, required by the parcelable interface.
-     */
-    public static final Parcelable.Creator<Item> CREATOR
-             = new Parcelable.Creator<Item>() {
-         @Override
+	/**
+	 * The CREATOR, required by the parcelable interface.
+	 */
+	public static final Parcelable.Creator<Item> CREATOR = new Parcelable.Creator<Item>() {
+		@Override
 		public Item createFromParcel(Parcel in) {
-             return new Item(in);
-         }
+			return new Item(in);
+		}
 
 		@Override
 		public Item[] newArray(int size) {
-             return new Item[size];
-         }
-     };
-     
-     private Item(Parcel in) {
-    	 mId = in.readLong();
-    	 mListId = in.readLong();
-    	 mName = in.readString();
-    	 mNumStock = in.readInt();
-         mNumBuy = in.readInt();
-         mPrice = in.readFloat();
-         mUnitSize = in.readFloat();
-         mUnitLabel = UnitLabel.values()[in.readInt()];
-         mIsBought = in.readInt() == 1;
-    	 mStockIdx = in.readInt();
-         mShopIdx = in.readInt();
-     }
+			return new Item[size];
+		}
+	};
+
+	private Item(Parcel in) {
+		mId = in.readLong();
+		mListId = in.readLong();
+		mName = in.readString();
+		mNumStock = in.readInt();
+		mNumBuy = in.readInt();
+		mPrice = in.readFloat();
+		mUnitSize = in.readFloat();
+		mUnitLabel = UnitLabel.values()[in.readInt()];
+		mIsBought = in.readInt() == 1;
+		mStockIdx = in.readInt();
+		mShopIdx = in.readInt();
+	}
 }

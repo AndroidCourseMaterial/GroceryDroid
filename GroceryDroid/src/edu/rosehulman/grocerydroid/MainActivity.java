@@ -128,7 +128,6 @@ public class MainActivity extends SherlockFragmentActivity {
 	void deleteList() {
 		mShoppingLists.remove(mSelectedList);
 		mSlda.deleteList(mSelectedList);
-		// TODO: test this once I can add items to lists.
 		mIda.deleteAllItemsWithListId(mSelectedList.getId());
 		mAdapter.notifyDataSetChanged();
 		updateMainPrompt();
@@ -175,10 +174,8 @@ public class MainActivity extends SherlockFragmentActivity {
 	 */
 	void launchShopActivity() {
 		Log.d(MyApplication.GD, String.format("Shop at %s", mSelectedList));
-		// intent = new Intent(MainActivity.this,
-		// ShopActivity.class);
-		// intent.putExtra(MainActivity.KEY_SELECTED_LIST,
-		// MainActivity.this.selectedList);
-		// startActivity(intent);
+		Intent intent = new Intent(MainActivity.this, ShopActivity.class);
+		intent.putExtra(MainActivity.KEY_SELECTED_LIST, mSelectedList.getId());
+		startActivity(intent);
 	}
 }

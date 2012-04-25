@@ -62,9 +62,6 @@ public class StockActivity extends ShoppingListActivity {
 //			}
 //		});
 
-		// TODO: display icons for shopping, adding an item, and
-		// rearranging stock order.
-
 		// LayoutInflater inflater = (LayoutInflater)
 		// getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		// View layout = inflater.inflate(R.layout.add_name_group, null);
@@ -92,6 +89,12 @@ public class StockActivity extends ShoppingListActivity {
 		// }
 		// });
 
+	}
+
+	@Override
+	protected void refreshDisplay() {
+		updateMainPrompt();
+		getItemAdapter().notifyDataSetChanged();
 	}
 
 	/**
@@ -125,23 +128,18 @@ public class StockActivity extends ShoppingListActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
-		// handle item selection
 		switch (menuItem.getItemId()) {
 		case R.id.stock_menu_item_add_name:
 			launchNewItemDialog();
 			return super.onOptionsItemSelected(menuItem);
-			// TODO: add reset all button.
-			// case :
-			// for (Item item : getShoppingList().getItems(Order.AS_IS)) {
-			// item.resetNumberToBuy();
-			// }
-			// super.onOptionsItemSelected(menuItem);
-			// move to ShoppingListActivity: int nChanged =
-			// mIda.updateAllItemsInList(getShoppingList());
-			// return true;
 		case R.id.stock_menu_item_reset_all:
 			resetNumberToBuyForAllItems();
 			return true;
+		case R.id.stock_menu_item_go_shopping:
+			// TODO: call MainActivity launch shop activity
+			return true;
+		// TODO: add option to rearrange stock order.
+
 		default:
 			return super.onOptionsItemSelected(menuItem);
 		}
@@ -158,7 +156,7 @@ public class StockActivity extends ShoppingListActivity {
 		}
 		if (nReset > 0) {
 			getIda().updateAllItemsInList(getShoppingList());
-			getItemAdapter().notifyDataSetChanged();
+			refreshDisplay();
 		}
 	}
 }

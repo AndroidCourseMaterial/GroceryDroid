@@ -25,6 +25,11 @@
     <string name="show_all">Show all</string>
     <string name="hide_bought">Hide bought</string>
     <string name="choose_action_for_list">What would you like to do with this list?</string>
-    <string name="stock_menu_item_reset_all">Reset all to buy 0</string>
     <string name="stock_menu_item_add_item">Add item</string>
+    <string name="stock_menu_item_go_shopping">Go shopping</string>
+    <string name="stock_menu_item_reset_all">Reset all to buy 0</string>
+    <string name="shop_menu_item_add_item">Add item</string>
+    <string name="shop_menu_item_reset_all">Unbuy all</string>
+    <string name="shop_layout_total_spent_text">Spent this much money on list</string>
+    
 </resources>

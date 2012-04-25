@@ -54,19 +54,4 @@ class ConfirmDeleteItemDialogFragment extends DialogFragment {
 							}
 						}).create();
 	}
-	
-	@Override
-	public void onPause() {
-		
-		super.onPause();
-	}
-
-	
-	@Override
-	public void onResume() {
-		// TODO Auto-generated method stub.
-		super.onResume();
-	}
-	
-	
 }
