@@ -35,7 +35,6 @@ public class ShopActivity extends ShoppingListActivity {
 
 		Intent intent = this.getIntent();
 		long listId = intent.getLongExtra(MainActivity.KEY_SELECTED_LIST, -1);
-		Log.d(MyApplication.GD, "shopping with list " + listId);
 
 		initializeDatabase();
 		initializeShoppingList(listId);
@@ -75,15 +74,14 @@ public class ShopActivity extends ShoppingListActivity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
-		// TODO add showHide:
 		// // Note: similar to findViewById()
-		 MenuItem showHide = menu.findItem(R.id.shop_menu_show_hide);
-		 // Toggle the menu title. If current current status is to show, then
-		 // the menu asks, "Hide?" and vice-versa
-		 String text = this.showAll ? getString(R.string.shop_menu_hide_bought_items)
-		 : getString(R.string.shop_menu_show_bought_items);
-		 showHide.setTitleCondensed(text);
-		 showHide.setTitle(text);
+		MenuItem showHide = menu.findItem(R.id.shop_menu_show_hide);
+		// Toggle the menu title. If current current status is to show, then
+		// the menu asks, "Hide?" and vice-versa
+		String text = this.showAll ? getString(R.string.shop_menu_hide_bought_items)
+				: getString(R.string.shop_menu_show_bought_items);
+		showHide.setTitleCondensed(text);
+		showHide.setTitle(text);
 		return true;
 	}
 
@@ -100,13 +98,14 @@ public class ShopActivity extends ShoppingListActivity {
 			this.showAll = !this.showAll;
 			refreshDisplay();
 			return true;
-		// TODO: At some point in the flow, I should set hte items as unbought. 
-		// case R.id.shopMenuDone:
-		// for (Item itm : this.shoppingList.getItems()) {
-		// itm.setBought(false);
-		// }
-		// this.finish();
-		// }
+			// TODO: At some point in the flow, I should set hte items as
+			// unbought.
+			// case R.id.shopMenuDone:
+			// for (Item itm : this.shoppingList.getItems()) {
+			// itm.setBought(false);
+			// }
+			// this.finish();
+			// }
 		default:
 			return super.onOptionsItemSelected(menuItem);
 		}
