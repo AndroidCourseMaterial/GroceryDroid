@@ -37,6 +37,14 @@ public abstract class ShoppingListActivity extends SherlockFragmentActivity {
 	}
 
 	/**
+	 * Returns the value of the field called 'mIda'.
+	 * @return Returns the mIda.
+	 */
+	public ItemDataAdapter getIda() {
+		return this.mIda;
+	}
+
+	/**
 	 * Loads the shopping list with the given listId and all of its items from
 	 * the database.
 	 * 

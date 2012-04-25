@@ -6,11 +6,14 @@ import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import edu.rosehulman.grocerydroid.model.Item;
 import edu.rosehulman.grocerydroid.model.ShoppingList.Order;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+
+import java.util.ArrayList;
 
 /**
  * The activity used to manage the creation and restocking of the items in a
@@ -124,7 +127,7 @@ public class StockActivity extends ShoppingListActivity {
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
 		// handle item selection
 		switch (menuItem.getItemId()) {
-		case R.id.add_name_menu_item:
+		case R.id.stock_menu_item_add_name:
 			launchNewItemDialog();
 			return super.onOptionsItemSelected(menuItem);
 			// TODO: add reset all button.
@@ -136,8 +139,26 @@ public class StockActivity extends ShoppingListActivity {
 			// move to ShoppingListActivity: int nChanged =
 			// mIda.updateAllItemsInList(getShoppingList());
 			// return true;
+		case R.id.stock_menu_item_reset_all:
+			resetNumberToBuyForAllItems();
+			return true;
 		default:
 			return super.onOptionsItemSelected(menuItem);
+		}
+	}
+
+	private void resetNumberToBuyForAllItems() {
+		int nReset = 0;
+		ArrayList<Item> items = getShoppingList().getItems(Order.AS_IS);
+		for (Item item : items) {
+			if (item.getNBuy() > 0) {
+				item.resetNumberToBuy();
+				nReset++;
+			}
+		}
+		if (nReset > 0) {
+			getIda().updateAllItemsInList(getShoppingList());
+			getItemAdapter().notifyDataSetChanged();
 		}
 	}
 }
