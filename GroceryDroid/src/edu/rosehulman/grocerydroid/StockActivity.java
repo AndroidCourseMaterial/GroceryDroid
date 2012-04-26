@@ -25,7 +25,7 @@ public class StockActivity extends ShoppingListActivity {
 	// private AutoCompleteTextView mNameBox;
 	// private ImageView mEditIcon;
 	// private ArrayAdapter<String> mAutoAdapter;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setTheme(R.style.Theme_Sherlock_ForceOverflow);
@@ -41,7 +41,6 @@ public class StockActivity extends ShoppingListActivity {
 		initializeDatabase();
 		initializeShoppingList(listId);
 		getSupportActionBar().setSubtitle(getShoppingList().getName());
-		updateMainPrompt();
 
 		setListView((ListView) findViewById(R.id.stock_list_view));
 		StockItemAdapter sia = new StockItemAdapter(this, R.layout.stock_item,
@@ -49,18 +48,20 @@ public class StockActivity extends ShoppingListActivity {
 		setItemAdapter(sia);
 		sia.setStockActivity(this);
 
-//		getListView().setOnItemClickListener(new OnItemClickListener() {
-//			@Override
-//			public void onItemClick(AdapterView<?> parent, View v, int pos,
-//					long id) {
-//				mSelectedItem = getShoppingList().getItems(Order.STOCK).get(pos);
-//				// Is this just launchItemDialog();
-//
-//				ItemDialogFragment df = new ItemDialogFragment();
-//				df.setItem(mSelectedItem);
-//				df.show(getSupportFragmentManager(), "choose_action");
-//			}
-//		});
+		refreshDisplay();
+
+		// getListView().setOnItemClickListener(new OnItemClickListener() {
+		// @Override
+		// public void onItemClick(AdapterView<?> parent, View v, int pos,
+		// long id) {
+		// mSelectedItem = getShoppingList().getItems(Order.STOCK).get(pos);
+		// // Is this just launchItemDialog();
+		//
+		// ItemDialogFragment df = new ItemDialogFragment();
+		// df.setItem(mSelectedItem);
+		// df.show(getSupportFragmentManager(), "choose_action");
+		// }
+		// });
 
 		// LayoutInflater inflater = (LayoutInflater)
 		// getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -136,9 +137,19 @@ public class StockActivity extends ShoppingListActivity {
 			resetNumberToBuyForAllItems();
 			return true;
 		case R.id.stock_menu_item_go_shopping:
-			// TODO: call MainActivity launch shop activity
+			finish();
+			
+			// CONSIDER: Another idea would be to peel this activity off the
+			// stack first. Perhaps mainActivity could start stock activity for
+			// a result, and when it
+			// returned, it could launch the shop activity if requested.
+			// This code is copy-and-paste/modified from MainActivity:
+//			 Intent intent = new Intent(this, ShopActivity.class);
+//			 intent.putExtra(MainActivity.KEY_SELECTED_LIST,
+//			 getShoppingList().getId());
+//			 startActivity(intent);
 			return true;
-		// TODO: add option to rearrange stock order.
+			// TODO: add option to rearrange stock order.
 
 		default:
 			return super.onOptionsItemSelected(menuItem);
@@ -159,4 +170,18 @@ public class StockActivity extends ShoppingListActivity {
 			refreshDisplay();
 		}
 	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		// CONSIDER: seems like overkill, but we need to reload the list since
+		// new items may have been added or deleted in the shop activity that
+		// just returned.
+		// initializeShoppingList(getShoppingList().getId());
+		// When I include that LOC, items that are added via the
+		// ItemDialogFragment are no longer added to the display.
+		// Perhaps this StockActivity.onResume() executes prior to the 
+		// database writing that occurs right as the ShopActivity finishes.
+	}
+
 }

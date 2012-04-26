@@ -82,18 +82,18 @@ public class MainActivity extends SherlockFragmentActivity {
 	}
 
 	private void initializeDatabase() {
-		this.mSlda = new ShoppingListDataAdapter();
-		this.mSlda.open();
+		mSlda = new ShoppingListDataAdapter();
+		mSlda.open();
 
-		this.mIda = new ItemDataAdapter();
-		this.mIda.open();
+		mIda = new ItemDataAdapter();
+		mIda.open();
 	}
 
 	/** Loads all of the shopping lists from the database */
 	private void initializeShoppingLists() {
-		this.mShoppingLists = new ArrayList<ShoppingList>();
+		mShoppingLists = new ArrayList<ShoppingList>();
 		for (ShoppingList list : mSlda.getAllLists()) {
-			this.mShoppingLists.add(list);
+			mShoppingLists.add(list);
 		}
 		updateMainPrompt();
 	}

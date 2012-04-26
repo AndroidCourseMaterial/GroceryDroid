@@ -182,7 +182,7 @@ public abstract class ShoppingListActivity extends SherlockFragmentActivity {
 	 */
 	protected void deleteItem(Item item) {
 		Log.d(MyApplication.GD, "Deleting from list the item " + item);
-		this.mShoppingList.deleteItem(item);
+		mShoppingList.deleteItem(item);
 		Log.d(MyApplication.GD, "Deleting from Db the item " + item);
 		mIda.deleteItem(item);
 		refreshDisplay();

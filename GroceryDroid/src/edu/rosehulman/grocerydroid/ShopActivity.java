@@ -148,4 +148,11 @@ public class ShopActivity extends ShoppingListActivity {
 		totalSpentTV.setText(s);
 		getItemAdapter().notifyDataSetChanged();
 	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		refreshDisplay();
+	}
+
 }

@@ -29,7 +29,7 @@
     <string name="stock_menu_item_go_shopping">Go shopping</string>
     <string name="stock_menu_item_reset_all">Reset all to buy 0</string>
     <string name="shop_menu_item_add_item">Add item</string>
-    <string name="shop_menu_item_reset_all">Unbuy all</string>
+    <string name="shop_menu_item_reset_all">Show original list</string>
     <string name="shop_layout_total_spent_text">Spent this much money on list</string>
     <string name="shop_menu_show_bought_items">Show bought items</string>
     <string name="shop_menu_hide_bought_items">Hide bought items</string>
