@@ -13,12 +13,30 @@
         android:text="@string/main_screen_prompt_default"
         android:textSize="24sp"/>
 
+    <edu.rosehulman.grocerydroid.TouchListView
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    xmlns:app="http://schemas.android.com/apk/res/edu.rosehulman.grocerydroid"
+	    xmlns:tlv="http://schemas.android.com/apk/res/edu.rosehulman.grocerydroid"
+	
+        android:id="@+id/main_shopping_list_view"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:drawSelectorOnTop="false"
+	    tlv:normal_height="64dip"
+	    tlv:expanded_height="128dip"
+	    tlv:grabber="@+id/icon"
+	    tlv:remove_mode="slideRight"
+    />
+    
+    
+<!--     
     <ListView
+        android:id="@android:id/list" was used in TouchListView
 	    android:id="@+id/main_shopping_list_view"
 	    android:layout_width="fill_parent" 
 	    android:layout_height="fill_parent" 
 	    />    
-    
+ -->    
     
     
 </LinearLayout>

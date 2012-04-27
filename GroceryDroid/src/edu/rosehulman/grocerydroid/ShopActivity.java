@@ -34,7 +34,7 @@ public class ShopActivity extends ShoppingListActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		Intent intent = this.getIntent();
-		long listId = intent.getLongExtra(MainActivity.KEY_SELECTED_LIST, -1);
+		long listId = intent.getLongExtra(MainActivityNonTouch.KEY_SELECTED_LIST, -1);
 
 		initializeDatabase();
 		initializeShoppingList(listId);

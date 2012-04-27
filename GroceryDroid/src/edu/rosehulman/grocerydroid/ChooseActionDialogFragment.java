@@ -40,7 +40,7 @@ class ChooseActionDialogFragment extends DialogFragment {
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						MainActivity activity = (MainActivity) getActivity();
+						MainActivityNonTouch activity = (MainActivityNonTouch) getActivity();
 						switch (which) {
 						case 0:
 							activity.launchStockActivity();

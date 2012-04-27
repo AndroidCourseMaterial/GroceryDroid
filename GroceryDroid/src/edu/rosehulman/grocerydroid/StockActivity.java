@@ -35,7 +35,7 @@ public class StockActivity extends ShoppingListActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		Intent intent = this.getIntent();
-		long listId = intent.getLongExtra(MainActivity.KEY_SELECTED_LIST, -1);
+		long listId = intent.getLongExtra(MainActivityNonTouch.KEY_SELECTED_LIST, -1);
 		Log.d(MyApplication.GD, "stocking with list " + listId);
 
 		initializeDatabase();
@@ -137,17 +137,14 @@ public class StockActivity extends ShoppingListActivity {
 			resetNumberToBuyForAllItems();
 			return true;
 		case R.id.stock_menu_item_go_shopping:
+			// Note: My original idea was to launch the ShopActivity right from here. But 
+			// if I added an item in ShopActivity, it wasn't updated when the back button
+			// was pressed. The current solution is cleaner.
+			Intent returnData = new Intent();
+			returnData.putExtra(MainActivityNonTouch.KEY_GO_SHOPPING, MainActivityNonTouch.GO_SHOPPING);
+			setResult(RESULT_OK, returnData);
 			finish();
-			
-			// CONSIDER: Another idea would be to peel this activity off the
-			// stack first. Perhaps mainActivity could start stock activity for
-			// a result, and when it
-			// returned, it could launch the shop activity if requested.
-			// This code is copy-and-paste/modified from MainActivity:
-//			 Intent intent = new Intent(this, ShopActivity.class);
-//			 intent.putExtra(MainActivity.KEY_SELECTED_LIST,
-//			 getShoppingList().getId());
-//			 startActivity(intent);
+
 			return true;
 			// TODO: add option to rearrange stock order.
 
@@ -170,18 +167,4 @@ public class StockActivity extends ShoppingListActivity {
 			refreshDisplay();
 		}
 	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		// CONSIDER: seems like overkill, but we need to reload the list since
-		// new items may have been added or deleted in the shop activity that
-		// just returned.
-		// initializeShoppingList(getShoppingList().getId());
-		// When I include that LOC, items that are added via the
-		// ItemDialogFragment are no longer added to the display.
-		// Perhaps this StockActivity.onResume() executes prior to the 
-		// database writing that occurs right as the ShopActivity finishes.
-	}
-
 }

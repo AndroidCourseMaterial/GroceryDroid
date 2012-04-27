@@ -20,12 +20,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import edu.rosehulman.grocerydroid.db.ItemDataAdapter;
@@ -44,13 +42,12 @@ import java.util.ArrayList;
  * 
  * @author Matthew Boutell. Created Mar 29, 2012.
  */
-public class MainActivity extends SherlockFragmentActivity {
+public class MainActivityNonTouch extends SherlockFragmentActivity {
 	private ShoppingListDataAdapter mSlda;
 	private ItemDataAdapter mIda;
 	private ArrayList<ShoppingList> mShoppingLists = null;
 	private ShoppingList mSelectedList;
-//	private MainShoppingListAdapter mAdapter;
-	private IconicAdapter mAdapter;
+	private MainShoppingListAdapter mAdapter;
 	private static final int REQUEST_STOCK = 0;
 	
 	/** Used for passing data via an Intent */
@@ -79,81 +76,22 @@ public class MainActivity extends SherlockFragmentActivity {
 		initializeDatabase();
 		initializeShoppingLists();
 
-		TouchListView tlv=(TouchListView)findViewById(R.id.main_shopping_list_view);
-		mAdapter=new IconicAdapter();
-		tlv.setAdapter(mAdapter);
-		tlv.setDropListener(onDrop);
-		tlv.setRemoveListener(onRemove);
-		
-//		ListView lv = (ListView) findViewById(R.id.main_shopping_list_view);
-//		mAdapter = new MainShoppingListAdapter(this, R.layout.main_list,
-//				mShoppingLists);
-//		lv.setAdapter(mAdapter);
+		ListView lv = (ListView) findViewById(R.id.main_shopping_list_view);
+		mAdapter = new MainShoppingListAdapter(this, R.layout.main_list,
+				mShoppingLists);
+		lv.setAdapter(mAdapter);
 
-		tlv.setOnItemClickListener(new OnItemClickListener() {
+		lv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View v, int pos,
 					long id) {
-				mSelectedList = MainActivity.this.mShoppingLists.get(pos);
+				mSelectedList = MainActivityNonTouch.this.mShoppingLists.get(pos);
 				DialogFragment df = ChooseActionDialogFragment.newInstance();
 				df.show(getSupportFragmentManager(), "choose_action");
 			}
 		});
 	}
 
-	
-
-	private TouchListView.DropListener onDrop = new TouchListView.DropListener() {
-		@Override
-		public void drop(int from, int to) {
-			ShoppingList item = mAdapter.getItem(from);
-
-			mAdapter.remove(item);
-			mAdapter.insert(item, to);
-		}
-	};
-
-	private TouchListView.RemoveListener onRemove=new TouchListView.RemoveListener() {
-		@Override
-		public void remove(int which) {
-				mAdapter.remove(mAdapter.getItem(which));
-		}
-	};
-	
-	/**
-	 * TODO Put here a description of what this class does.
-	 *
-	 * @author boutell.
-	 *         Created Apr 26, 2012.
-	 */
-	class IconicAdapter extends ArrayAdapter<ShoppingList> {
-		/**
-		 * TODO Put here a description of what this constructor does.
-		 *
-		 */
-		IconicAdapter() {
-			super(MainActivity.this, R.layout.main_touch_list_row, mShoppingLists);
-		}
-		
-		@Override
-		public View getView(int position, View convertView,
-												ViewGroup parent) {
-			View row=convertView;
-			
-			if (row==null) {													
-				LayoutInflater inflater=getLayoutInflater();
-				
-				row=inflater.inflate(R.layout.main_touch_list_row, parent, false);
-			}
-			
-			TextView label=(TextView)row.findViewById(R.id.label);
-			
-			label.setText(mShoppingLists.get(position).getName());
-			
-			return(row);
-		}
-	}
-	
 	private void initializeDatabase() {
 		mSlda = new ShoppingListDataAdapter();
 		mSlda.open();
@@ -236,8 +174,8 @@ public class MainActivity extends SherlockFragmentActivity {
 	void launchStockActivity() {
 		Log.d(MyApplication.GD,
 				String.format("Stock list for %s", mSelectedList));
-		Intent intent = new Intent(MainActivity.this, StockActivity.class);
-		intent.putExtra(MainActivity.KEY_SELECTED_LIST, mSelectedList.getId());
+		Intent intent = new Intent(MainActivityNonTouch.this, StockActivity.class);
+		intent.putExtra(MainActivityNonTouch.KEY_SELECTED_LIST, mSelectedList.getId());
 		startActivityForResult(intent, REQUEST_STOCK);
 
 	}
@@ -248,8 +186,8 @@ public class MainActivity extends SherlockFragmentActivity {
 	 */
 	void launchShopActivity() {
 		Log.d(MyApplication.GD, String.format("Shop at %s", mSelectedList));
-		Intent intent = new Intent(MainActivity.this, ShopActivity.class);
-		intent.putExtra(MainActivity.KEY_SELECTED_LIST, mSelectedList.getId());
+		Intent intent = new Intent(MainActivityNonTouch.this, ShopActivity.class);
+		intent.putExtra(MainActivityNonTouch.KEY_SELECTED_LIST, mSelectedList.getId());
 		startActivity(intent);
 	}
 
