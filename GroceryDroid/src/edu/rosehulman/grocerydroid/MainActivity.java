@@ -49,8 +49,7 @@ public class MainActivity extends SherlockFragmentActivity {
 	private ItemDataAdapter mIda;
 	private ArrayList<ShoppingList> mShoppingLists = null;
 	private ShoppingList mSelectedList;
-//	private MainShoppingListAdapter mAdapter;
-	private IconicAdapter mAdapter;
+	private MainShoppingListAdapter mAdapter;
 	private static final int REQUEST_STOCK = 0;
 	
 	/** Used for passing data via an Intent */
@@ -80,15 +79,11 @@ public class MainActivity extends SherlockFragmentActivity {
 		initializeShoppingLists();
 
 		TouchListView tlv=(TouchListView)findViewById(R.id.main_shopping_list_view);
-		mAdapter=new IconicAdapter();
+		mAdapter = new MainShoppingListAdapter(this, R.layout.main_touch_list_row,
+				mShoppingLists);
 		tlv.setAdapter(mAdapter);
 		tlv.setDropListener(onDrop);
-		tlv.setRemoveListener(onRemove);
 		
-//		ListView lv = (ListView) findViewById(R.id.main_shopping_list_view);
-//		mAdapter = new MainShoppingListAdapter(this, R.layout.main_list,
-//				mShoppingLists);
-//		lv.setAdapter(mAdapter);
 
 		tlv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -101,8 +96,6 @@ public class MainActivity extends SherlockFragmentActivity {
 		});
 	}
 
-	
-
 	private TouchListView.DropListener onDrop = new TouchListView.DropListener() {
 		@Override
 		public void drop(int from, int to) {
@@ -113,47 +106,6 @@ public class MainActivity extends SherlockFragmentActivity {
 		}
 	};
 
-	private TouchListView.RemoveListener onRemove=new TouchListView.RemoveListener() {
-		@Override
-		public void remove(int which) {
-				mAdapter.remove(mAdapter.getItem(which));
-		}
-	};
-	
-	/**
-	 * TODO Put here a description of what this class does.
-	 *
-	 * @author boutell.
-	 *         Created Apr 26, 2012.
-	 */
-	class IconicAdapter extends ArrayAdapter<ShoppingList> {
-		/**
-		 * TODO Put here a description of what this constructor does.
-		 *
-		 */
-		IconicAdapter() {
-			super(MainActivity.this, R.layout.main_touch_list_row, mShoppingLists);
-		}
-		
-		@Override
-		public View getView(int position, View convertView,
-												ViewGroup parent) {
-			View row=convertView;
-			
-			if (row==null) {													
-				LayoutInflater inflater=getLayoutInflater();
-				
-				row=inflater.inflate(R.layout.main_touch_list_row, parent, false);
-			}
-			
-			TextView label=(TextView)row.findViewById(R.id.label);
-			
-			label.setText(mShoppingLists.get(position).getName());
-			
-			return(row);
-		}
-	}
-	
 	private void initializeDatabase() {
 		mSlda = new ShoppingListDataAdapter();
 		mSlda.open();

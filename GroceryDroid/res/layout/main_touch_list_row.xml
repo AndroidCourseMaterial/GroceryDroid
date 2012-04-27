@@ -1,26 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="64dip"
+    android:layout_height="64dp"
     android:gravity="center_vertical"
     android:ignoreGravity="@+id/icon">
-    <ImageView android:id="@+id/icon"
-        android:layout_alignParentLeft="true"
+    <ImageView 
+        android:contentDescription="@string/grabber_icon"
+        android:id="@+id/icon"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 				android:src="@drawable/grabber"
 		/>
-		<TextView android:id="@+id/label"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="wrap_content"
-        android:paddingLeft="9dip"
+
+    <!-- 
+        android:id="@+id/label"
+        android:layout_centerVertical="true"
+        android:textSize="24sp"
+         -->
+    
+    <TextView 
+        android:id="@+id/main_list_name"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="fill_parent"
+        android:layout_margin="5dp"    
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:layout_height="wrap_content"
         android:layout_alignWithParentIfMissing="true"
-        android:layout_toRightOf="@id/icon"
-				android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/icon"
+        android:gravity="center_vertical"
         android:ellipsize="marquee"
         android:singleLine="true"
-		/>
+	   />
 </RelativeLayout>

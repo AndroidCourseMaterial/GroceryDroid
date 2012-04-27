@@ -36,7 +36,7 @@ class AddListDialogFragment extends DialogFragment {
 				EditText et = (EditText)view.findViewById(R.id.add_list_name_edit_text);
 				String newListName = et.getText().toString();
 				if (!newListName.equals("")) {
-					((MainActivityNonTouch)getActivity()).addList(newListName);
+					((MainActivity)getActivity()).addList(newListName);
 					dismiss();
 				}
 			}

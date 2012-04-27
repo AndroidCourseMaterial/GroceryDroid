@@ -35,7 +35,7 @@ public class StockActivity extends ShoppingListActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		Intent intent = this.getIntent();
-		long listId = intent.getLongExtra(MainActivityNonTouch.KEY_SELECTED_LIST, -1);
+		long listId = intent.getLongExtra(MainActivity.KEY_SELECTED_LIST, -1);
 		Log.d(MyApplication.GD, "stocking with list " + listId);
 
 		initializeDatabase();
@@ -141,7 +141,7 @@ public class StockActivity extends ShoppingListActivity {
 			// if I added an item in ShopActivity, it wasn't updated when the back button
 			// was pressed. The current solution is cleaner.
 			Intent returnData = new Intent();
-			returnData.putExtra(MainActivityNonTouch.KEY_GO_SHOPPING, MainActivityNonTouch.GO_SHOPPING);
+			returnData.putExtra(MainActivity.KEY_GO_SHOPPING, MainActivity.GO_SHOPPING);
 			setResult(RESULT_OK, returnData);
 			finish();
 

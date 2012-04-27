@@ -58,10 +58,10 @@ public class MainShoppingListAdapter extends ArrayAdapter<ShoppingList> {
 		// Create a view if it doesn't exist
 		if (convertView == null) {
 			mainShoppingListView = new RelativeLayout(this.getContext());
-			String inflater = Context.LAYOUT_INFLATER_SERVICE;
-			LayoutInflater vi = (LayoutInflater) getContext().getSystemService(
-					inflater);
-			vi.inflate(this.mResourceId, mainShoppingListView, true);
+			String inflaterService = Context.LAYOUT_INFLATER_SERVICE;
+			LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(
+					inflaterService);
+			inflater.inflate(this.mResourceId, mainShoppingListView, true);
 		} else {
 			mainShoppingListView = (RelativeLayout) convertView;
 		}

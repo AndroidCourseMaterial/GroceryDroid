@@ -24,7 +24,7 @@ class ConfirmDeleteListDialogFragment extends DialogFragment {
 							@Override
 							public void onClick(DialogInterface dialog,
 									int whichButton) {
-								((MainActivityNonTouch) getActivity()).deleteList();
+								((MainActivity) getActivity()).deleteList();
 								dialog.dismiss();
 							}
 						})
