@@ -18,7 +18,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-	private static final int DATABASE_VERSION = 3;
+	private static final int DATABASE_VERSION = 4;
 	private static DatabaseHelper sSingleton = null;
 	private static final String DATABASE_NAME = "shopping_items.db";
 	private static final String MOCK_DATABASE_NAME = "mock_shopping_items.db";
@@ -66,7 +66,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 			+ ShoppingListDataAdapter.TABLE_SHOPPING_LISTS + " ("
 			+ ShoppingListDataAdapter.DB_KEY_ID
 			+ " integer primary key autoincrement, "
-			+ ShoppingListDataAdapter.DB_KEY_NAME + " text not null" + ");";
+			+ ShoppingListDataAdapter.DB_KEY_NAME + " text not null, "
+			+ ShoppingListDataAdapter.DB_KEY_DISPLAY_INDEX + " integer" + ");";
 
 	// SQL statement to create a new database
 	private static final String CREATE_TABLE_GROCERY_ITEMS = "CREATE TABLE "

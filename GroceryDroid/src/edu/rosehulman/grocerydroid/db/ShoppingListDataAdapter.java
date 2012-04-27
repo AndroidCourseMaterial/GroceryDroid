@@ -3,7 +3,10 @@ package edu.rosehulman.grocerydroid.db;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import edu.rosehulman.grocerydroid.model.Item;
 import edu.rosehulman.grocerydroid.model.ShoppingList;
+
+import java.util.ArrayList;
 
 /**
  * All the operations needed to access the shopping list table in the database.
@@ -21,6 +24,9 @@ public class ShoppingListDataAdapter extends TableAdapter {
 	/** Name */
 	static final String DB_KEY_NAME = "name";
 
+	/** Display order */
+	static final String DB_KEY_DISPLAY_INDEX = "displayIndex";
+	
 	/**
 	 * Puts all of the given shopping list's data into a ContentValues object.
 	 * 
@@ -33,6 +39,7 @@ public class ShoppingListDataAdapter extends TableAdapter {
 		// a sqlite error (code 19). But don't I want to insert by list ID?
 		//newItemValues.put(DB_KEY_ID, list.getId());
 		newItemValues.put(DB_KEY_NAME, list.getName());
+		newItemValues.put(DB_KEY_DISPLAY_INDEX, list.getDisplayIdx());
 		return newItemValues;
 	}
 
@@ -92,9 +99,31 @@ public class ShoppingListDataAdapter extends TableAdapter {
 				null, null);
 		c.moveToFirst();
 		String name = c.getString(c.getColumnIndexOrThrow(DB_KEY_NAME));
-		return new ShoppingList(id, name);
+		int displayIndex = c.getInt(c.getColumnIndexOrThrow(DB_KEY_DISPLAY_INDEX));
+		return new ShoppingList(id, name, displayIndex);
 	}
 	
+	/**
+	 * Update all the lists passed to it.
+	 * 
+	 * @param lists
+	 * @return The number of items which have been updated.
+	 */
+	public int updateAllLists(ArrayList<ShoppingList> lists) {
+		// TODO Unit-test this
+		int nUpdated = 0;
+		sDb.beginTransaction();
+		try {
+			for (ShoppingList list : lists) {
+				nUpdated += (updateList(list) ? 1 : 0);
+			}
+			sDb.setTransactionSuccessful();
+		} finally {
+			sDb.endTransaction();
+		}
+
+		return nUpdated;
+	}
 	
 	/**
 	 * Returns an iterator over all the lists in the table.
@@ -130,7 +159,8 @@ public class ShoppingListDataAdapter extends TableAdapter {
 			Cursor c = getCursor();
 			long id = c.getLong(c.getColumnIndexOrThrow(DB_KEY_ID));
 			String name = c.getString(c.getColumnIndexOrThrow(DB_KEY_NAME));
-			return new ShoppingList(id, name);
+			int displayIndex = c.getInt(c.getColumnIndexOrThrow(DB_KEY_DISPLAY_INDEX));
+			return new ShoppingList(id, name, displayIndex);
 		}
 	}
 }

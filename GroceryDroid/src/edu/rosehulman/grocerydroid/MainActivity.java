@@ -20,12 +20,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import edu.rosehulman.grocerydroid.db.ItemDataAdapter;
@@ -38,6 +35,8 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * The main screen displays all the user's shopping lists.
@@ -51,13 +50,13 @@ public class MainActivity extends SherlockFragmentActivity {
 	private ShoppingList mSelectedList;
 	private MainShoppingListAdapter mAdapter;
 	private static final int REQUEST_STOCK = 0;
-	
+
 	/** Used for passing data via an Intent */
 	static final String KEY_SELECTED_LIST = "KEY_SELECTED_LIST";
 
 	/** Used for passing data via an Intent */
 	static final String KEY_GO_SHOPPING = "GO SHOPPING";
-	
+
 	/**
 	 * To communicate that this activity should immediately go to the shopping
 	 * activity once the stock activity finishes.
@@ -78,18 +77,17 @@ public class MainActivity extends SherlockFragmentActivity {
 		initializeDatabase();
 		initializeShoppingLists();
 
-		TouchListView tlv=(TouchListView)findViewById(R.id.main_shopping_list_view);
-		mAdapter = new MainShoppingListAdapter(this, R.layout.main_touch_list_row,
-				mShoppingLists);
+		TouchListView tlv = (TouchListView) findViewById(R.id.main_shopping_list_view);
+		mAdapter = new MainShoppingListAdapter(this,
+				R.layout.main_touch_list_row, mShoppingLists);
 		tlv.setAdapter(mAdapter);
 		tlv.setDropListener(onDrop);
-		
 
 		tlv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View v, int pos,
 					long id) {
-				mSelectedList = MainActivity.this.mShoppingLists.get(pos);
+				mSelectedList = mShoppingLists.get(pos);
 				DialogFragment df = ChooseActionDialogFragment.newInstance();
 				df.show(getSupportFragmentManager(), "choose_action");
 			}
@@ -103,6 +101,10 @@ public class MainActivity extends SherlockFragmentActivity {
 
 			mAdapter.remove(item);
 			mAdapter.insert(item, to);
+			
+			// writes out to the DB immediately.
+			// CONSIDER: just write out onPause()?
+			setListOrderToDisplayOrder(); 
 		}
 	};
 
@@ -120,14 +122,40 @@ public class MainActivity extends SherlockFragmentActivity {
 		for (ShoppingList list : mSlda.getAllLists()) {
 			mShoppingLists.add(list);
 		}
+		Collections.sort(mShoppingLists, new CompareDisplayOrder());
 		updateMainPrompt();
+	}
+
+	private class CompareDisplayOrder implements Comparator<ShoppingList> {
+		@Override
+		public int compare(ShoppingList left, ShoppingList right) {
+			Integer leftIdx = new Integer(left.getDisplayIdx());
+			Integer rightIdx = new Integer(right.getDisplayIdx());
+			return leftIdx.compareTo(rightIdx);
+		}
+	}
+
+	/**
+	 * Each list remembers its order in the display. This method updates that
+	 * order to match the order that the items appear on the screen (presumably
+	 * after they have been rearranged by the user), and updates the DB.
+	 */
+	public void setListOrderToDisplayOrder() {
+		for (int i = 0; i < mAdapter.getCount(); i++) {
+			mAdapter.getItem(i).setDisplayIdx(i);
+		}
+		
+//		for (int i = 0; i < mShoppingLists.size(); i++) {
+//			mShoppingLists.get(i).setDisplayIdx(i);
+//		}
+		mSlda.updateAllLists(mShoppingLists);
 	}
 
 	/** Use because the prompt is different if there are no lists. */
 	private void updateMainPrompt() {
 		TextView tv = (TextView) findViewById(R.id.main_screen_prompt);
 		Log.d(MyApplication.GD, "There are " + mShoppingLists.size() + " lists");
-		if (this.mShoppingLists.size() > 0) {
+		if (mShoppingLists.size() > 0) {
 			tv.setText(R.string.main_screen_prompt_lists_present);
 		} else {
 			tv.setText(R.string.main_screen_prompt_default);
@@ -191,7 +219,6 @@ public class MainActivity extends SherlockFragmentActivity {
 		Intent intent = new Intent(MainActivity.this, StockActivity.class);
 		intent.putExtra(MainActivity.KEY_SELECTED_LIST, mSelectedList.getId());
 		startActivityForResult(intent, REQUEST_STOCK);
-
 	}
 
 	/**

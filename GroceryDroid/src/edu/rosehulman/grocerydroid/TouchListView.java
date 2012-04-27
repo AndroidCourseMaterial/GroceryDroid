@@ -17,7 +17,6 @@ package edu.rosehulman.grocerydroid;
  * limitations under the License.
  */
 
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -162,8 +161,7 @@ public class TouchListView extends ListView {
 					break;
 				}
 
-				View item = (View) getChildAt(itemnum
-						- getFirstVisiblePosition());
+				View item = getChildAt(itemnum - getFirstVisiblePosition());
 
 				if (isDraggableRow(item)) {
 					mDragPoint = y - item.getTop();
@@ -426,8 +424,8 @@ public class TouchListView extends ListView {
 		mWindowParams.x = x;
 		mWindowParams.y = y - mDragPoint + mCoordOffset;
 
-		mWindowParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
-		mWindowParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
+		mWindowParams.height = android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+		mWindowParams.width = android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 		mWindowParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
 				| WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
 				| WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON

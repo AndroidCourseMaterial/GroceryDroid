@@ -135,15 +135,15 @@ public class ItemDataAdapter extends TableAdapter {
 		// CONSIDER: is there a better way to do this, like using a
 		// Cursor or a transaction?
 		int nUpdated = 0;
-//		sDb.beginTransaction();
-//		try {
+		sDb.beginTransaction();
+		try {
 			for (Item item : list.getItems(ShoppingList.Order.AS_IS)) {
 				nUpdated += (updateItem(item) ? 1 : 0);
 			}
-//			sDb.setTransactionSuccessful();
-//		} finally {
-//			sDb.endTransaction();
-//		}
+			sDb.setTransactionSuccessful();
+		} finally {
+			sDb.endTransaction();
+		}
 
 		return nUpdated;
 	}

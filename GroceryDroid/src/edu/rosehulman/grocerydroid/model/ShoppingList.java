@@ -16,6 +16,22 @@ public class ShoppingList {
 	private long mId;
 	private String mName;
 	private ArrayList<Item> mItems;
+	private int mDisplayIdx;
+	
+	/**
+	 * Creates a ShoppingList from the given parameters.
+	 * 
+	 * @param id
+	 * @param name
+	 * @param displayIdx 
+	 * 
+	 */
+	public ShoppingList(long id, String name, int displayIdx) {
+		mId = id;
+		mName = name;
+		mDisplayIdx = displayIdx;
+		mItems = new ArrayList<Item>();
+	}
 
 	/**
 	 * Creates a ShoppingList from the given parameters.
@@ -25,9 +41,7 @@ public class ShoppingList {
 	 * 
 	 */
 	public ShoppingList(long id, String name) {
-		mId = id;
-		mName = name;
-		mItems = new ArrayList<Item>();
+		this(id, name, -1);
 	}
 
 	/**
@@ -37,9 +51,7 @@ public class ShoppingList {
 	 * 
 	 */
 	public ShoppingList(String name) {
-		this.mId = DEFAULT_ID;
-		this.mName = name;
-		this.mItems = new ArrayList<Item>();
+		this(DEFAULT_ID, name);
 	}
 
 	/**
@@ -196,6 +208,22 @@ public class ShoppingList {
 	 */
 	public void setId(long id) {
 		this.mId = id;
+	}
+
+	/**
+	 * Returns the value of the field called 'displayIdx'.
+	 * @return Returns the displayIdx.
+	 */
+	public int getDisplayIdx() {
+		return this.mDisplayIdx;
+	}
+
+	/**
+	 * Sets the field called 'displayIdx' to the given value.
+	 * @param displayIdx The displayIdx to set.
+	 */
+	public void setDisplayIdx(int displayIdx) {
+		this.mDisplayIdx = displayIdx;
 	}
 
 	/**
