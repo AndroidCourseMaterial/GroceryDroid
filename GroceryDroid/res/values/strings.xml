@@ -34,5 +34,8 @@
     <string name="shop_menu_show_bought_items">Show bought items</string>
     <string name="shop_menu_hide_bought_items">Hide bought items</string>
     <string name="grabber_icon">Grabber icon</string>
-    
+    <string name="sort_by_stock_order_activity_prompt_no_lists">No items to re-arrange</string>
+    <string name="sort_by_stock_order_activity_prompt_lists_present">Drag items to match the order of your pantry</string>
+    <string name="sort_menu_save_order">Save</string>
+    <string name="stock_menu_item_sort_items">Rearrange items</string>
 </resources>

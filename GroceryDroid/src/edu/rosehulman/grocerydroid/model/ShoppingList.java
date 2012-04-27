@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import edu.rosehulman.grocerydroid.ItemAdapter;
 import edu.rosehulman.grocerydroid.db.ItemDataAdapter;
 
 /**
@@ -148,12 +149,15 @@ public class ShoppingList {
 	 * updates that order to match the order that the items appear on the screen
 	 * (presumably after they have been rearranged by the user), so that it can
 	 * be stored in the DB.
+	 * 
+	 * @param adapter 
 	 */
-	public void setPantryOrderToListOrder() {
+	public void setPantryOrderToListOrder(ItemAdapter adapter) {
+		// TODO: Unit-test this
 		for (int i = 0; i < this.mItems.size(); i++) {
 			// CONSIDER: switch order backwards so that adding an item to the
 			// top doesn't affect the order of every item in the list.
-			this.mItems.get(i).setStockIdx(i);
+			adapter.getItem(i).setStockIdx(i);
 		}
 
 	}
@@ -163,12 +167,14 @@ public class ShoppingList {
 	 * updates that order to match the order that the items appear on the screen
 	 * (presumably after they have been rearranged by the user), so that it can
 	 * be stored in the DB.
+	 * @param adapter 
 	 */
-	public void setShoppingOrderToListOrder() {
+	public void setShoppingOrderToListOrder(ItemAdapter adapter) {
+		// TODO: Unit-test this
 		for (int i = 0; i < this.mItems.size(); i++) {
 			// CONSIDER: switch order backwards so that adding an item to the
 			// top doesn't affect the order of every item in the list.
-			this.mItems.get(i).setShopIdx(i);
+			adapter.getItem(i).setShopIdx(i);
 		}
 	}
 

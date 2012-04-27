@@ -8,6 +8,7 @@ import edu.rosehulman.grocerydroid.db.ItemDataAdapter;
 import edu.rosehulman.grocerydroid.db.ShoppingListDataAdapter;
 import edu.rosehulman.grocerydroid.model.Item;
 import edu.rosehulman.grocerydroid.model.ShoppingList;
+import edu.rosehulman.grocerydroid.model.ShoppingList.Order;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
@@ -51,10 +52,12 @@ public abstract class ShoppingListActivity extends SherlockFragmentActivity {
 	 * @param listId
 	 */
 	protected void initializeShoppingList(long listId) {
+		
 		Log.d(MyApplication.GD, "Before call getList");
 		setShoppingList(mSlda.getList(listId));
 		Log.d(MyApplication.GD, "After call getList");
 
+		getShoppingList().getItems(Order.AS_IS).clear();
 		for (Item item : mIda.getAllItemsWithListId(listId)) {
 			getShoppingList().addItem(item);
 		}

@@ -25,6 +25,9 @@
         <activity
             android:name=".ShopActivity" >
         </activity>
-    </application>
+        <activity
+            android:name=".SortByStockOrderActivity" >
+        </activity>
+        </application>
 
 </manifest>

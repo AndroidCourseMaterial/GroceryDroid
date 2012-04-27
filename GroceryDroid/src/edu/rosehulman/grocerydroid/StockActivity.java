@@ -14,6 +14,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * The activity used to manage the creation and restocking of the items in a
@@ -25,6 +26,11 @@ public class StockActivity extends ShoppingListActivity {
 	// private AutoCompleteTextView mNameBox;
 	// private ImageView mEditIcon;
 	// private ArrayAdapter<String> mAutoAdapter;
+
+	private static final int SORT_ITEMS = 0;
+
+
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -146,13 +152,52 @@ public class StockActivity extends ShoppingListActivity {
 			finish();
 
 			return true;
-			// TODO: add option to rearrange stock order.
-
+		case R.id.stock_menu_item_sort_items:
+			// Note: My original idea was to launch the ShopActivity right from here. But 
+			// if I added an item in ShopActivity, it wasn't updated when the back button
+			// was pressed. The current solution is cleaner.
+			Intent intent = new Intent(this, SortByStockOrderActivity.class);
+			intent.putExtra(MainActivity.KEY_SELECTED_LIST, getShoppingList().getId());
+			startActivityForResult(intent, SORT_ITEMS);
+			return true;
 		default:
 			return super.onOptionsItemSelected(menuItem);
 		}
 	}
 
+	@Override
+	protected void onActivityResult(int reqCode, int resultCode, Intent data) {
+		if (reqCode == SORT_ITEMS && resultCode == RESULT_OK) {
+			Log.d(MyApplication.GD, "Stock refreshing display");
+			initializeShoppingList(getShoppingList().getId());
+			getItemAdapter().sort(new CompareStockOrder());
+			refreshDisplay();
+		}
+		// TODO: Bug here. When the sort activity finishes and calls this, 
+		// It doesn't change the order of the display.
+		// The bug also affects resetting all to 0! 
+		// I need tyo slow down and figure out what I'm doing!
+	}
+	
+	private class CompareStockOrder implements Comparator<Item> {
+		@Override
+		public int compare(Item left, Item right) {
+			Integer leftIdx = new Integer(left.getStockIdx());
+			Integer rightIdx = new Integer(right.getStockIdx());
+			return leftIdx.compareTo(rightIdx);
+		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		Log.d(MyApplication.GD, "Stock resuming");
+		initializeShoppingList(getShoppingList().getId());
+		getItemAdapter().sort(new CompareStockOrder());
+		refreshDisplay();
+	}
+	
+	
 	private void resetNumberToBuyForAllItems() {
 		int nReset = 0;
 		ArrayList<Item> items = getShoppingList().getItems(Order.AS_IS);

@@ -18,4 +18,10 @@
         android:showAsAction="ifRoom"
         android:title="@string/stock_menu_item_reset_all"
         />
+    <item
+        android:id="@+id/stock_menu_item_sort_items"
+        android:icon="@drawable/ic_launcher"
+        android:showAsAction="ifRoom"
+        android:title="@string/stock_menu_item_sort_items"
+        />
 </menu>
