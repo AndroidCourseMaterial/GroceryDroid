@@ -23,6 +23,17 @@ public abstract class ItemAdapter extends ArrayAdapter<Item> {
 	 * @param textViewResourceId
 	 * @param objects
 	 */
+	public ItemAdapter(Context context, int textViewResourceId) {
+		super(context, textViewResourceId);
+	}
+
+	/**
+	 * Creates an ItemAdapter from the given parameters.
+	 * 
+	 * @param context
+	 * @param textViewResourceId
+	 * @param objects
+	 */
 	public ItemAdapter(Context context, int textViewResourceId,
 			List<Item> objects) {
 		super(context, textViewResourceId, objects);

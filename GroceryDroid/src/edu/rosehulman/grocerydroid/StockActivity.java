@@ -14,7 +14,6 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 /**
  * The activity used to manage the creation and restocking of the items in a
@@ -29,11 +28,9 @@ public class StockActivity extends ShoppingListActivity {
 
 	private static final int SORT_ITEMS = 0;
 
-
-
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.d(MyApplication.GD, "Begin onCreate stock");
 		setTheme(R.style.Theme_Sherlock_ForceOverflow);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.stock_layout);
@@ -49,8 +46,10 @@ public class StockActivity extends ShoppingListActivity {
 		getSupportActionBar().setSubtitle(getShoppingList().getName());
 
 		setListView((ListView) findViewById(R.id.stock_list_view));
-		StockItemAdapter sia = new StockItemAdapter(this, R.layout.stock_item,
-				getShoppingList().getItems(Order.STOCK));
+// Manage the adapter's list myself in refreshDisplay.
+//		StockItemAdapter sia = new StockItemAdapter(this, R.layout.stock_item,
+//				getShoppingList().getItems(Order.STOCK));
+		StockItemAdapter sia = new StockItemAdapter(this, R.layout.stock_item);
 		setItemAdapter(sia);
 		sia.setStockActivity(this);
 
@@ -96,12 +95,26 @@ public class StockActivity extends ShoppingListActivity {
 		// }
 		// });
 
+		Log.d(MyApplication.GD, "End onCreate stock");
 	}
 
 	@Override
+	protected void onResume() {
+		Log.d(MyApplication.GD, "Begin onresume stock");
+		super.onResume();
+		initializeShoppingList(getShoppingList().getId());
+		refreshDisplay();
+		Log.d(MyApplication.GD, "End onresume stock");
+	}
+	
+	@Override
 	protected void refreshDisplay() {
 		updateMainPrompt();
-		getItemAdapter().notifyDataSetChanged();
+		getItemAdapter().clear();
+		for (Item item : getShoppingList().getItems(Order.STOCK)) {
+			getItemAdapter().add(item);
+		}
+		getItemAdapter().notifyDataSetChanged(); // redundant?
 	}
 
 	/**
@@ -153,51 +166,15 @@ public class StockActivity extends ShoppingListActivity {
 
 			return true;
 		case R.id.stock_menu_item_sort_items:
-			// Note: My original idea was to launch the ShopActivity right from here. But 
-			// if I added an item in ShopActivity, it wasn't updated when the back button
-			// was pressed. The current solution is cleaner.
 			Intent intent = new Intent(this, SortByStockOrderActivity.class);
 			intent.putExtra(MainActivity.KEY_SELECTED_LIST, getShoppingList().getId());
-			startActivityForResult(intent, SORT_ITEMS);
+			startActivity(intent);
 			return true;
 		default:
 			return super.onOptionsItemSelected(menuItem);
 		}
 	}
 
-	@Override
-	protected void onActivityResult(int reqCode, int resultCode, Intent data) {
-		if (reqCode == SORT_ITEMS && resultCode == RESULT_OK) {
-			Log.d(MyApplication.GD, "Stock refreshing display");
-			initializeShoppingList(getShoppingList().getId());
-			getItemAdapter().sort(new CompareStockOrder());
-			refreshDisplay();
-		}
-		// TODO: Bug here. When the sort activity finishes and calls this, 
-		// It doesn't change the order of the display.
-		// The bug also affects resetting all to 0! 
-		// I need tyo slow down and figure out what I'm doing!
-	}
-	
-	private class CompareStockOrder implements Comparator<Item> {
-		@Override
-		public int compare(Item left, Item right) {
-			Integer leftIdx = new Integer(left.getStockIdx());
-			Integer rightIdx = new Integer(right.getStockIdx());
-			return leftIdx.compareTo(rightIdx);
-		}
-	}
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		Log.d(MyApplication.GD, "Stock resuming");
-		initializeShoppingList(getShoppingList().getId());
-		getItemAdapter().sort(new CompareStockOrder());
-		refreshDisplay();
-	}
-	
-	
 	private void resetNumberToBuyForAllItems() {
 		int nReset = 0;
 		ArrayList<Item> items = getShoppingList().getItems(Order.AS_IS);

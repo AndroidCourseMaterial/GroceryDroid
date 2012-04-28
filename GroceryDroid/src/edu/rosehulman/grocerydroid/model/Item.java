@@ -2,9 +2,6 @@ package edu.rosehulman.grocerydroid.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
-
-import edu.rosehulman.grocerydroid.MyApplication;
 
 /**
  * A single grocery item.

@@ -31,6 +31,22 @@ public class StockItemAdapter extends ItemAdapter {
 	 * @param textViewResourceId
 	 * @param objects
 	 */
+	public StockItemAdapter(Context context, int textViewResourceId) {
+		super(context, textViewResourceId);
+
+		// Save the resource so I can inflate it later
+		this.mResourceId = textViewResourceId;
+	}
+
+
+	
+	/**
+	 * Creates a StockItemAdapter from the given parameters.
+	 * 
+	 * @param context
+	 * @param textViewResourceId
+	 * @param objects
+	 */
 	public StockItemAdapter(Context context, int textViewResourceId,
 			List<Item> objects) {
 		super(context, textViewResourceId, objects);

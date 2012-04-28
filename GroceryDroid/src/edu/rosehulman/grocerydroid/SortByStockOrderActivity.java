@@ -134,8 +134,8 @@ public class SortByStockOrderActivity extends SherlockFragmentActivity {
 		case R.id.sort_menu_save_order:
 			mShoppingList.setPantryOrderToListOrder(mAdapter); 
 			mIda.updateAllItemsInList(mShoppingList);
-			Intent returnData = new Intent();
-			setResult(RESULT_OK, returnData);
+//			Intent returnData = new Intent();
+//			setResult(RESULT_OK, returnData);
 			finish();
 			return true;
 		case android.R.id.home:
