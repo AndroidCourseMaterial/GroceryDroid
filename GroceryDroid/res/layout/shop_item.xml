@@ -17,7 +17,6 @@
         android:layout_marginLeft="5dp"    
         android:layout_marginRight="5dp"    
 		android:layout_toLeftOf="@+id/shop_item_view_buy_button"
-		android:text="Name"
 		android:textSize="20sp"
   		/>
     <TextView
@@ -28,7 +27,6 @@
         android:layout_marginRight="5dp"    
         android:layout_toLeftOf="@+id/shop_item_view_buy_button"
         android:layout_below="@+id/shop_item_view_name_and_to_buy"
-        android:text="Description"
         android:textSize="14sp"
         />
 </RelativeLayout>

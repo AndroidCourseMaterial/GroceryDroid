@@ -10,15 +10,16 @@
         android:layout_marginTop="5dp"    
         android:layout_marginLeft="5dp"    
         android:layout_marginRight="5dp"    
-        android:text="Name:"
+        android:text="@string/item_fragment_dialog_name_prompt"
         />
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/item_name_box"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"    
         android:layout_marginRight="5dp"    
         android:layout_below="@+id/item_name_prompt"
+        android:hint="Name"
         />
     <TextView
         android:id="@+id/item_price_prompt"
@@ -31,7 +32,6 @@
         />
     <EditText
         android:id="@+id/item_price_box"
-        android:numeric="decimal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"    

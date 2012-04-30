@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -37,15 +38,49 @@ public class ItemDialogFragment extends DialogFragment {
 		final View view = inflater.inflate(R.layout.fragment_dialog_item,
 				container, false);
 
-		EditText nameBox = (EditText) view.findViewById(R.id.item_name_box);
+		// EditText nameBox = (EditText) view.findViewById(R.id.item_name_box);
+		// nameBox.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+		AutoCompleteTextView nameBox = (AutoCompleteTextView) view
+				.findViewById(R.id.item_name_box);
 		nameBox.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+		
+//		String[] names = new String[] { "Bob", "Joe", "Caleb", "Jonathan",
+//				"Elise" };
+
+		String[] foodNames = getResources().getStringArray(R.array.food_names);
+		
+		//		ArrayAdapter<String> autoAdapter = new ArrayAdapter<String>(
+//				getActivity(), android.R.layout.simple_list_item_1, names);
+		ArrayAdapter<String> autoAdapter = new ArrayAdapter<String>(
+				getActivity(), R.layout.dropdown_item, foodNames);
+
+		// android.R.layout.sherlock.* both white/invisible
+		// android.R.layout.
+ 		// simple_spinner_item too thin
+        // simple list item 2: crash
+		// activity_list_item crash
+		//simple_spinner_dropdown_item
+		
+		nameBox.setAdapter(autoAdapter);
+
+		// mEditIcon.setOnKeyListener(new OnKeyListener() {
+		// @Override
+		// public boolean onKey(View v, int keyCode, KeyEvent event) {
+		// // If the event is a key-down event on the "enter" button
+		// if ((event.getAction() == KeyEvent.ACTION_DOWN)
+		// && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+		// Toast.makeText(StockActivity.this, tv.getText(),
+		// Toast.LENGTH_SHORT).show();
+		// return true;
+		// }
+		// return false;
+		// }
+		// });
 
 		EditText priceBox = (EditText) view.findViewById(R.id.item_price_box);
 		priceBox.setInputType(InputType.TYPE_CLASS_PHONE);
 		// priceBox.setInputType(InputType.TYPE_CLASS_NUMBER|InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
-		
-		
 		// first true : is signed, second one : is decimal
 		priceBox.setKeyListener(new DigitsKeyListener(false, true));
 
