@@ -3,7 +3,6 @@ package edu.rosehulman.grocerydroid.db;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import edu.rosehulman.grocerydroid.model.Item;
 import edu.rosehulman.grocerydroid.model.ShoppingList;
 
 import java.util.ArrayList;

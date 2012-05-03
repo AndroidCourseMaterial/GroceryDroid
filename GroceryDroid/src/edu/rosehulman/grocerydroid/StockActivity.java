@@ -1,19 +1,25 @@
 package edu.rosehulman.grocerydroid;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import edu.rosehulman.grocerydroid.model.Item;
+import edu.rosehulman.grocerydroid.model.Item.UnitLabel;
 import edu.rosehulman.grocerydroid.model.ShoppingList.Order;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * The activity used to manage the creation and restocking of the items in a
@@ -25,8 +31,6 @@ public class StockActivity extends ShoppingListActivity {
 	// private AutoCompleteTextView mNameBox;
 	// private ImageView mEditIcon;
 	// private ArrayAdapter<String> mAutoAdapter;
-
-	private static final int SORT_ITEMS = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -170,6 +174,11 @@ public class StockActivity extends ShoppingListActivity {
 			intent.putExtra(MainActivity.KEY_SELECTED_LIST, getShoppingList().getId());
 			startActivity(intent);
 			return true;
+		case R.id.stock_menu_item_load_items_from_spreadsheet:
+			loadItemsFromSpreadsheet();
+			return true;
+			
+			
 		default:
 			return super.onOptionsItemSelected(menuItem);
 		}
@@ -188,5 +197,68 @@ public class StockActivity extends ShoppingListActivity {
 			getIda().updateAllItemsInList(getShoppingList());
 			refreshDisplay();
 		}
+	}
+
+	private void loadItemsFromSpreadsheet() {
+		ArrayList<Item> spreadsheetItems = new ArrayList<Item>();
+		long dummyID = 0;
+		long listId = getShoppingList().getId();
+		Resources r = this.getResources();
+		InputStream myFile = r.openRawResource(R.raw.shoprite_list);
+		Scanner sc = new Scanner(myFile);
+		String line;
+		while (sc.hasNextLine()) {
+			line = sc.nextLine();
+			String[] tokens = line.split(",");
+			List<String> tokenList = Arrays.asList(tokens);
+			Log.d(MyApplication.GD, tokenList.toString());
+			int nToStock = 0;
+			int i = 0;
+			if (tokens[i].length() > 0) {
+				nToStock = Integer.parseInt(tokens[i]);
+			}
+			i++;
+			int price = 0;
+			if (tokens[i].length() > 0) {
+				price = Integer.parseInt(tokens[i]);
+			}
+			i++;
+			float size = 0;
+			if (tokens[i].length() > 0) {
+				size = Float.parseFloat(tokens[i]);
+			}
+			i++;
+			UnitLabel unitLabel = UnitLabel.unit;
+			String potentialUnit = tokens[i];
+			for (UnitLabel u : UnitLabel.values()) {
+				if (u.toString().equalsIgnoreCase(potentialUnit)) {
+					unitLabel = u;
+				}
+			}
+			i++;
+			// Clean it up
+			String name = tokens[i].trim();
+			if (name.charAt(0) == '\"') {
+				name = name.substring(1);
+			}
+			spreadsheetItems.add(new Item(dummyID, listId, name, nToStock, price, size, unitLabel));
+		}
+
+		// Remove the current data		
+		getIda().deleteAllItemsWithListId(listId);
+		
+		// replace with current data
+		getShoppingList().setItems(spreadsheetItems);
+		
+		Log.d(MyApplication.GD, spreadsheetItems.toString());
+		// Insert into db and get real ID
+		// Conc mod exception...
+		for (Item item : getShoppingList().getItems(Order.AS_IS)) {
+		//for (int i = 0; i < spreadsheetItems.size(); i++) {
+		//	Item item = spreadsheetItems.get(i);
+			long id = getIda().insertItem(item);
+			item.setId(id);
+		}
+		refreshDisplay();
 	}
 }

@@ -39,4 +39,5 @@
     <string name="sort_menu_save_order">Save</string>
     <string name="stock_menu_item_sort_items">Rearrange items</string>
     <string name="item_fragment_dialog_name_prompt">Name:</string>
+    <string name="stock_menu_item_load_items_from_spreadsheet">Load from spreadsheet</string>
 </resources>

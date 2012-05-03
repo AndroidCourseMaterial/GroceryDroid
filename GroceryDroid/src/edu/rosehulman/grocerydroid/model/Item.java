@@ -42,14 +42,14 @@ public class Item implements Parcelable {
 	 * @param nStock
 	 * @param nBuy
 	 * @param price
-	 * @param size
-	 * @param unit
+	 * @param unitSize
+	 * @param unitLabel
 	 * @param isBought
 	 * @param stockIdx
 	 * @param shopIdx
 	 */
 	public Item(long id, long listId, String name, int nStock, int nBuy,
-			float price, float size, UnitLabel unit, boolean isBought,
+			float price, float unitSize, UnitLabel unitLabel, boolean isBought,
 			int stockIdx, int shopIdx) {
 		this.mId = id;
 		this.mListId = listId;
@@ -57,13 +57,30 @@ public class Item implements Parcelable {
 		this.mNumStock = nStock;
 		this.mNumBuy = nBuy;
 		this.mPrice = price;
-		this.mUnitSize = size;
-		this.mUnitLabel = unit;
+		this.mUnitSize = unitSize;
+		this.mUnitLabel = unitLabel;
 		this.mIsBought = isBought;
 		this.mStockIdx = stockIdx;
 		this.mShopIdx = shopIdx;
 	}
 
+	/**
+	 * Creates a Item from the given parameters. Used when loading from a 
+	 * spreadsheet.
+	 *
+	 * @param id
+	 * @param listId
+	 * @param name
+	 * @param nStock
+	 * @param price
+	 * @param unitSize
+	 * @param unitLabel
+	 */
+	public Item(long id, long listId, String name, int nStock, float price, 
+			float unitSize, UnitLabel unitLabel) {
+		this(id, listId, name, nStock, 0, price, unitSize, unitLabel, false, 0, 0);
+	}
+	
 	/**
 	 * Creates a Item from the given parameters.
 	 * 
