@@ -72,6 +72,10 @@ public class StockActivity extends ShoppingListActivity {
 		// }
 		// });
 
+		
+		// Jake Wharton says to do, http://stackoverflow.com/questions/9929878/android-actionbarsherlock-search-widget:
+		//You either inflate the layout in code and call findViewById or you specify the layout in the menu XML and then call getActionView().findViewById(...)
+		
 		// LayoutInflater inflater = (LayoutInflater)
 		// getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		// View layout = inflater.inflate(R.layout.add_name_group, null);

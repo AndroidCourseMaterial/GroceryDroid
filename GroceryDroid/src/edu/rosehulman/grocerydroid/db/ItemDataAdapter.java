@@ -132,8 +132,6 @@ public class ItemDataAdapter extends TableAdapter {
 	 * @return The number of items which have been updated.
 	 */
 	public int updateAllItemsInList(ShoppingList list) {
-		// CONSIDER: is there a better way to do this, like using a
-		// Cursor or a transaction?
 		int nUpdated = 0;
 		sDb.beginTransaction();
 		try {

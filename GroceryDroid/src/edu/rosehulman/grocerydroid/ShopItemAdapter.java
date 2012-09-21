@@ -84,7 +84,7 @@ public class ShopItemAdapter extends ItemAdapter {
 
 		TextView nameView = (TextView) shopItemView
 				.findViewById(R.id.shop_item_view_name_and_to_buy);
-		nameView.setText(item.getName() + "- Buy " + item.getNBuy());
+		nameView.setText(item.getName() + "- buy " + item.getNBuy());
 
 		TextView infoView = (TextView) shopItemView
 				.findViewById(R.id.shop_item_view_info);
