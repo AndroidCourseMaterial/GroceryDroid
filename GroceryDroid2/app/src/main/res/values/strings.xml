@@ -83,7 +83,7 @@
 2.  Click on the first list, FoodWorld.
 Choose "Add or change items" from the dialog\n\n
 
-3.  You are at the Make a list screen. Your list will be blank the first time.
+3.  You are at the Make a List screen. Your list will be blank the first time.
 Click + to add items you regularly buy, even if not every trip.
 You can add prices and sizes if you like.\n\n
 
@@ -91,9 +91,9 @@ You can add prices and sizes if you like.\n\n
 to choose how many of each item you would like to buy.
     In a given shopping trip, many items may just stay 0.\n\n
 
-5.  Select the Go shopping option.\n\n
+5.  Select the Go Shopping option.\n\n
 
-6.  You are now at the Go shopping screen. Your list will now contain
+6.  You are now at the Go Shopping screen. Your list will now contain
 only those items with non-zero quantities you chose in the previous screen.\n\n
 
 7.  Check them off as you shop and they will disappear.
@@ -106,21 +106,13 @@ items so that when you are making the list, the order the items appear
 matches your kitchen, and when you are shopping, the order the items appear
 matches the store.\n\n
 
-1. From the Make a list screen, choose the Rearrange items option.
+1. From the Make a List screen, choose the Rearrange Items option.
 Drag the items up and down so that their order matches your kitchen.
 When you are done, click the save option (the checkbox).\n\n
 
-2. From the Go shopping screen, choose the Rearrange items option.
+2. From the Go Shopping screen, choose the Rearrange Items option.
 Drag the items around so that their order matches the store.
 When you are done, click the save option (the checkbox).\n\n
     </string>
-
-
-
-
-
-
-
-
 
 </resources>

@@ -29,19 +29,19 @@ import android.widget.EditText;
  * @author Matthew Boutell. Created Apr 11, 2012.
  */
 public class AddListDialogFragment extends DialogFragment {
-//	@Override
-//	public void onCreate(Bundle savedInstanceState) {
-//		super.onCreate(savedInstanceState);
-//		int theme = 0;
-//		int style = DialogFragment.STYLE_NO_TITLE;
-//		setStyle(style, theme);
-//	}
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		int theme = getTheme();
+		int style = DialogFragment.STYLE_NO_TITLE;
+		setStyle(style, theme);
+	}
 
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.add_list_prompt);
+        //builder.setTitle(R.string.add_list_prompt);
         final View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_dialog_add_list, null);
         builder.setView(view);
         builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
@@ -67,36 +67,4 @@ public class AddListDialogFragment extends DialogFragment {
 
         return builder.create();
     }
-
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        final View view = inflater.inflate(R.layout.fragment_dialog_add_list,
-//                container, false);
-//
-//        Button saveButton = (Button) view
-//                .findViewById(R.id.add_list_save_button);
-//        Button cancelButton = (Button) view
-//                .findViewById(R.id.add_list_cancel_button);
-//        saveButton.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                EditText et = (EditText) view
-//                        .findViewById(R.id.add_list_name_edit_text);
-//                String newListName = et.getText().toString();
-//                if (!newListName.equals("")) {
-//                    ((MainActivity) getActivity()).addList(newListName);
-//                    dismiss();
-//                }
-//            }
-//        });
-//        cancelButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dismiss();
-//            }
-//        });
-//        return view;
-//    }
 }

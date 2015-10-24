@@ -49,8 +49,6 @@ public class StockActivity extends ShoppingListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		Log.d(MyApplication.GD, "Begin onCreate stock");
-//		setTheme(R.style.Theme_Sherlock);
-//		setTheme(R.style.Theme_Sherlock_ForceOverflow);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.stock_layout);
 		getSupportActionBar().setIcon(R.mipmap.ic_action_notepaper);
