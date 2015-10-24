@@ -46,6 +46,7 @@ public class SortByStockOrderActivity extends AppCompatActivity {
 	private ShoppingList mShoppingList;
 	
 	/** Called when the activity is first created. */
+	@SuppressWarnings("ConstantConditions")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 //		setTheme(R.style.Theme_Sherlock);

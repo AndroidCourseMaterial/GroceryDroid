@@ -6,7 +6,7 @@
         android:id="@+id/add_list"
         android:icon="@android:drawable/ic_menu_add"
         app:showAsAction="always"
-        android:title="Add List"/>
+        android:title="@string/add_list"/>
     <item
         android:id="@+id/main_about"
         android:orderInCategory="100"

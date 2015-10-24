@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
      * Loads all of the shopping lists from the database
      */
     private void initializeShoppingLists() {
-        mShoppingLists = new ArrayList<ShoppingList>();
+        mShoppingLists = new ArrayList<>();
         for (ShoppingList list : mSlda.getAllLists()) {
             mShoppingLists.add(list);
         }
@@ -125,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
      * order to match the order that the items appear on the screen (presumably
      * after they have been rearranged by the user), and updates the DB.
      */
-    public void setListOrderToDisplayOrder() {
+    private void setListOrderToDisplayOrder() {
         for (int i = 0; i < mAdapter.getCount(); i++) {
             mAdapter.getItem(i).setDisplayIdx(i);
         }
@@ -233,8 +234,8 @@ public class MainActivity extends AppCompatActivity {
     private class CompareDisplayOrder implements Comparator<ShoppingList> {
         @Override
         public int compare(ShoppingList left, ShoppingList right) {
-            Integer leftIdx = Integer.valueOf(left.getDisplayIdx());
-            Integer rightIdx = Integer.valueOf(right.getDisplayIdx());
+            Integer leftIdx = left.getDisplayIdx();
+            Integer rightIdx = right.getDisplayIdx();
             return leftIdx.compareTo(rightIdx);
         }
     }

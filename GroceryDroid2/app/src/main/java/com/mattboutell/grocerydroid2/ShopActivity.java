@@ -40,6 +40,7 @@ public class ShopActivity extends ShoppingListActivity {
 	private ArrayList<Item> mItemsToDisplay;
 	private boolean showAll = false;
 
+	@SuppressWarnings("ConstantConditions")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -55,7 +56,7 @@ public class ShopActivity extends ShoppingListActivity {
 		getSupportActionBar().setTitle(getShoppingList().getName());
 		getSupportActionBar().setSubtitle(R.string.shop_activity_subtitle);
 
-		mItemsToDisplay = new ArrayList<Item>();
+		mItemsToDisplay = new ArrayList<>();
 
 		setListView((ListView) findViewById(R.id.shop_list_view));
 		ShopItemAdapter sia = new ShopItemAdapter(this, R.layout.shop_item,

@@ -15,6 +15,7 @@
  */
 package com.mattboutell.grocerydroid2;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -37,14 +38,14 @@ public class AddListDialogFragment extends DialogFragment {
 		setStyle(style, theme);
 	}
 
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        //builder.setTitle(R.string.add_list_prompt);
+        @SuppressLint("InflateParams")
         final View view = getActivity().getLayoutInflater().inflate(R.layout.fragment_dialog_add_list, null);
+
         builder.setView(view);
-        builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
 
             /**
              * This method will be invoked when a button in the dialog is clicked.

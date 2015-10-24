@@ -49,6 +49,7 @@ public class SortByShopOrderActivity extends AppCompatActivity {
 	private ShoppingList mShoppingList;
 	
 	/** Called when the activity is first created. */
+	@SuppressWarnings("ConstantConditions")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 //		setTheme(R.style.Theme_Sherlock_ForceOverflow); // ABS, must come first

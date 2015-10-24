@@ -97,26 +97,22 @@ public class Item implements Parcelable {
 		// CONSIDER: have String format be locale dependent
 		// USA: String s = String.format("%s (%d) $%.2f/%.1f %s", this.name,
 		// this.nToStock, this.price, this.size, this.unit.toString());
-		String s = String.format("%d %d %s (%d/%d) %.0fK/%.1f %s %s %d %d",
+		return String.format("%d %d %s (%d/%d) %.0fK/%.1f %s %s %d %d",
 				this.mId, this.mListId, this.mName, this.mNumBuy,
 				this.mNumStock, this.mPrice, this.mUnitSize, this.mUnitLabel,
 				this.mIsBought ? "B" : "N", this.mStockIdx, this.mShopIdx);
-		return s;
 	}
 
-	/**
-	 * @return A short string for this item: name and unit
-	 */
-	public String toShortString() {
-		return String.format("%s, %.1f %s", this.mName, this.mUnitSize,
-				this.mUnitLabel);
-	}
+//	/**
+//	 * @return A short string for this item: name and unit
+//	 */
+//	public String toShortString() {
+//		return String.format("%s, %.1f %s", this.mName, this.mUnitSize,
+//				this.mUnitLabel);
+//	}
 
 	private boolean isIntegerValue(float value) {
-		if (Math.abs(value - (int) value) < Item.EPSILON) {
-			return true;
-		}
-		return false;
+		return (Math.abs(value - (int) value) < Item.EPSILON);
 	}
 
 	/**
@@ -236,16 +232,6 @@ public class Item implements Parcelable {
 	}
 
 	/**
-	 * Sets the field called 'price' to the given value.
-	 * 
-	 * @param price
-	 *            The price to set.
-	 */
-	public void setPrice(float price) {
-		this.mPrice = price;
-	}
-
-	/**
 	 * Returns the value of the field called 'id'.
 	 * 
 	 * @return Returns the id.
@@ -256,7 +242,7 @@ public class Item implements Parcelable {
 
 	/**
 	 * Sets the field called 'id' to the given value.
-	 * 
+	 *
 	 * @param id
 	 *            The id to set.
 	 */
@@ -266,21 +252,11 @@ public class Item implements Parcelable {
 
 	/**
 	 * Returns the value of the field called 'listId'.
-	 * 
+	 *
 	 * @return Returns the listId.
 	 */
 	public long getListId() {
 		return this.mListId;
-	}
-
-	/**
-	 * Sets the field called 'listId' to the given value.
-	 * 
-	 * @param listId
-	 *            The listId to set.
-	 */
-	public void setListId(long listId) {
-		this.mListId = listId;
 	}
 
 	/**
@@ -324,32 +300,12 @@ public class Item implements Parcelable {
 	}
 
 	/**
-	 * Sets the field called 'nStock' to the given value.
-	 * 
-	 * @param nStock
-	 *            The nStock to set.
-	 */
-	public void setNStock(int nStock) {
-		this.mNumStock = nStock;
-	}
-
-	/**
 	 * Returns the value of the field called 'nBuy'.
 	 * 
 	 * @return Returns the nBuy.
 	 */
 	public int getNBuy() {
 		return this.mNumBuy;
-	}
-
-	/**
-	 * Sets the field called 'nBuy' to the given value.
-	 * 
-	 * @param nBuy
-	 *            The nBuy to set.
-	 */
-	public void setNBuy(int nBuy) {
-		this.mNumBuy = nBuy;
 	}
 
 	/**
@@ -362,32 +318,12 @@ public class Item implements Parcelable {
 	}
 
 	/**
-	 * Sets the field called 'unitSize' to the given value.
-	 * 
-	 * @param unitSize
-	 *            The unitSize to set.
-	 */
-	public void setUnitSize(float unitSize) {
-		this.mUnitSize = unitSize;
-	}
-
-	/**
 	 * Returns the value of the field called 'unitLabel'.
 	 * 
 	 * @return Returns the unitLabel.
 	 */
 	public UnitLabel getUnitLabel() {
 		return this.mUnitLabel;
-	}
-
-	/**
-	 * Sets the field called 'unitLabel' to the given value.
-	 * 
-	 * @param unitLabel
-	 *            The unitLabel to set.
-	 */
-	public void setUnitLabel(UnitLabel unitLabel) {
-		this.mUnitLabel = unitLabel;
 	}
 
 	/**

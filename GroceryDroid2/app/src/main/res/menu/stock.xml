@@ -33,6 +33,6 @@
         android:id="@+id/main_help"
         android:icon="@mipmap/action_help"
         app:showAsAction="never"
-        android:title="Help"/>
+        android:title="@string/menu_help"/>
 
 </menu>

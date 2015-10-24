@@ -43,7 +43,6 @@ public class StockItemAdapter extends ItemAdapter {
 	 * 
 	 * @param context
 	 * @param textViewResourceId
-	 * @param objects
 	 */
 	public StockItemAdapter(Context context, int textViewResourceId) {
 		super(context, textViewResourceId);
@@ -101,13 +100,13 @@ public class StockItemAdapter extends ItemAdapter {
 
 		final Button addStockButton = (Button) stockItemView
 				.findViewById(R.id.add_stock_button);
-		addStockButton.setText("Buy " + item.getNBuy());
+		addStockButton.setText(mStockActivity.getString(R.string.buy_format, item.getNBuy()));
 		addStockButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Log.d(MyApplication.GD, "" + v.getId() + " " + position);
 				item.incrementNumberToBuy();
-				addStockButton.setText("Buy " + item.getNBuy());
+				addStockButton.setText(mStockActivity.getString(R.string.buy_format, item.getNBuy()));
 				mStockActivity.updateItem(item);
 			}
 		});
@@ -119,7 +118,7 @@ public class StockItemAdapter extends ItemAdapter {
 			public void onClick(View v) {
 				Log.d(MyApplication.GD, "" + v.getId() + " " + position);
 				item.resetNumberToBuy();
-				addStockButton.setText("Buy " + item.getNBuy());
+				addStockButton.setText(mStockActivity.getString(R.string.buy_format, item.getNBuy()));
 				mStockActivity.updateItem(item);
 			}
 		});

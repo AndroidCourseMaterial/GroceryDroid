@@ -36,7 +36,6 @@ public abstract class ItemAdapter extends ArrayAdapter<Item> {
 	 * 
 	 * @param context
 	 * @param textViewResourceId
-	 * @param objects
 	 */
 	public ItemAdapter(Context context, int textViewResourceId) {
 		super(context, textViewResourceId);

@@ -48,7 +48,9 @@
     <string name="item_fragment_price_prompt">Price:</string>
     <string name="item_fragment_price_hint">Price</string>
     <string name="item_framgent_unit_size_prompt">Size:</string>
+    <string name="item_framgent_unit_size_hint">Size</string>
     <string name="item_framgent_unit_label_prompt">Unit:</string>
+    <string name="item_framgent_unit_label_hint">Unit</string>
     <string name="item_fragment_number_to_stock_prompt">Number to stock:</string>
     <string name="item">item</string>
     <string name="stock_menu_item_load_items_from_spreadsheet">Load from spreadsheet</string>
@@ -60,6 +62,12 @@
     <string name="delete">Delete</string>
     <string name="stock_activity_subtitle">Make a list</string>
     <string name="shop_activity_subtitle">Shop for these items</string>
+    <string name="float_format">%.2f</string>
+    <string name="int_format">%d</string>
+    <string name="shop_item_format">%1$s - buy %2$d</string>
+    <string name="buy_format">Buy %d</string>
+    <string name="add_list">Add List</string>
+
     <string name="about">Matt Boutell created GroceryDroid for his own use, but hopes that others may also find it useful.
 
         This idea was originally implemented by Matt\'s college roommates as a spreadsheet.\n\n

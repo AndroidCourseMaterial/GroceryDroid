@@ -14,7 +14,6 @@ import java.util.Comparator;
  */
 public class ShoppingList {
 	private static final long DEFAULT_ID = 0;
-	private static final double EPSILON = 0.00000001;
 	private long mId;
 	private String mName;
 	private ArrayList<Item> mItems;
@@ -32,7 +31,7 @@ public class ShoppingList {
 		mId = id;
 		mName = name;
 		mDisplayIdx = displayIdx;
-		mItems = new ArrayList<Item>();
+		mItems = new ArrayList<>();
 	}
 
 	/**
@@ -100,7 +99,8 @@ public class ShoppingList {
 		StringBuilder result = new StringBuilder();
 		result.append(String.format("%d %s", this.mId, this.mName));
 		for (Item item : this.mItems) {
-			result.append("\n  " + item);
+			result.append("\n  ");
+			result.append(item);
 		}
 		return result.toString();
 	}
@@ -292,8 +292,6 @@ public class ShoppingList {
 	 *
 	 * @param order
 	 *            The order in which the items will be returned
-	 * @param ida
-	 *            The item data adapter
 	 * @return The list of Items
 	 */
 	public ArrayList<Item> getItems(Order order) {
@@ -303,7 +301,7 @@ public class ShoppingList {
 			ida.open();
 			// Shouldn't be null since init'd in constructor. Check anyway.
 			if (this.mItems == null) {
-				this.mItems = new ArrayList<Item>();
+				this.mItems = new ArrayList<>();
 			}
 			this.mItems.clear();
 			for (Item item : ida.getAllItemsWithListId(this.mId)) {
@@ -328,8 +326,8 @@ public class ShoppingList {
 	private class CompareStockOrder implements Comparator<Item> {
 		@Override
 		public int compare(Item left, Item right) {
-			Integer leftIdx = Integer.valueOf(left.getStockIdx());
-			Integer rightIdx = Integer.valueOf(right.getStockIdx());
+			Integer leftIdx = left.getStockIdx();
+			Integer rightIdx = right.getStockIdx();
 			return leftIdx.compareTo(rightIdx);
 		}
 	}
@@ -337,8 +335,8 @@ public class ShoppingList {
 	private class CompareShopOrder implements Comparator<Item> {
 		@Override
 		public int compare(Item left, Item right) {
-			Integer leftIdx = Integer.valueOf(left.getShopIdx());
-			Integer rightIdx = Integer.valueOf(right.getShopIdx());
+			Integer leftIdx = left.getShopIdx();
+			Integer rightIdx = right.getShopIdx();
 			return leftIdx.compareTo(rightIdx);
 		}
 	}

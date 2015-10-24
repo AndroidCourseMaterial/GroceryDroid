@@ -28,7 +28,7 @@ import com.mattboutell.grocerydroid2.model.Item;
  * 
  * @author Matthew Boutell. Created Apr 18, 2012.
  */
-class ConfirmDeleteItemDialogFragment extends DialogFragment {
+public class ConfirmDeleteItemDialogFragment extends DialogFragment {
 
 	// CONSIDER: I used a constructor and stored instance data.
 	// The Android examples show dialogs as static. I'm not sure why they need

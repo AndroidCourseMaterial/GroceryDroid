@@ -114,6 +114,7 @@ public class ShoppingListDataAdapter extends TableAdapter {
 		c.moveToFirst();
 		String name = c.getString(c.getColumnIndexOrThrow(DB_KEY_NAME));
 		int displayIndex = c.getInt(c.getColumnIndexOrThrow(DB_KEY_DISPLAY_INDEX));
+		c.close();
 		return new ShoppingList(id, name, displayIndex);
 	}
 	

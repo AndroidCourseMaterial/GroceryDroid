@@ -16,7 +16,6 @@
 package com.mattboutell.grocerydroid2;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -89,17 +88,16 @@ public class ShopItemAdapter extends ItemAdapter {
 		// Note: using an onCheckedChangeListener was buggy, since it appears that 
 		// manually calling setChecked, like I just did, calls the listener.
 		buyItemButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				item.setBought(!item.isBought());
-				Log.d(MyApplication.GD, "Clicked on item " + item.toString());
-				mShopActivity.refreshDisplay();
-			}
-		});
+            @Override
+            public void onClick(View v) {
+                item.setBought(!item.isBought());
+                mShopActivity.refreshDisplay();
+            }
+        });
 
 		TextView nameView = (TextView) shopItemView
 				.findViewById(R.id.shop_item_view_name_and_to_buy);
-		nameView.setText(item.getName() + "- buy " + item.getNBuy());
+		nameView.setText(mShopActivity.getString(R.string.shop_item_format, item.getName(), item.getNBuy()));
 
 		TextView infoView = (TextView) shopItemView
 				.findViewById(R.id.shop_item_view_info);

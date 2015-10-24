@@ -90,20 +90,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/item_num_stock_prompt"
+        android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
         android:text="@string/decrement"
-        android:textSize="20dp" />
+        android:textSize="20sp" />
 
     <EditText
         android:id="@+id/item_num_stock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/item_num_stock_prompt"
+        android:layout_toEndOf="@+id/item_decrement_num_stock"
         android:layout_toRightOf="@+id/item_decrement_num_stock"
         android:gravity="center"
         android:inputType="numberDecimal"
         android:text="@string/two_spaces"
-        android:textSize="20dp" />
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/item_increment_num_stock"
@@ -111,8 +113,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/item_num_stock_prompt"
         android:layout_toRightOf="@+id/item_num_stock"
+        android:layout_toEndOf="@+id/item_num_stock"
         android:text="@string/increment"
-        android:textSize="20dp" />
+        android:textSize="20sp" />
 
     <View
         android:id="@+id/button_separator"
@@ -122,41 +125,4 @@
         android:layout_marginBottom="2dp"
         android:layout_marginTop="2dp"
         android:background="@color/white" />
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button_separator"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="3dp"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/item_save_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/save"
-            android:textSize="20dp" />
-
-        <Button
-            android:id="@+id/item_cancel_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/cancel"
-            android:textSize="20dp" />
-
-        <Button
-            android:id="@+id/item_delete_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/delete"
-            android:textSize="20dp" />
-    </LinearLayout>
-
 </RelativeLayout>

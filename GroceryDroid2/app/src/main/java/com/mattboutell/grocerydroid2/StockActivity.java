@@ -46,6 +46,7 @@ public class StockActivity extends ShoppingListActivity {
 	// private ImageView mEditIcon;
 	// private ArrayAdapter<String> mAutoAdapter;
 
+	@SuppressWarnings("ConstantConditions")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		Log.d(MyApplication.GD, "Begin onCreate stock");
@@ -71,55 +72,7 @@ public class StockActivity extends ShoppingListActivity {
 		StockItemAdapter sia = new StockItemAdapter(this, R.layout.stock_item);
 		setItemAdapter(sia);
 		sia.setStockActivity(this);
-
 		refreshDisplay();
-
-		// getListView().setOnItemClickListener(new OnItemClickListener() {
-		// @Override
-		// public void onItemClick(AdapterView<?> parent, View v, int pos,
-		// long id) {
-		// mSelectedItem = getShoppingList().getItems(Order.STOCK).get(pos);
-		// // Is this just launchItemDialog();
-		//
-		// ItemDialogFragment df = new ItemDialogFragment();
-		// df.setItem(mSelectedItem);
-		// df.show(getSupportFragmentManager(), "choose_action");
-		// }
-		// });
-
-		// Jake Wharton says to do,
-		// http://stackoverflow.com/questions/9929878/android-actionbarsherlock-search-widget:
-		// You either inflate the layout in code and call findViewById or you
-		// specify the layout in the menu XML and then call
-		// getActionView().findViewById(...)
-
-		// LayoutInflater inflater = (LayoutInflater)
-		// getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		// View layout = inflater.inflate(R.layout.add_name_group, null);
-		// mNameBox = (AutoCompleteTextView) layout
-		// .findViewById(R.id.add_name_autocomplete);
-		// mEditIcon = (ImageView) layout.findViewById(R.id.edit_icon);
-		// mNameBox.setCompletionHint(this.getString(R.string.item_name));
-		// String[] names = new String[] { "bob", "joe", "caleb", "jonathan",
-		// "elise" };
-		// mAutoAdapter = new ArrayAdapter<String>(this,
-		// android.R.layout.simple_list_item_1, names);
-		// mNameBox.setAdapter(mAutoAdapter);
-
-		// mEditIcon.setOnKeyListener(new OnKeyListener() {
-		// @Override
-		// public boolean onKey(View v, int keyCode, KeyEvent event) {
-		// // If the event is a key-down event on the "enter" button
-		// if ((event.getAction() == KeyEvent.ACTION_DOWN)
-		// && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-		// Toast.makeText(StockActivity.this, tv.getText(),
-		// Toast.LENGTH_SHORT).show();
-		// return true;
-		// }
-		// return false;
-		// }
-		// });
-
 		Log.d(MyApplication.GD, "End onCreate stock");
 	}
 
@@ -231,7 +184,7 @@ public class StockActivity extends ShoppingListActivity {
 	}
 
 	private void loadItemsFromSpreadsheet() {
-		ArrayList<Item> spreadsheetItems = new ArrayList<Item>();
+		ArrayList<Item> spreadsheetItems = new ArrayList<>();
 		long dummyID = 0;
 		long listId = getShoppingList().getId();
 		Resources r = this.getResources();
