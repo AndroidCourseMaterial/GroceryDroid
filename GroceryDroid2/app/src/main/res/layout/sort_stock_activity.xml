@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/sort_by_stock_order_activity_prompt"
+        android:layout_marginTop="20dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/sort_by_stock_order_activity_prompt_no_lists"
+        android:textSize="24sp"/>
+
+    <com.mattboutell.grocerydroid2.TouchListView
+	    xmlns:android="http://schemas.android.com/apk/res/android"
+	    xmlns:tlv="http://schemas.android.com/apk/res/com.mattboutell.grocerydroid2"
+	
+        android:id="@+id/sort_by_stock_order_activity_touch_list_view"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:drawSelectorOnTop="false"
+	    tlv:normal_height="64dip"
+	    tlv:expanded_height="128dip"
+	    tlv:grabber="@+id/icon"
+    />
+</LinearLayout>

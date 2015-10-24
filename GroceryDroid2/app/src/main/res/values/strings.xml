@@ -4,7 +4,7 @@
     <string name="welcome">Welcome</string>
     <string name="about_app">About GroceryDroid</string>
     <string name="menu_help">Help</string>
-    <string name="main_screen_prompt_default">Tap + above to start</string>
+    <string name="main_screen_prompt_default">Tap + to start</string>
     <string name="main_screen_prompt_lists_present">Choose a list</string>
     <string name="shopping_list_prompt_default">Tap + to add an item</string>
     <string name="shopping_list_prompt_items_present">Choose an item</string>
@@ -69,8 +69,6 @@
         Elise helped organize all the grocery items in the autocomplete feature.\n\n
 
         The rearrangeable lists are courtesy of CommonsWare (commonsware.com/cwac).\n\n
-
-        The ActionBar is courtesy of Jake Wharton (actionbarsherlock.com)\n\n
 
         The icons were created using Inkscape (inkscape.org) and generated using the Android Asset Studio (android-ui-utils.googlecode.com/hg/asset-studio/dist/index.html)\n\n
 

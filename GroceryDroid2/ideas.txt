@@ -1,0 +1,4 @@
+Update to TouchListView:
+
+https://github.com/h6ah4i/android-advancedrecyclerview
+https://developer.android.com/reference/android/support/v7/widget/helper/ItemTouchHelper.html

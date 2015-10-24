@@ -1,6 +1,11 @@
 package com.mattboutell.grocerydroid2.model;
 
+import com.mattboutell.grocerydroid2.ItemAdapter;
+import com.mattboutell.grocerydroid2.db.ItemDataAdapter;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * A shopping list is simply a list of Items.
@@ -140,218 +145,218 @@ public class ShoppingList {
 		return total;
 	}
 
-//	/**
-//	 * Each item remembers its order in the pantry, when stocking. This method
-//	 * updates that order to match the order that the items appear on the screen
-//	 * (presumably after they have been rearranged by the user), so that it can
-//	 * be stored in the DB.
-//	 *
-//	 * @param adapter
-//	 */
-//	public void setPantryOrderToListOrder(ItemAdapter adapter) {
-//		// TODO: Unit-test this
-//		for (int i = 0; i < this.mItems.size(); i++) {
-//			// CONSIDER: switch order backwards so that adding an item to the
-//			// top doesn't affect the order of every item in the list.
-//			adapter.getItem(i).setStockIdx(i+1);
-//		}
-//
-//	}
-//
-//	/**
-//	 * Each item remembers its order in the store, when shopping. This method
-//	 * updates that order to match the order that the items appear on the screen
-//	 * (presumably after they have been rearranged by the user), so that it can
-//	 * be stored in the DB.
-//	 * @param adapter
-//	 */
-//	public void setShoppingOrderToListOrder(ItemAdapter adapter) {
-//		// TODO: Unit-test this
-//		for (int i = 0; i < this.mItems.size(); i++) {
-//			// CONSIDER: switch order backwards so that adding an item to the
-//			// top doesn't affect the order of every item in the list.
-//			adapter.getItem(i).setShopIdx(i+1);
-//		}
-//	}
-//
-//	/**
-//	 * Returns the value of the field called 'name'.
-//	 *
-//	 * @return Returns the name.
-//	 */
-//	public String getName() {
-//		return this.mName;
-//	}
-//
-//	/**
-//	 * Sets the field called 'name' to the given value.
-//	 *
-//	 * @param name
-//	 *            The name to set.
-//	 */
-//	public void setName(String name) {
-//		this.mName = name;
-//	}
-//
-//	/**
-//	 * Returns the value of the field called 'id'.
-//	 *
-//	 * @return Returns the id.
-//	 */
-//	public long getId() {
-//		return this.mId;
-//	}
-//
-//	/**
-//	 * Sets the field called 'id' to the given value.
-//	 *
-//	 * @param id
-//	 *            The id to set.
-//	 */
-//	public void setId(long id) {
-//		this.mId = id;
-//	}
-//
-//	/**
-//	 * Returns the value of the field called 'displayIdx'.
-//	 * @return Returns the displayIdx.
-//	 */
-//	public int getDisplayIdx() {
-//		return this.mDisplayIdx;
-//	}
-//
-//	/**
-//	 * Sets the field called 'displayIdx' to the given value.
-//	 * @param displayIdx The displayIdx to set.
-//	 */
-//	public void setDisplayIdx(int displayIdx) {
-//		this.mDisplayIdx = displayIdx;
-//	}
-//
-//	/**
-//	 * Returns true if this is a non-empty list in which all items
-//	 * that should be bought (because the number to buy is positive)
-//	 * have been bought.
-//	 *
-//	 * @return True iff the condition above holds.
-//	 */
-//	public boolean hasItemsToBuy() {
-//		if (this.mItems.size() == 0) {
-//			return false;
-//		}
-//		for (Item item : this.mItems) {
-//			if (item.getNBuy() > 0 && !item.isBought()) {
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-//
-//	/**
-//	 * Returns true if this is a non-empty list in which all items
-//	 * that should be bought (because the number to buy is positive)
-//	 * have been bought.
-//	 *
-//	 * @return True iff the condition above holds.
-//	 */
-//	public boolean hasItemsAllBought() {
-//		if (this.mItems.size() == 0) {
-//			return false;
-//		}
-//		for (Item item : this.mItems) {
-//			if (item.getNBuy() > 0 && !item.isBought()) {
-//				return false;
-//			}
-//		}
-//		return true;
-//	}
-//
-//
-//	/**
-//	 * Sets the field called 'items' to the given value.
-//	 *
-//	 * @param items
-//	 *            The items to set.
-//	 */
-//	public void setItems(ArrayList<Item> items) {
-//		this.mItems = items;
-//	}
-//
-//	// CONSIDER: since we access AS_IS primarily just for testing, does it
-//	// make sense to have an overloaded getItems() method that calls
-//	// getItems(Order.AS_IS)?
-//
-//	/**
-//	 *
-//	 * Lazy-loads the items if needed.
-//	 *
-//	 * @param order
-//	 *            The order in which the items will be returned
-//	 * @param ida
-//	 *            The item data adapter
-//	 * @return The list of Items
-//	 */
-//	public ArrayList<Item> getItems(Order order) {
-//		if (this.mItems == null || this.mItems.size() == 0) {
-//			// If items isn't, then lazy-load it.
-//			ItemDataAdapter ida = new ItemDataAdapter();
-//			ida.open();
-//			// Shouldn't be null since init'd in constructor. Check anyway.
-//			if (this.mItems == null) {
-//				this.mItems = new ArrayList<Item>();
-//			}
-//			this.mItems.clear();
-//			for (Item item : ida.getAllItemsWithListId(this.mId)) {
-//				this.mItems.add(item);
-//			}
-//		}
-//
-//		switch (order) {
-//		case STOCK:
-//			Collections.sort(this.mItems, new CompareStockOrder());
-//			break;
-//		case SHOP:
-//			Collections.sort(this.mItems, new CompareShopOrder());
-//			break;
-//		default:
-//			// empty
-//		}
-//
-//		return this.mItems;
-//	}
-//
-//	private class CompareStockOrder implements Comparator<Item> {
-//		@Override
-//		public int compare(Item left, Item right) {
-//			Integer leftIdx = Integer.valueOf(left.getStockIdx());
-//			Integer rightIdx = Integer.valueOf(right.getStockIdx());
-//			return leftIdx.compareTo(rightIdx);
-//		}
-//	}
-//
-//	private class CompareShopOrder implements Comparator<Item> {
-//		@Override
-//		public int compare(Item left, Item right) {
-//			Integer leftIdx = Integer.valueOf(left.getShopIdx());
-//			Integer rightIdx = Integer.valueOf(right.getShopIdx());
-//			return leftIdx.compareTo(rightIdx);
-//		}
-//	}
-//
-//	/**
-//	 * Whether the list should be displayed in the order the items appear in the
-//	 * pantry, the order they appear in the store, or neither.
-//	 *
-//	 * @author Matthew Boutell. Created Mar 30, 2012.
-//	 */
-//	public enum Order {
-//		/** default */
-//		AS_IS,
-//
-//		/** pantry order */
-//		STOCK,
-//
-//		/** store order */
-//		SHOP
-//	}
+	/**
+	 * Each item remembers its order in the pantry, when stocking. This method
+	 * updates that order to match the order that the items appear on the screen
+	 * (presumably after they have been rearranged by the user), so that it can
+	 * be stored in the DB.
+	 *
+	 * @param adapter
+	 */
+	public void setPantryOrderToListOrder(ItemAdapter adapter) {
+		// TODO: Unit-test this
+		for (int i = 0; i < this.mItems.size(); i++) {
+			// CONSIDER: switch order backwards so that adding an item to the
+			// top doesn't affect the order of every item in the list.
+			adapter.getItem(i).setStockIdx(i+1);
+		}
+
+	}
+
+	/**
+	 * Each item remembers its order in the store, when shopping. This method
+	 * updates that order to match the order that the items appear on the screen
+	 * (presumably after they have been rearranged by the user), so that it can
+	 * be stored in the DB.
+	 * @param adapter
+	 */
+	public void setShoppingOrderToListOrder(ItemAdapter adapter) {
+		// TODO: Unit-test this
+		for (int i = 0; i < this.mItems.size(); i++) {
+			// CONSIDER: switch order backwards so that adding an item to the
+			// top doesn't affect the order of every item in the list.
+			adapter.getItem(i).setShopIdx(i+1);
+		}
+	}
+
+	/**
+	 * Returns the value of the field called 'name'.
+	 *
+	 * @return Returns the name.
+	 */
+	public String getName() {
+		return this.mName;
+	}
+
+	/**
+	 * Sets the field called 'name' to the given value.
+	 *
+	 * @param name
+	 *            The name to set.
+	 */
+	public void setName(String name) {
+		this.mName = name;
+	}
+
+	/**
+	 * Returns the value of the field called 'id'.
+	 *
+	 * @return Returns the id.
+	 */
+	public long getId() {
+		return this.mId;
+	}
+
+	/**
+	 * Sets the field called 'id' to the given value.
+	 *
+	 * @param id
+	 *            The id to set.
+	 */
+	public void setId(long id) {
+		this.mId = id;
+	}
+
+	/**
+	 * Returns the value of the field called 'displayIdx'.
+	 * @return Returns the displayIdx.
+	 */
+	public int getDisplayIdx() {
+		return this.mDisplayIdx;
+	}
+
+	/**
+	 * Sets the field called 'displayIdx' to the given value.
+	 * @param displayIdx The displayIdx to set.
+	 */
+	public void setDisplayIdx(int displayIdx) {
+		this.mDisplayIdx = displayIdx;
+	}
+
+	/**
+	 * Returns true if this is a non-empty list in which all items
+	 * that should be bought (because the number to buy is positive)
+	 * have been bought.
+	 *
+	 * @return True iff the condition above holds.
+	 */
+	public boolean hasItemsToBuy() {
+		if (this.mItems.size() == 0) {
+			return false;
+		}
+		for (Item item : this.mItems) {
+			if (item.getNBuy() > 0 && !item.isBought()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Returns true if this is a non-empty list in which all items
+	 * that should be bought (because the number to buy is positive)
+	 * have been bought.
+	 *
+	 * @return True iff the condition above holds.
+	 */
+	public boolean hasItemsAllBought() {
+		if (this.mItems.size() == 0) {
+			return false;
+		}
+		for (Item item : this.mItems) {
+			if (item.getNBuy() > 0 && !item.isBought()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+
+	/**
+	 * Sets the field called 'items' to the given value.
+	 *
+	 * @param items
+	 *            The items to set.
+	 */
+	public void setItems(ArrayList<Item> items) {
+		this.mItems = items;
+	}
+
+	// CONSIDER: since we access AS_IS primarily just for testing, does it
+	// make sense to have an overloaded getItems() method that calls
+	// getItems(Order.AS_IS)?
+
+	/**
+	 *
+	 * Lazy-loads the items if needed.
+	 *
+	 * @param order
+	 *            The order in which the items will be returned
+	 * @param ida
+	 *            The item data adapter
+	 * @return The list of Items
+	 */
+	public ArrayList<Item> getItems(Order order) {
+		if (this.mItems == null || this.mItems.size() == 0) {
+			// If items isn't, then lazy-load it.
+			ItemDataAdapter ida = new ItemDataAdapter();
+			ida.open();
+			// Shouldn't be null since init'd in constructor. Check anyway.
+			if (this.mItems == null) {
+				this.mItems = new ArrayList<Item>();
+			}
+			this.mItems.clear();
+			for (Item item : ida.getAllItemsWithListId(this.mId)) {
+				this.mItems.add(item);
+			}
+		}
+
+		switch (order) {
+		case STOCK:
+			Collections.sort(this.mItems, new CompareStockOrder());
+			break;
+		case SHOP:
+			Collections.sort(this.mItems, new CompareShopOrder());
+			break;
+		default:
+			// empty
+		}
+
+		return this.mItems;
+	}
+
+	private class CompareStockOrder implements Comparator<Item> {
+		@Override
+		public int compare(Item left, Item right) {
+			Integer leftIdx = Integer.valueOf(left.getStockIdx());
+			Integer rightIdx = Integer.valueOf(right.getStockIdx());
+			return leftIdx.compareTo(rightIdx);
+		}
+	}
+
+	private class CompareShopOrder implements Comparator<Item> {
+		@Override
+		public int compare(Item left, Item right) {
+			Integer leftIdx = Integer.valueOf(left.getShopIdx());
+			Integer rightIdx = Integer.valueOf(right.getShopIdx());
+			return leftIdx.compareTo(rightIdx);
+		}
+	}
+
+	/**
+	 * Whether the list should be displayed in the order the items appear in the
+	 * pantry, the order they appear in the store, or neither.
+	 *
+	 * @author Matthew Boutell. Created Mar 30, 2012.
+	 */
+	public enum Order {
+		/** default */
+		AS_IS,
+
+		/** pantry order */
+		STOCK,
+
+		/** store order */
+		SHOP
+	}
 }

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <TextView
+        android:id="@+id/item_name_prompt"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/item_fragment_name_prompt" />
+
+    <AutoCompleteTextView
+        android:id="@+id/item_name_box"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_name_prompt"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:hint="@string/item_fragment_name_hint" />
+
+    <TextView
+        android:id="@+id/item_price_prompt"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_name_box"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:text="@string/item_fragment_price_prompt" />
+
+    <EditText
+        android:id="@+id/item_price_box"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_price_prompt"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:hint="@string/item_fragment_price_hint" />
+
+    <TextView
+        android:id="@+id/item_unit_size_prompt"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_price_box"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:text="@string/item_framgent_unit_size_prompt" />
+
+    <EditText
+        android:id="@+id/item_unit_size_box"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_unit_size_prompt"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:inputType="numberDecimal" />
+
+    <TextView
+        android:id="@+id/item_unit_label_prompt"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_unit_size_box"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:text="@string/item_framgent_unit_label_prompt" />
+
+    <Spinner
+        android:id="@+id/item_unit_label_spinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_unit_label_prompt"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:drawSelectorOnTop="true"
+        android:prompt="@string/item_framgent_unit_label_prompt" />
+
+    <TextView
+        android:id="@+id/item_num_stock_prompt"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_unit_label_spinner"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:text="@string/item_fragment_number_to_stock_prompt" />
+
+    <Button
+        android:id="@+id/item_decrement_num_stock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_num_stock_prompt"
+        android:layout_marginLeft="5dp"
+        android:text="@string/decrement"
+        android:textSize="20dp" />
+
+    <EditText
+        android:id="@+id/item_num_stock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_num_stock_prompt"
+        android:layout_toRightOf="@+id/item_decrement_num_stock"
+        android:gravity="center"
+        android:inputType="numberDecimal"
+        android:text="@string/two_spaces"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/item_increment_num_stock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/item_num_stock_prompt"
+        android:layout_toRightOf="@+id/item_num_stock"
+        android:text="@string/increment"
+        android:textSize="20dp" />
+
+    <View
+        android:id="@+id/button_separator"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/item_decrement_num_stock"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/white" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_separator"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="3dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/item_save_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/save"
+            android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/item_cancel_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/item_delete_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/delete"
+            android:textSize="20dp" />
+    </LinearLayout>
+
+</RelativeLayout>

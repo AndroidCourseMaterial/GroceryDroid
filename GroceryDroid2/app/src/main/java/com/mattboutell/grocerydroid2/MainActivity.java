@@ -1,17 +1,26 @@
 package com.mattboutell.grocerydroid2;
 
+import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.TextView;
 
+import com.mattboutell.grocerydroid2.db.ItemDataAdapter;
+import com.mattboutell.grocerydroid2.db.ShoppingListDataAdapter;
 import com.mattboutell.grocerydroid2.model.ShoppingList;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * The main screen displays all the user's shopping lists.
@@ -19,24 +28,38 @@ import java.util.ArrayList;
  * @author Matthew Boutell. Created Mar 29, 2012. Updated Oct 24, 2015.
  */
 public class MainActivity extends AppCompatActivity {
-//    private ShoppingListDataAdapter mSlda;
-//    private ItemDataAdapter mIda;
-    private ArrayList<ShoppingList> mShoppingLists = null;
-    private ShoppingList mSelectedList;
-//    private MainShoppingListAdapter mAdapter;
-    private static final int REQUEST_STOCK = 0;
-
-    /** Used for passing data via an Intent */
+    /**
+     * Used for passing data via an Intent
+     */
     static final String KEY_SELECTED_LIST = "KEY_SELECTED_LIST";
-
-    /** Used for passing data via an Intent */
+    /**
+     * Used for passing data via an Intent
+     */
     static final String KEY_GO_SHOPPING = "GO SHOPPING";
-
     /**
      * To communicate that this activity should immediately go to the shopping
      * activity once the stock activity finishes.
      */
     static final int GO_SHOPPING = 1;
+    private static final int REQUEST_STOCK = 0;
+    private ShoppingListDataAdapter mSlda;
+    private ItemDataAdapter mIda;
+    private ArrayList<ShoppingList> mShoppingLists = null;
+    private ShoppingList mSelectedList;
+    private MainShoppingListAdapter mAdapter;
+    private TouchListView.DropListener onDrop = new TouchListView.DropListener() {
+        @Override
+        public void drop(int from, int to) {
+            ShoppingList item = mAdapter.getItem(from);
+
+            mAdapter.remove(item);
+            mAdapter.insert(item, to);
+
+            // writes out to the DB immediately.
+            // CONSIDER: just write out onPause()?
+            setListOrderToDisplayOrder();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,27 +76,163 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        initializeDatabase();
+        initializeShoppingLists();
+
+        TouchListView tlv = (TouchListView) findViewById(R.id.main_shopping_list_view);
+        mAdapter = new MainShoppingListAdapter(this,
+                R.layout.main_touch_list_row, mShoppingLists);
+        tlv.setAdapter(mAdapter);
+        tlv.setDropListener(onDrop);
+
+        tlv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int pos,
+                                    long id) {
+                mSelectedList = mShoppingLists.get(pos);
+                DialogFragment df = ChooseActionDialogFragment.newInstance();
+                df.show(getFragmentManager(), "choose_action");
+            }
+        });
+    }
+
+    private void initializeDatabase() {
+        mSlda = new ShoppingListDataAdapter();
+        mSlda.open();
+
+        mIda = new ItemDataAdapter();
+        mIda.open();
+    }
+
+    /**
+     * Loads all of the shopping lists from the database
+     */
+    private void initializeShoppingLists() {
+        mShoppingLists = new ArrayList<ShoppingList>();
+        for (ShoppingList list : mSlda.getAllLists()) {
+            mShoppingLists.add(list);
+        }
+        Collections.sort(mShoppingLists, new CompareDisplayOrder());
+        updateMainPrompt();
+    }
+
+    /**
+     * Each list remembers its order in the display. This method updates that
+     * order to match the order that the items appear on the screen (presumably
+     * after they have been rearranged by the user), and updates the DB.
+     */
+    public void setListOrderToDisplayOrder() {
+        for (int i = 0; i < mAdapter.getCount(); i++) {
+            mAdapter.getItem(i).setDisplayIdx(i);
+        }
+
+//		for (int i = 0; i < mShoppingLists.size(); i++) {
+//			mShoppingLists.get(i).setDisplayIdx(i);
+//		}
+        mSlda.updateAllLists(mShoppingLists);
+    }
+
+    /**
+     * Use because the prompt is different if there are no lists.
+     */
+    private void updateMainPrompt() {
+        TextView tv = (TextView) findViewById(R.id.main_screen_prompt);
+        Log.d(MyApplication.GD, "There are " + mShoppingLists.size() + " lists");
+        if (mShoppingLists.size() > 0) {
+            tv.setText(R.string.main_screen_prompt_lists_present);
+        } else {
+            tv.setText(R.string.main_screen_prompt_default);
+        }
+    }
+
+    /**
+     * Adds the given list to the activity.
+     *
+     * @param listName
+     */
+    void addList(String listName) {
+        ShoppingList newList = new ShoppingList(listName);
+        mSlda.insertList(newList);
+        mShoppingLists.add(newList);
+        mAdapter.notifyDataSetChanged();
+        updateMainPrompt();
+    }
+
+    /**
+     * Deletes the list and all its items.
+     */
+    void deleteList() {
+        mShoppingLists.remove(mSelectedList);
+        mSlda.deleteList(mSelectedList);
+        mIda.deleteAllItemsWithListId(mSelectedList.getId());
+        mAdapter.notifyDataSetChanged();
+        updateMainPrompt();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.top_level, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        // handle item selection
+        switch (item.getItemId()) {
+            case R.id.add_list:
+                DialogFragment addListFragment = new AddListDialogFragment();
+                addListFragment.show(getFragmentManager(), "add_list");
+                return true;
+            case R.id.main_about:
+                DialogFragment aboutFragment = new AboutDialogFragment();
+                aboutFragment.show(getFragmentManager(), "main_about");
+                return true;
+            case R.id.main_help:
+                DialogFragment helpFragment = new HelpDialogFragment();
+                helpFragment.show(getFragmentManager(), "main_help");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
+    }
 
-        return super.onOptionsItemSelected(item);
+    /**
+     * Launches the stock activity.
+     */
+    void launchStockActivity() {
+        Log.d(MyApplication.GD,
+                String.format("Stock list for %s", mSelectedList));
+        Intent intent = new Intent(MainActivity.this, StockActivity.class);
+        intent.putExtra(MainActivity.KEY_SELECTED_LIST, mSelectedList.getId());
+        startActivityForResult(intent, REQUEST_STOCK);
+    }
+
+    /**
+     * Launches the shop activity.
+     */
+    void launchShopActivity() {
+        Log.d(MyApplication.GD, String.format("Shop at %s", mSelectedList));
+        Intent intent = new Intent(MainActivity.this, ShopActivity.class);
+        intent.putExtra(MainActivity.KEY_SELECTED_LIST, mSelectedList.getId());
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int reqCode, int resultCode, Intent data) {
+        if (reqCode == REQUEST_STOCK && resultCode == RESULT_OK) {
+            if (data.getIntExtra(KEY_GO_SHOPPING, -1) > 0) {
+                launchShopActivity();
+            }
+        }
+    }
+
+    private class CompareDisplayOrder implements Comparator<ShoppingList> {
+        @Override
+        public int compare(ShoppingList left, ShoppingList right) {
+            Integer leftIdx = Integer.valueOf(left.getDisplayIdx());
+            Integer rightIdx = Integer.valueOf(right.getDisplayIdx());
+            return leftIdx.compareTo(rightIdx);
+        }
     }
 }

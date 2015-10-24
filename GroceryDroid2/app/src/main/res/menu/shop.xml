@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
 
-    <!--<item-->
-        <!--android:id="@+id/shop_menu_item_add_name"-->
-        <!--android:icon="@drawable/content_new"-->
-        <!--android:showAsAction="always"-->
-        <!--android:title="@string/shop_menu_item_add_item"/>-->
+    <item
+        android:id="@+id/shop_menu_item_add_name"
+        android:icon="@mipmap/content_new"
+        app:showAsAction="always"
+        android:title="@string/shop_menu_item_add_item"/>
     <item
         android:id="@+id/shop_menu_item_reset_all"
         android:icon="@mipmap/ic_action_notepaper_zero"
