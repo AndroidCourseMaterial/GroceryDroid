@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="num_stock_options">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </string-array>
+    <string-array name="list_selected_options">
+        <item>Make the list or change it</item>
+        <item>Go shopping</item>
+        <item>Delete this list</item>
+    </string-array>
+
+    <string-array name="food_names">
+        <item>Water</item>
+        <item>Oil</item>
+        <item>Green onions</item>
+        <item>Peanuts</item>
+        <item>Bananas</item>
+        <item>Oranges</item>
+        <item>Marie biscuits</item>
+    </string-array>
+
+</resources>

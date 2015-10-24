@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/stock_menu_item_add_name"
+        android:icon="@drawable/ic_action_plus"
+        android:showAsAction="always"
+        android:title="@string/stock_menu_item_add_item"
+        />
+    <item
+        android:id="@+id/stock_menu_item_go_shopping"
+        android:icon="@drawable/ic_action_shop"
+        android:showAsAction="ifRoom"
+        android:title="@string/stock_menu_item_go_shopping"
+        />
+    <item
+        android:id="@+id/stock_menu_item_reset_all"
+        android:icon="@drawable/ic_launcher"
+        android:showAsAction="ifRoom"
+        android:title="@string/stock_menu_item_reset_all"
+        />
+    <item
+        android:id="@+id/stock_menu_item_sort_items"
+        android:icon="@drawable/ic_launcher"
+        android:showAsAction="ifRoom"
+        android:title="@string/stock_menu_item_sort_items"
+        />
+    <item
+        android:id="@+id/stock_menu_item_load_items_from_spreadsheet"
+        android:icon="@drawable/ic_launcher"
+        android:showAsAction="ifRoom"
+        android:title="@string/stock_menu_item_load_items_from_spreadsheet"
+        />
+</menu>

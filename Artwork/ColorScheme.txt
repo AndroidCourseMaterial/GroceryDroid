@@ -1,0 +1,12 @@
+Launcher
+
+android asset studio:
+	Background color: light blue  ##afdfff
+Inkscape:
+		Foreground color:  141e3c
+
+Images:
+
+Grocery store image from http://www.flickr.com/photos/redjar/113109935/, under a creative commons license, 
+http://creativecommons.org/licenses/by-sa/2.0/deed.en	
+
