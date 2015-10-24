@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/stock_menu_item_add_name"
-        android:icon="@mipmap/content_new"
-        app:showAsAction="always"
-        android:title="@string/stock_menu_item_add_item"/>
+    <!--<item-->
+        <!--android:id="@+id/stock_menu_item_add_name"-->
+        <!--android:icon="@mipmap/content_new"-->
+        <!--app:showAsAction="always"-->
+        <!--android:title="@string/stock_menu_item_add_item"/>-->
     <item
         android:id="@+id/stock_menu_item_go_shopping"
         android:icon="@mipmap/ic_action_shop"
@@ -15,12 +15,12 @@
     <item
         android:id="@+id/stock_menu_item_reset_all"
         android:icon="@mipmap/ic_action_notepaper_zero"
-        app:showAsAction="ifRoom"
+        app:showAsAction="never"
         android:title="@string/stock_menu_item_reset_all"/>
     <item
         android:id="@+id/stock_menu_item_sort_items"
         android:icon="@mipmap/ic_action_grabber"
-        app:showAsAction="ifRoom"
+        app:showAsAction="never"
         android:title="@string/stock_menu_item_sort_items"/>
     <!-- TODO: Remove this before production -->
 <!-- 

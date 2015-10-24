@@ -19,10 +19,12 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -51,9 +53,17 @@ public class StockActivity extends ShoppingListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		Log.d(MyApplication.GD, "Begin onCreate stock");
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.stock_layout);
+		setContentView(R.layout.activity_stock);
 		getSupportActionBar().setIcon(R.mipmap.ic_action_notepaper);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_stock);
+		fab.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+                launchNewItemDialog();
+			}
+		});
 
 		Intent intent = this.getIntent();
 		long listId = intent.getLongExtra(MainActivity.KEY_SELECTED_LIST, -1);
@@ -127,9 +137,9 @@ public class StockActivity extends ShoppingListActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
 		switch (menuItem.getItemId()) {
-		case R.id.stock_menu_item_add_name:
-			launchNewItemDialog();
-			return super.onOptionsItemSelected(menuItem);
+//		case R.id.stock_menu_item_add_name:
+//			launchNewItemDialog();
+//			return super.onOptionsItemSelected(menuItem);
 		case R.id.stock_menu_item_reset_all:
 			resetNumberToBuyForAllItems();
 			return true;

@@ -18,9 +18,11 @@ package com.mattboutell.grocerydroid2;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -44,9 +46,17 @@ public class ShopActivity extends ShoppingListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.shop_layout);
+		setContentView(R.layout.activity_shop);
 		getSupportActionBar().setIcon(R.mipmap.ic_action_shop);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_shop);
+		fab.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				launchNewItemDialog();
+			}
+		});
 
 		Intent intent = this.getIntent();
 		long listId = intent.getLongExtra(MainActivity.KEY_SELECTED_LIST, -1);
@@ -107,9 +117,9 @@ public class ShopActivity extends ShoppingListActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
 		switch (menuItem.getItemId()) {
-		case R.id.shop_menu_item_add_name:
-			launchNewItemDialog();
-			return super.onOptionsItemSelected(menuItem);
+//		case R.id.shop_menu_item_add_name:
+//			launchNewItemDialog();
+//			return super.onOptionsItemSelected(menuItem);
 		case R.id.shop_menu_item_reset_all:
 			resetBoughtForAllItems();
 			return true;
