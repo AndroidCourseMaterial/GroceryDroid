@@ -14,9 +14,10 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
+            android:logo="@mipmap/ic_action_notepaper_and_shop"
+            android:navigationIcon="@mipmap/ic_action_notepaper_and_shop"
             android:subtitle="@string/welcome"
             android:title="@string/app_name"
-            android:navigationIcon="@mipmap/ic_action_notepaper_and_shop"
             app:popupTheme="@style/AppTheme.PopupOverlay"
 
             />
@@ -28,6 +29,6 @@
     <android.support.design.widget.FloatingActionButton android:id="@+id/fab"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:layout_gravity="bottom|end" android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />
+        android:src="@mipmap/content_new" />
 
 </android.support.design.widget.CoordinatorLayout>
