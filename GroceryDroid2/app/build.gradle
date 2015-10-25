@@ -4,6 +4,12 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
 
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE-FIREBASE.txt'
+        exclude 'META-INF/NOTICE'
+    }
+
     defaultConfig {
         applicationId "com.mattboutell.grocerydroid2"
         minSdkVersion 15

@@ -68,6 +68,10 @@
     <string name="buy_format">Buy %d</string>
     <string name="add_list">Add List</string>
 
+    <string name="firebase_url">http://grocery-droid.firebaseio.com</string>
+    <string name="firebase_url_format">http://grocery-droid.firebaseio.com/%s</string>
+
+
     <string name="about">Matt Boutell created GroceryDroid for his own use, but hopes that others may also find it useful.
 
         This idea was originally implemented by Matt\'s college roommates as a spreadsheet.\n\n

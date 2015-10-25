@@ -45,14 +45,14 @@ public class MainActivity extends AppCompatActivity {
     private ItemDataAdapter mIda;
     private ArrayList<ShoppingList> mShoppingLists = null;
     private ShoppingList mSelectedList;
-    private MainShoppingListAdapter mAdapter;
+    private MainShoppingListAdapterFB mAdapter;
     private TouchListView.DropListener onDrop = new TouchListView.DropListener() {
         @Override
         public void drop(int from, int to) {
-            ShoppingList item = mAdapter.getItem(from);
-
-            mAdapter.remove(item);
-            mAdapter.insert(item, to);
+            ShoppingList item = (ShoppingList)mAdapter.getItem(from);
+            // TODO:
+//            mAdapter.remove(item);
+//            mAdapter.insert(item, to);
 
             // writes out to the DB immediately.
             // CONSIDER: just write out onPause()?
@@ -86,8 +86,9 @@ public class MainActivity extends AppCompatActivity {
         initializeShoppingLists();
 
         TouchListView tlv = (TouchListView) findViewById(R.id.main_shopping_list_view);
-        mAdapter = new MainShoppingListAdapter(this,
-                R.layout.main_touch_list_row, mShoppingLists);
+//        mAdapter = new MainShoppingListAdapter(this,
+//                R.layout.main_touch_list_row, mShoppingLists);
+        mAdapter = new MainShoppingListAdapterFB(this);
         tlv.setAdapter(mAdapter);
         tlv.setDropListener(onDrop);
 
@@ -128,9 +129,10 @@ public class MainActivity extends AppCompatActivity {
      * after they have been rearranged by the user), and updates the DB.
      */
     private void setListOrderToDisplayOrder() {
-        for (int i = 0; i < mAdapter.getCount(); i++) {
-            mAdapter.getItem(i).setDisplayIdx(i);
-        }
+// TODO:
+//        for (int i = 0; i < mAdapter.getCount(); i++) {
+//            mAdapter.getItem(i).setDisplayIdx(i);
+//        }
 
 //		for (int i = 0; i < mShoppingLists.size(); i++) {
 //			mShoppingLists.get(i).setDisplayIdx(i);
