@@ -28,9 +28,9 @@ public class ShoppingList {
     private String mOwnerUid;
     private long mId;
     private String mName;
+    private double mPriority;
     private ArrayList<Item> mItems;
-    private int mDisplayIdx;
-
+    private long mDisplayIdx;
 
     /**
      * Creates a ShoppingList from the given parameters.
@@ -70,15 +70,22 @@ public class ShoppingList {
         setValues(snapshot);
     }
 
+    public ShoppingList(String ownerUid, String name) {
+        mOwnerUid = ownerUid;
+        mName = name;
+    }
+
     public void setValues(DataSnapshot snapshot) {
         if (!(snapshot.getKey().equals(mKey))) {
-            Log.w(Constants.TAG, "Attempt to set values on assignment with different key");
+            Log.w(Constants.TAG, "Attempt to set values on list with different key");
             return;
         }
-        Map<String, Object> values = (Map<String, Object>)snapshot.getValue();
+        Map<String, Object> values = (Map<String, Object>) snapshot.getValue();
         if (values != null) {
             mName = (String) values.get(NAME);
-            mDisplayIdx = (int) values.get(DISPLAY_INDEX);
+            if (snapshot.getPriority() != null) {
+                mPriority = (double) snapshot.getPriority();
+            }
             mOwnerUid = (String) values.get(OWNER_UID);
         }
     }
@@ -86,7 +93,6 @@ public class ShoppingList {
     public Map<String, Object> valuesMap() {
         Map<String, Object> map = new HashMap<>();
         map.put(NAME, mName);
-        map.put(DISPLAY_INDEX, mDisplayIdx);
         map.put(OWNER_UID, mOwnerUid);
         return map;
     }
@@ -238,6 +244,11 @@ public class ShoppingList {
         this.mName = name;
     }
 
+    public void setPriority(double priority) {
+        mPriority = priority;
+    }
+
+
     /**
      * Returns the value of the field called 'id'.
      *
@@ -254,24 +265,6 @@ public class ShoppingList {
      */
     public void setId(long id) {
         this.mId = id;
-    }
-
-    /**
-     * Returns the value of the field called 'displayIdx'.
-     *
-     * @return Returns the displayIdx.
-     */
-    public int getDisplayIdx() {
-        return this.mDisplayIdx;
-    }
-
-    /**
-     * Sets the field called 'displayIdx' to the given value.
-     *
-     * @param displayIdx The displayIdx to set.
-     */
-    public void setDisplayIdx(int displayIdx) {
-        this.mDisplayIdx = displayIdx;
     }
 
     /**

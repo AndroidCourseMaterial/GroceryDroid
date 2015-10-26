@@ -13,13 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
-import com.mattboutell.grocerydroid2.db.ItemDataAdapter;
-import com.mattboutell.grocerydroid2.db.ShoppingListDataAdapter;
 import com.mattboutell.grocerydroid2.model.ShoppingList;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 /**
  * The main screen displays all the user's shopping lists.
@@ -41,22 +35,18 @@ public class MainActivity extends AppCompatActivity {
      */
     static final int GO_SHOPPING = 1;
     private static final int REQUEST_STOCK = 0;
-    private ShoppingListDataAdapter mSlda;
-    private ItemDataAdapter mIda;
-    private ArrayList<ShoppingList> mShoppingLists = null;
+//    private ShoppingListDataAdapter mSlda;
+//    private ItemDataAdapter mIda;
+    //private ArrayList<ShoppingList> mShoppingLists = null;
     private ShoppingList mSelectedList;
     private MainShoppingListAdapterFB mAdapter;
     private TouchListView.DropListener onDrop = new TouchListView.DropListener() {
         @Override
         public void drop(int from, int to) {
             ShoppingList item = (ShoppingList)mAdapter.getItem(from);
-            // TODO:
-//            mAdapter.remove(item);
-//            mAdapter.insert(item, to);
-
-            // writes out to the DB immediately.
-            // CONSIDER: just write out onPause()?
-            setListOrderToDisplayOrder();
+            mAdapter.removeListFromAdapterOnly(item);
+            mAdapter.insertListToPositionInAdapterOnly(item, to);
+            mAdapter.setPrioritiesToListOrder();
         }
     };
 
@@ -70,20 +60,14 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setIcon(R.mipmap.ic_action_notepaper_and_shop);
         getSupportActionBar().setSubtitle(R.string.welcome);
 
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DialogFragment addListFragment = new AddListDialogFragment();
                 addListFragment.show(getFragmentManager(), "add_list");
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
             }
         });
-
-        initializeDatabase();
-        initializeShoppingLists();
 
         TouchListView tlv = (TouchListView) findViewById(R.id.main_shopping_list_view);
 //        mAdapter = new MainShoppingListAdapter(this,
@@ -96,30 +80,33 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View v, int pos,
                                     long id) {
-                mSelectedList = mShoppingLists.get(pos);
+                mSelectedList = (ShoppingList)mAdapter.getItem(pos);
                 DialogFragment df = ChooseActionDialogFragment.newInstance();
                 df.show(getFragmentManager(), "choose_action");
             }
         });
+
+//        initializeDatabase();
+        initializeShoppingLists();
     }
 
-    private void initializeDatabase() {
-        mSlda = new ShoppingListDataAdapter();
-        mSlda.open();
-
-        mIda = new ItemDataAdapter();
-        mIda.open();
-    }
+//    private void initializeDatabase() {
+//        mSlda = new ShoppingListDataAdapter();
+//        mSlda.open();
+//
+//        mIda = new ItemDataAdapter();
+//        mIda.open();
+//    }
 
     /**
      * Loads all of the shopping lists from the database
      */
     private void initializeShoppingLists() {
-        mShoppingLists = new ArrayList<>();
-        for (ShoppingList list : mSlda.getAllLists()) {
-            mShoppingLists.add(list);
-        }
-        Collections.sort(mShoppingLists, new CompareDisplayOrder());
+//        mShoppingLists = new ArrayList<>();
+//        for (ShoppingList list : mSlda.getAllLists()) {
+//            mShoppingLists.add(list);
+//        }
+//        Collections.sort(mShoppingLists, new CompareDisplayOrder());
         updateMainPrompt();
     }
 
@@ -137,16 +124,17 @@ public class MainActivity extends AppCompatActivity {
 //		for (int i = 0; i < mShoppingLists.size(); i++) {
 //			mShoppingLists.get(i).setDisplayIdx(i);
 //		}
-        mSlda.updateAllLists(mShoppingLists);
+//        mSlda.updateAllLists(mShoppingLists);
     }
 
     /**
      * Use because the prompt is different if there are no lists.
      */
-    private void updateMainPrompt() {
+    void updateMainPrompt() {
+        // TODO:
         TextView tv = (TextView) findViewById(R.id.main_screen_prompt);
-        Log.d(MyApplication.GD, "There are " + mShoppingLists.size() + " lists");
-        if (mShoppingLists.size() > 0) {
+        Log.d(MyApplication.GD, "There are " + mAdapter.getCount() + " list(s)");
+        if (mAdapter.getCount() > 0) {
             tv.setText(R.string.main_screen_prompt_lists_present);
         } else {
             tv.setText(R.string.main_screen_prompt_default);
@@ -159,10 +147,7 @@ public class MainActivity extends AppCompatActivity {
      * @param listName
      */
     void addList(String listName) {
-        ShoppingList newList = new ShoppingList(listName);
-        mSlda.insertList(newList);
-        mShoppingLists.add(newList);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.addList(listName);
         updateMainPrompt();
     }
 
@@ -170,10 +155,13 @@ public class MainActivity extends AppCompatActivity {
      * Deletes the list and all its items.
      */
     void deleteList() {
-        mShoppingLists.remove(mSelectedList);
-        mSlda.deleteList(mSelectedList);
-        mIda.deleteAllItemsWithListId(mSelectedList.getId());
-        mAdapter.notifyDataSetChanged();
+        mAdapter.removeList(mSelectedList);
+
+//        mShoppingLists.remove(mSelectedList);
+//        mSlda.deleteList(mSelectedList);
+// TODO
+//        mIda.deleteAllItemsWithListId(mSelectedList.getId());
+//        mAdapter.notifyDataSetChanged();
         updateMainPrompt();
     }
 
@@ -234,12 +222,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class CompareDisplayOrder implements Comparator<ShoppingList> {
-        @Override
-        public int compare(ShoppingList left, ShoppingList right) {
-            Integer leftIdx = left.getDisplayIdx();
-            Integer rightIdx = right.getDisplayIdx();
-            return leftIdx.compareTo(rightIdx);
-        }
-    }
+//    private class CompareDisplayOrder implements Comparator<ShoppingList> {
+//        @Override
+//        public int compare(ShoppingList left, ShoppingList right) {
+//            Long leftIdx = left.getDisplayIdx();
+//            Long rightIdx = right.getDisplayIdx();
+//            return leftIdx.compareTo(rightIdx);
+//        }
+//    }
 }

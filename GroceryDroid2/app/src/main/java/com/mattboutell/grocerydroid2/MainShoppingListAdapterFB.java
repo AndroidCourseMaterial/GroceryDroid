@@ -26,6 +26,9 @@ public class MainShoppingListAdapterFB extends BaseAdapter {
     private final Context mContext;
     private final LayoutInflater mInflater;
     private ArrayList<ShoppingList> mShoppingLists = new ArrayList<>();
+    private String mUid;
+    private Firebase mListsRef;
+    private Query mListsForOwnerRef;
 
     public MainShoppingListAdapterFB(Context context) {
         Log.d(Constants.TAG, "ShoppingListAdapter");
@@ -33,17 +36,17 @@ public class MainShoppingListAdapterFB extends BaseAdapter {
         mContext = context;
         mInflater = LayoutInflater.from(context);
 
-        String mUid = context.getSharedPreferences(Constants.PREFS, 0).getString(Constants.UID_KEY, "");
+        mUid = context.getSharedPreferences(Constants.PREFS, 0).getString(Constants.UID_KEY, "");
         assert (!mUid.isEmpty());
 
         // ADD OWNER LISTENER
         Firebase mOwnerRef = new Firebase(context.getString(R.string.firebase_url_format, "owners/" + mUid));
         mOwnerRef.addListenerForSingleValueEvent(new OwnerValueEventListener());
 
-        Firebase mListsRef = new Firebase(context.getString(R.string.firebase_url_format, "lists/"));
+        mListsRef = new Firebase(context.getString(R.string.firebase_url_format, "lists/"));
 
-        Query assignmentsForCourseRef = mListsRef.orderByChild(ShoppingList.OWNER_UID).equalTo(mUid);
-        assignmentsForCourseRef.addChildEventListener(new ShoppingListsChildEventListener());
+        mListsForOwnerRef = mListsRef.orderByChild(ShoppingList.OWNER_UID).equalTo(mUid);
+        mListsForOwnerRef.addChildEventListener(new ShoppingListsChildEventListener());
     }
 
     /**
@@ -100,7 +103,7 @@ public class MainShoppingListAdapterFB extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         RelativeLayout mainShoppingListView;
-        final ShoppingList list = (ShoppingList) this.getItem(position);
+        final ShoppingList list = mShoppingLists.get(position);
 
         // Create a view if it doesn't exist
         if (convertView == null) {
@@ -120,13 +123,16 @@ public class MainShoppingListAdapterFB extends BaseAdapter {
     private class ShoppingListsChildEventListener implements ChildEventListener {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            Log.d(Constants.TAG, "Child added: " + dataSnapshot);
             mShoppingLists.add(new ShoppingList(dataSnapshot));
             // TODO: Sort by displayIdx? Collections.sort(mAssignments);
             notifyDataSetChanged();
+            ((MainActivity)mContext).updateMainPrompt();
         }
 
         @Override
         public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            Log.d(Constants.TAG, "Child changed: " + dataSnapshot);
             String key = dataSnapshot.getKey();
             for (ShoppingList list : mShoppingLists) {
                 if (list.getKey().equals(key)) {
@@ -139,6 +145,7 @@ public class MainShoppingListAdapterFB extends BaseAdapter {
 
         @Override
         public void onChildRemoved(DataSnapshot dataSnapshot) {
+            Log.d(Constants.TAG, "Child removed: " + dataSnapshot);
             String key = dataSnapshot.getKey();
             for (ShoppingList list : mShoppingLists) {
                 if (list.getKey().equals(key)) {
@@ -151,13 +158,61 @@ public class MainShoppingListAdapterFB extends BaseAdapter {
 
         @Override
         public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            Log.d(Constants.TAG, "Child moved: " + dataSnapshot);
             // empty
+            // TODO: How will changing priorities affect this?
         }
 
         @Override
         public void onCancelled(FirebaseError firebaseError) {
             Log.e("TAG", "Error: " + firebaseError.getMessage());
         }
+    }
+
+    public void addList(final String listName) {
+        ShoppingList list = new ShoppingList(mUid,listName);
+        // CONSIDER: should I set the priority here?
+        list.setPriority(mShoppingLists.size());
+        mListsRef.push().setValue(list.valuesMap());
+    }
+
+    public void editList(ShoppingList list, String listName) {
+        list.setName(listName);
+        mListsRef.child(list.getKey()).setValue(list.valuesMap());
+    }
+
+    public void removeList(ShoppingList listToRemove) {
+        mListsRef.child(listToRemove.getKey()).removeValue();
+    }
+
+    public void removeListFromAdapterOnly(ShoppingList listToRemove) {
+        mShoppingLists.remove(listToRemove);
+    }
+
+    public void insertListToPositionInAdapterOnly(ShoppingList listToInsert, int pos) {
+        mShoppingLists.add(pos, listToInsert);
+    }
+
+    public void setPrioritiesToListOrder() {
+        Log.d(Constants.TAG, "Changing priorities for: " + mListsRef);
+//        mListsRef.runTransaction(new Transaction.Handler() {
+//            @Override
+//            public Transaction.Result doTransaction(MutableData mutableData) {
+//                Log.d(Constants.TAG, "Mutable data: " + mutableData);
+//                return Transaction.success(mutableData);
+//            }
+//
+//            @Override
+//            public void onComplete(FirebaseError firebaseError, boolean b, DataSnapshot dataSnapshot) {
+//                notifyDataSetChanged();
+//            }
+//        }, false);
+
+        for (int i = 0; i < mShoppingLists.size(); i++) {
+            ShoppingList list = mShoppingLists.get(i);
+            mListsRef.child(list.getKey()).setPriority(i);
+        }
+        // This triggers childChanged
     }
 
     class OwnerValueEventListener implements ValueEventListener {

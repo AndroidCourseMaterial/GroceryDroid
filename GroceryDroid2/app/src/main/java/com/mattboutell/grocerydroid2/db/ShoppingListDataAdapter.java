@@ -53,7 +53,7 @@ public class ShoppingListDataAdapter extends TableAdapter {
 		// a sqlite error (code 19). But don't I want to insert by list ID?
 		//newItemValues.put(DB_KEY_ID, list.getId());
 		newItemValues.put(DB_KEY_NAME, list.getName());
-		newItemValues.put(DB_KEY_DISPLAY_INDEX, list.getDisplayIdx());
+		//newItemValues.put(DB_KEY_DISPLAY_INDEX, list.getDisplayIdx());
 		return newItemValues;
 	}
 
