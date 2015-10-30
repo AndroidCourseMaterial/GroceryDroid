@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.widget.BaseAdapter;
 
 import com.firebase.client.Firebase;
+import com.firebase.client.Query;
 import com.mattboutell.grocerydroid2.model.Item;
 
 import java.util.ArrayList;
@@ -46,6 +47,12 @@ public abstract class ItemAdapter extends BaseAdapter {
         mItemsRef = new Firebase(context.getString(R.string.firebase_url_format, "items/"));
 
         // Do Firebase query in child classes, since they order items differently.
+        Query itemsForShoppingListRef = mItemsRef.orderByChild(Item.SHOPPING_LIST_KEY).equalTo(shoppingListKey);
+
+
+        //Query assignmentsForCourseRef = mAssignmentsRef.orderByChild(Assignment.COURSE_KEY).equalTo(courseKey);
+        //assignmentsForCourseRef.addChildEventListener(new AssignmentsChildEventListener());
+
 
     }
 

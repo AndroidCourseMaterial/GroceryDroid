@@ -2,6 +2,13 @@ package com.mattboutell.grocerydroid2.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+
+import com.firebase.client.DataSnapshot;
+import com.mattboutell.grocerydroid2.Constants;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A single grocery item.
@@ -10,20 +17,36 @@ import android.os.Parcelable;
  */
 public class Item implements Parcelable {
 
+	// Firebase
+	public static final String NAME = "NAME";
+	public static final String SHOPPING_LIST_KEY = "SHOPPING_LIST_KEY";
+	public static final String NUM_STOCK = "NUM_STOCK";
+	public static final String NUM_BUY = "NUM_BUY";
+	public static final String PRICE = "PRICE";
+	public static final String UNIT_SIZE = "UNIT_SIZE";
+	public static final String UNIT_LABEL = "UNIT_LABEL";
+	public static final String IS_BOUGHT = "IS_BOUGHT";
+	public static final String STOCK_INDEX = "STOCK_INDEX";
+	public static final String SHOP_INDEX = "SHOP_INDEX";
+
 	// CONSIDER: use a BigDecimal for the price and unitSize so that comparisons
 	// are easier.
 	private static final float EPSILON = 0.000001f;
 
 	private static final long DEFAULT_ID = 0;
+
+	private String mKey;
+	private String mShoppingListKey;  // the list to which it belongs
+
 	private long mId;
 	private long mListId; // the list to which it belongs
 	private String mName;
 	private int mNumStock;
 	private int mNumBuy;
-	private float mPrice;
+	private double mPrice;
 	// CONSIDER: should I have a simple Unit class that encapsulates unit size
 	// and label?
-	private float mUnitSize;
+	private double mUnitSize;
 	private UnitLabel mUnitLabel;
 	private boolean mIsBought;
 	private int mStockIdx;
@@ -82,6 +105,7 @@ public class Item implements Parcelable {
 				0);
 	}
 
+
 	/**
 	 * Creates a Item from the given parameters.
 	 * 
@@ -91,6 +115,49 @@ public class Item implements Parcelable {
 		this(DEFAULT_ID, listId, "", 1, 1, 0.0f, 1.0f, UnitLabel.unit, false,
 				0, 0);
 	}
+
+	// Used by Firebase for existing items
+	public Item(DataSnapshot snapshot) {
+		mKey = snapshot.getKey();
+		setValues(snapshot);
+	}
+
+	public void setValues(DataSnapshot snapshot) {
+		if (!(snapshot.getKey().equals(mKey))) {
+			Log.w(Constants.TAG, "Attempt to set values on item with different key");
+			return;
+		}
+		Map<String, Object> values = (Map<String, Object>)snapshot.getValue();
+		if (values != null) {
+			mName = (String) values.get(NAME);
+			mShoppingListKey = (String)values.get(SHOPPING_LIST_KEY);
+			mNumStock = (int)values.get(NUM_STOCK);
+			mNumBuy = (int)values.get(NUM_BUY);
+			mPrice = (double)values.get(PRICE);
+			mUnitSize = (double)values.get(UNIT_SIZE);
+            int unitIndex = (int)values.get(UNIT_LABEL);
+            mUnitLabel = UnitLabel.values()[unitIndex];
+			mIsBought = (boolean)values.get(IS_BOUGHT);
+			mStockIdx = (int)values.get(STOCK_INDEX);
+			mShopIdx = (int)values.get(SHOP_INDEX);
+		}
+	}
+
+	public Map<String, Object> valuesMap() {
+		Map<String, Object> map = new HashMap<>();
+        map.put(NAME, mName);
+        map.put(SHOPPING_LIST_KEY, mShoppingListKey);
+        map.put(NUM_STOCK, mNumStock);
+        map.put(NUM_BUY, mNumBuy);
+        map.put(PRICE, mPrice);
+        map.put(UNIT_SIZE, mUnitSize);
+        map.put(UNIT_LABEL, mUnitLabel.ordinal());
+        map.put(IS_BOUGHT, mIsBought);
+        map.put(STOCK_INDEX, mStockIdx);
+        map.put(SHOP_INDEX, mShopIdx);
+		return map;
+	}
+
 
 	@Override
 	public String toString() {
@@ -111,7 +178,7 @@ public class Item implements Parcelable {
 //				this.mUnitLabel);
 //	}
 
-	private boolean isIntegerValue(float value) {
+	private boolean isIntegerValue(double value) {
 		return (Math.abs(value - (int) value) < Item.EPSILON);
 	}
 
@@ -220,6 +287,10 @@ public class Item implements Parcelable {
 		return this.mNumBuy * this.mPrice;
 	}
 
+    public String getKey() {
+        return mKey;
+    }
+
 	// CONSIDER: removing unused setters/getters.
 
 	/**
@@ -227,7 +298,7 @@ public class Item implements Parcelable {
 	 * 
 	 * @return Returns the price.
 	 */
-	public float getPrice() {
+	public double getPrice() {
 		return this.mPrice;
 	}
 
@@ -313,7 +384,7 @@ public class Item implements Parcelable {
 	 * 
 	 * @return Returns the unitSize.
 	 */
-	public float getUnitSize() {
+	public double getUnitSize() {
 		return this.mUnitSize;
 	}
 
@@ -442,8 +513,8 @@ public class Item implements Parcelable {
 		out.writeString(mName);
 		out.writeInt(mNumStock);
 		out.writeInt(mNumBuy);
-		out.writeFloat(mPrice);
-		out.writeFloat(mUnitSize);
+		out.writeDouble(mPrice);
+		out.writeDouble(mUnitSize);
 		out.writeInt(mUnitLabel.ordinal());
 		out.writeInt(mIsBought ? 1 : 0);
 		out.writeInt(mStockIdx);
