@@ -133,7 +133,7 @@ public class ShoppingList {
         // TODO: Unit test this
         for (int i = 0; i < this.mItems.size(); i++) {
             Item currentItem = this.mItems.get(i);
-            if (item.getId() == currentItem.getId()) {
+            if (item.getKey() == currentItem.getKey()) {
                 this.mItems.set(i, item);
                 return true;
             }

@@ -145,14 +145,16 @@ public class ItemDialogFragment extends DialogFragment {
                 et = (EditText) view.findViewById(R.id.item_num_stock);
                 int numStock = getIntegerFromEditText(et);
 
-                mItem = new Item(mItem.getId(), mItem.getListId(), name,
+                String listKey = ((ShoppingListActivity)getActivity()).getShoppingListKey();
+
+                mItem = new Item(mItem.getKey(), mItem.getShoppingListKey(), name,
                         numStock, mItem.getNBuy(), price, size, Item.UnitLabel
                         .values()[unitIndex], mItem.isBought(), mItem
                         .getStockIdx(), mItem.getShopIdx());
                 if (mMode == Mode.ADD) {
-                    ((ShoppingListActivity) getActivity()).addItem(mItem);
+                    ((ShoppingListActivity) getActivity()).getItemAdapter().addItem(mItem);
                 } else if (mMode == Mode.EDIT) {
-                    ((ShoppingListActivity) getActivity()).updateItem(mItem);
+                    ((ShoppingListActivity) getActivity()).getItemAdapter().editItem(mItem);
                 }
             }
         });
@@ -211,13 +213,8 @@ public class ItemDialogFragment extends DialogFragment {
         return num;
     }
 
-    /**
-     * Creates an item with the given listId.
-     *
-     * @param listId
-     */
-    void initializeItem(long listId) {
-        mItem = new Item(listId);
+    void initializeItem(String shoppingListKey) {
+        mItem = new Item(shoppingListKey);
     }
 
     /**

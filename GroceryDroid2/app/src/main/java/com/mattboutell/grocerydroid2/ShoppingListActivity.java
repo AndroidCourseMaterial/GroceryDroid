@@ -36,6 +36,11 @@ public abstract class ShoppingListActivity extends AppCompatActivity {
 	private ShoppingList mShoppingList;
 	private ListView mListView;
 	private ItemAdapter mItemAdapter;
+	protected String mShoppingListKey;
+
+    public String getShoppingListKey() {
+        return mShoppingListKey;
+    }
 
 	/**
 	 * Returns the value of the field called 'mIda'.
@@ -53,14 +58,14 @@ public abstract class ShoppingListActivity extends AppCompatActivity {
 	 */
 	protected void initializeShoppingList(long listId) {
 		
-		Log.d(MyApplication.GD, "Before call getList");
-		setShoppingList(mSlda.getList(listId));
-		Log.d(MyApplication.GD, "After call getList");
-
-		getShoppingList().getItems(ShoppingList.Order.AS_IS).clear();
-		for (Item item : mIda.getAllItemsWithListId(listId)) {
-			getShoppingList().addItem(item);
-		}
+//		Log.d(MyApplication.GD, "Before call getList");
+//		setShoppingList(mSlda.getList(listId));
+//		Log.d(MyApplication.GD, "After call getList");
+//
+//		getShoppingList().getItems(ShoppingList.Order.AS_IS).clear();
+//		for (Item item : mIda.getAllItemsWithListId(listId)) {
+//			getShoppingList().addItem(item);
+//		}
 	}
 
 	/**
@@ -133,7 +138,7 @@ public abstract class ShoppingListActivity extends AppCompatActivity {
 		Log.d(MyApplication.GD, "About to create new ItemDialogFragment");
 		ItemDialogFragment newFragment = new ItemDialogFragment();
 		Log.d(MyApplication.GD, "Just created new ItemDialogFragment");
-		newFragment.initializeItem(mShoppingList.getId());
+		newFragment.initializeItem(mShoppingList.getKey());
 		newFragment.setMode(Mode.ADD);
 
 		Log.d(MyApplication.GD, "About to show new ItemDialogFragment");

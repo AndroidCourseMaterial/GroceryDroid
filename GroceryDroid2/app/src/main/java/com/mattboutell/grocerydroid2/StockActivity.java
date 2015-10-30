@@ -17,6 +17,7 @@ package com.mattboutell.grocerydroid2;
 
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -28,6 +29,10 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.mattboutell.grocerydroid2.model.Item;
 import com.mattboutell.grocerydroid2.model.ShoppingList;
 
@@ -41,12 +46,11 @@ import java.util.Scanner;
  * The activity used to manage the creation and restocking of the items in a
  * list.
  * 
- * @author Matthew Boutell. Created Apr 12, 2012.
+ * @author Matthew Boutell. Created Apr 12, 2012. Updated Oct 30, 2015.
  */
 public class StockActivity extends ShoppingListActivity {
-	// private AutoCompleteTextView mNameBox;
-	// private ImageView mEditIcon;
-	// private ArrayAdapter<String> mAutoAdapter;
+    private Firebase mShoppingListRef;
+    private StockItemAdapter mAdapter;
 
 	@SuppressWarnings("ConstantConditions")
 	@Override
@@ -59,19 +63,25 @@ public class StockActivity extends ShoppingListActivity {
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_stock);
 		fab.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
+            @Override
+            public void onClick(View view) {
                 launchNewItemDialog();
-			}
-		});
+            }
+        });
+
+        SharedPreferences prefs = getSharedPreferences(Constants.PREFS, MODE_PRIVATE);
+        mShoppingListKey = prefs.getString(Constants.SHOPPING_LIST_KEY, "");
+        mShoppingListRef = new Firebase(getString(R.string.firebase_url_format, "lists/" + mShoppingListKey));
+        mShoppingListRef.child("name").addListenerForSingleValueEvent(new ShoppingListNameValueEventListener());
+        Log.d(Constants.TAG, "Adding listener for course key: " + mShoppingListKey + " for path " + mShoppingListRef.child("name").toString());
+
 
 		Intent intent = this.getIntent();
-		long listId = intent.getLongExtra(MainActivity.KEY_SELECTED_LIST, -1);
-		Log.d(MyApplication.GD, "stocking with list " + listId);
+//		long listId = intent.getLongExtra(MainActivity.KEY_SELECTED_LIST, -1);
+		Log.d(MyApplication.GD, "stocking with list " + mShoppingListKey);
 
 //		initializeDatabase();
-		initializeShoppingList(listId);
-		getSupportActionBar().setTitle(getShoppingList().getName());
+//		initializeShoppingList(listId);
 		getSupportActionBar().setSubtitle(R.string.stock_activity_subtitle);
 
 		setListView((ListView) findViewById(R.id.stock_list_view));
@@ -79,14 +89,27 @@ public class StockActivity extends ShoppingListActivity {
 		// StockItemAdapter sia = new StockItemAdapter(this,
 		// R.layout.stock_item,
 		// getShoppingList().getItems(Order.STOCK));
-		StockItemAdapter sia = new StockItemAdapter(this, "TODO:SHOP_LIST_KEY");
+		StockItemAdapter sia = new StockItemAdapter(this, mShoppingListKey);
 		setItemAdapter(sia);
 		sia.setStockActivity(this);
 		refreshDisplay();
 		Log.d(MyApplication.GD, "End onCreate stock");
 	}
 
-	@Override
+    class ShoppingListNameValueEventListener implements ValueEventListener {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            Log.d(Constants.TAG, "Data snapshot = " + dataSnapshot);
+            getSupportActionBar().setTitle((String) dataSnapshot.getValue());
+        }
+
+        @Override
+        public void onCancelled(FirebaseError firebaseError) {
+            // empty
+        }
+    }
+
+    @Override
 	protected void onResume() {
 		Log.d(MyApplication.GD, "Begin onresume stock");
 		super.onResume();
@@ -196,7 +219,7 @@ public class StockActivity extends ShoppingListActivity {
 
 	private void loadItemsFromSpreadsheet() {
 		ArrayList<Item> spreadsheetItems = new ArrayList<>();
-		long dummyID = 0;
+		String dummyKey = "DUMMY_KEY";
 		long listId = getShoppingList().getId();
 		Resources r = this.getResources();
 		// InputStream myFile = r.openRawResource(R.raw.shoprite_list);
@@ -254,7 +277,7 @@ public class StockActivity extends ShoppingListActivity {
 			if (name.charAt(0) == '\"') {
 				name = name.substring(1);
 			}
-			spreadsheetItems.add(new Item(dummyID, listId, name, nToStock,
+			spreadsheetItems.add(new Item(dummyKey, mShoppingListKey, name, nToStock,
 					price, size, unitLabel));
 		}
 
@@ -271,7 +294,7 @@ public class StockActivity extends ShoppingListActivity {
 			// for (int i = 0; i < spreadsheetItems.size(); i++) {
 			// Item item = spreadsheetItems.get(i);
 			long id = getIda().insertItem(item);
-			item.setId(id);
+			//item.setId(id);
 		}
 		refreshDisplay();
 	}

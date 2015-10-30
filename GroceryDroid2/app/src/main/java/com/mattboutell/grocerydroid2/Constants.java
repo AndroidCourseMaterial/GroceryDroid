@@ -6,5 +6,6 @@ package com.mattboutell.grocerydroid2;
 public class Constants {
     public static final String PREFS = "PREFS";
     public static final String UID_KEY = "UID_KEY";
+    public static final String SHOPPING_LIST_KEY = "SHOPPING_LIST_KEY";
     public static final String TAG = "GD";
 }

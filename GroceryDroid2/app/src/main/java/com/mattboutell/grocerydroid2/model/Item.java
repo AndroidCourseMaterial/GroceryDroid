@@ -33,13 +33,11 @@ public class Item implements Parcelable {
 	// are easier.
 	private static final float EPSILON = 0.000001f;
 
-	private static final long DEFAULT_ID = 0;
+	private static final String DEFAULT_KEY = "";
 
 	private String mKey;
 	private String mShoppingListKey;  // the list to which it belongs
 
-	private long mId;
-	private long mListId; // the list to which it belongs
 	private String mName;
 	private int mNumStock;
 	private int mNumBuy;
@@ -52,30 +50,13 @@ public class Item implements Parcelable {
 	private int mStockIdx;
 	private int mShopIdx;
 
-	// id, listId, name, nStock, nBuy, price, unitSize, unitLabel, isBought,
-	// stockIdx,
-	// shopIdx
+	// key, listKey, name, nStock, nBuy, price, unitSize, unitLabel, isBought, stockIdx, shopIdx
 
-	/**
-	 * Creates a Item from the given parameters.
-	 * 
-	 * @param id
-	 * @param listId
-	 * @param name
-	 * @param nStock
-	 * @param nBuy
-	 * @param price
-	 * @param unitSize
-	 * @param unitLabel
-	 * @param isBought
-	 * @param stockIdx
-	 * @param shopIdx
-	 */
-	public Item(long id, long listId, String name, int nStock, int nBuy,
+	public Item(String key, String shoppingListKey, String name, int nStock, int nBuy,
 			float price, float unitSize, UnitLabel unitLabel, boolean isBought,
 			int stockIdx, int shopIdx) {
-		this.mId = id;
-		this.mListId = listId;
+		this.mKey = key;
+		this.mShoppingListKey = shoppingListKey;
 		setName(name);
 		this.mNumStock = nStock;
 		this.mNumBuy = nBuy;
@@ -87,32 +68,15 @@ public class Item implements Parcelable {
 		this.mShopIdx = shopIdx;
 	}
 
-	/**
-	 * Creates a Item from the given parameters. Used when loading from a
-	 * spreadsheet.
-	 * 
-	 * @param id
-	 * @param listId
-	 * @param name
-	 * @param nStock
-	 * @param price
-	 * @param unitSize
-	 * @param unitLabel
-	 */
-	public Item(long id, long listId, String name, int nStock, float price,
+
+	public Item(String key, String shoppingListKey, String name, int nStock, float price,
 			float unitSize, UnitLabel unitLabel) {
-		this(id, listId, name, nStock, 0, price, unitSize, unitLabel, false, 0,
+		this(key, shoppingListKey, name, nStock, 0, price, unitSize, unitLabel, false, 0,
 				0);
 	}
 
-
-	/**
-	 * Creates a Item from the given parameters.
-	 * 
-	 * @param listId
-	 */
-	public Item(long listId) {
-		this(DEFAULT_ID, listId, "", 1, 1, 0.0f, 1.0f, UnitLabel.unit, false,
+	public Item(String shoppingListKey) {
+		this(DEFAULT_KEY, shoppingListKey, "", 1, 1, 0.0f, 1.0f, UnitLabel.unit, false,
 				0, 0);
 	}
 
@@ -122,6 +86,7 @@ public class Item implements Parcelable {
 		setValues(snapshot);
 	}
 
+    @SuppressWarnings("unchecked")
 	public void setValues(DataSnapshot snapshot) {
 		if (!(snapshot.getKey().equals(mKey))) {
 			Log.w(Constants.TAG, "Attempt to set values on item with different key");
@@ -164,8 +129,8 @@ public class Item implements Parcelable {
 		// CONSIDER: have String format be locale dependent
 		// USA: String s = String.format("%s (%d) $%.2f/%.1f %s", this.name,
 		// this.nToStock, this.price, this.size, this.unit.toString());
-		return String.format("%d %d %s (%d/%d) %.0fK/%.1f %s %s %d %d",
-				this.mId, this.mListId, this.mName, this.mNumBuy,
+		return String.format("%s %s %s (%d/%d) %.0fK/%.1f %s %s %d %d",
+				this.mKey, this.mShoppingListKey, this.mName, this.mNumBuy,
 				this.mNumStock, this.mPrice, this.mUnitSize, this.mUnitLabel,
 				this.mIsBought ? "B" : "N", this.mStockIdx, this.mShopIdx);
 	}
@@ -242,7 +207,7 @@ public class Item implements Parcelable {
 			return false;
 		}
 		Item other = (Item) object;
-		return this.mId == other.mId && this.mListId == other.mListId
+		return this.mKey.equals(other.mKey) && this.mShoppingListKey.equals(other.mShoppingListKey)
 				&& this.mName.equals(other.mName)
 				&& this.mNumBuy == other.mNumBuy
 				&& this.mNumStock == other.mNumStock
@@ -300,34 +265,6 @@ public class Item implements Parcelable {
 	 */
 	public double getPrice() {
 		return this.mPrice;
-	}
-
-	/**
-	 * Returns the value of the field called 'id'.
-	 * 
-	 * @return Returns the id.
-	 */
-	public long getId() {
-		return this.mId;
-	}
-
-	/**
-	 * Sets the field called 'id' to the given value.
-	 *
-	 * @param id
-	 *            The id to set.
-	 */
-	public void setId(long id) {
-		this.mId = id;
-	}
-
-	/**
-	 * Returns the value of the field called 'listId'.
-	 *
-	 * @return Returns the listId.
-	 */
-	public long getListId() {
-		return this.mListId;
 	}
 
 	/**
@@ -454,7 +391,11 @@ public class Item implements Parcelable {
 		this.mShopIdx = shopIdx;
 	}
 
-	/**
+    public String getShoppingListKey() {
+        return mShoppingListKey;
+    }
+
+    /**
 	 * A list of potential units that this item can be sold in.
 	 * 
 	 * @author Matthew Boutell. Created Nov 7, 2011.
@@ -508,8 +449,8 @@ public class Item implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel out, int flags) {
-		out.writeLong(mId);
-		out.writeLong(mListId);
+		out.writeString(mKey);
+		out.writeString(mShoppingListKey);
 		out.writeString(mName);
 		out.writeInt(mNumStock);
 		out.writeInt(mNumBuy);
@@ -537,8 +478,8 @@ public class Item implements Parcelable {
 	};
 
 	private Item(Parcel in) {
-		mId = in.readLong();
-		mListId = in.readLong();
+		mKey = in.readString();
+		mShoppingListKey = in.readString();
 		mName = in.readString();
 		mNumStock = in.readInt();
 		mNumBuy = in.readInt();

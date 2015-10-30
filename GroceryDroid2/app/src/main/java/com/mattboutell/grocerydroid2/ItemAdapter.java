@@ -20,7 +20,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.BaseAdapter;
 
+import com.firebase.client.ChildEventListener;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.mattboutell.grocerydroid2.model.Item;
 
@@ -41,8 +44,6 @@ public abstract class ItemAdapter extends BaseAdapter {
     protected Firebase mItemsRef;
     protected  ArrayList<Item> mItems = new ArrayList<>();
 
-
-
     public ItemAdapter(Context context, String shoppingListKey) {
 
         Log.d(Constants.TAG, "");
@@ -53,12 +54,66 @@ public abstract class ItemAdapter extends BaseAdapter {
 
         // Do Firebase query in child classes, since they order items differently.
         Query itemsForShoppingListRef = mItemsRef.orderByChild(Item.SHOPPING_LIST_KEY).equalTo(shoppingListKey);
-
+        itemsForShoppingListRef.addChildEventListener(new ItemsChildEventListener());
 
         //Query assignmentsForCourseRef = mAssignmentsRef.orderByChild(Assignment.COURSE_KEY).equalTo(courseKey);
         //assignmentsForCourseRef.addChildEventListener(new AssignmentsChildEventListener());
+    }
 
+    class ItemsChildEventListener implements ChildEventListener {
 
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            mItems.add(new Item(dataSnapshot));
+            // TODO: Sort, by comparator that I set in adapter itself that uses the proper index.
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            for (Item item : mItems) {
+                if (item.getKey().equals(dataSnapshot.getKey())) {
+                    item.setValues(dataSnapshot);
+                    break;
+                }
+            }
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+            for (Item item : mItems) {
+                if (item.getKey().equals(dataSnapshot.getKey())) {
+                    mItems.remove(item);
+                    break;
+                }
+            }
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            // empty now
+        }
+
+        @Override
+        public void onCancelled(FirebaseError firebaseError) {
+            Log.e(Constants.TAG, "Error: " + firebaseError.getMessage());
+        }
+    }
+
+    public void addItem(Item item) {
+        // Doesn't yet have a key
+        mItemsRef.push().setValue(item.valuesMap());
+    }
+
+    public void editItem(Item itemToUpdate) {
+        // Has a key
+        mItemsRef.child(itemToUpdate.getKey()).setValue(itemToUpdate.valuesMap());
+    }
+
+    public void deleteItem(Item itemToDelete) {
+        mItemsRef.child(itemToDelete.getKey()).removeValue();
     }
 
     /**

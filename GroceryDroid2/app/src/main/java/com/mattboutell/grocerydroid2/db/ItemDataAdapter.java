@@ -74,7 +74,7 @@ public class ItemDataAdapter extends TableAdapter {
 	 */
 	private ContentValues toContentValues(Item item) {
 		ContentValues newItemValues = new ContentValues();
-		newItemValues.put(DB_KEY_LIST_ID, item.getListId());
+//		newItemValues.put(DB_KEY_LIST_ID, item.getListId());
 		newItemValues.put(DB_KEY_NAME, item.getName());
 		newItemValues.put(DB_KEY_NUM_TO_STOCK, item.getNStock());
 		newItemValues.put(DB_KEY_NUM_TO_BUY, item.getNBuy());
@@ -101,7 +101,7 @@ public class ItemDataAdapter extends TableAdapter {
 		// Insert the row
 		long rowId = sDb.insert(TABLE_GROCERY_ITEMS, null, newItemValues);
 		// Update the ID if it changed
-		item.setId(rowId);
+		//item.setId(rowId);
 		return rowId;
 	}
 
@@ -115,8 +115,7 @@ public class ItemDataAdapter extends TableAdapter {
 	public boolean updateItem(Item item) {
 		ContentValues newItemValues = toContentValues(item);
 
-		return sDb.update(TABLE_GROCERY_ITEMS, newItemValues, DB_KEY_ID + "="
-				+ item.getId(), null) == 1;
+		return false; //sDb.update(TABLE_GROCERY_ITEMS, newItemValues, DB_KEY_ID + "=" + item.getId(), null) == 1;
 	}
 
 	/**
@@ -126,8 +125,7 @@ public class ItemDataAdapter extends TableAdapter {
 	 * @return True iff one item was successfully removed.
 	 */
 	public boolean deleteItem(Item item) {
-		return sDb.delete(TABLE_GROCERY_ITEMS, DB_KEY_ID + "=" + item.getId(),
-				null) == 1;
+		return false; // sDb.delete(TABLE_GROCERY_ITEMS, DB_KEY_ID + "=" + item.getId(), null) == 1;
 	}
 
 	/**
@@ -213,8 +211,9 @@ public class ItemDataAdapter extends TableAdapter {
 					.getColumnIndexOrThrow(DB_KEY_IS_BOUGHT)) == 1;
 			int stockIdx = c.getInt(c.getColumnIndexOrThrow(DB_KEY_STOCK_IDX));
 			int shopIdx = c.getInt(c.getColumnIndexOrThrow(DB_KEY_SHOP_IDX));
-			return new Item(id, listId, name, nToStock, nToBuy, price, size,
-					unit, isBought, stockIdx, shopIdx);
+			return new Item("invalid key");
+//			return new Item(id, listId, name, nToStock, nToBuy, price, size,
+//					unit, isBought, stockIdx, shopIdx);
 		}
 	}
 }
