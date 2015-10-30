@@ -35,13 +35,18 @@ public abstract class ItemAdapter extends BaseAdapter {
 	// CONSIDER: As I'm writing the one for the Shopping Activity, what can I
 	// move here?
 
+    protected final Context mContext;
 	protected final LayoutInflater mInflater;
     protected String mShoppingListKey;
     protected Firebase mItemsRef;
     protected  ArrayList<Item> mItems = new ArrayList<>();
 
+
+
     public ItemAdapter(Context context, String shoppingListKey) {
+
         Log.d(Constants.TAG, "");
+        mContext = context;
         mInflater = LayoutInflater.from(context);
         mShoppingListKey = shoppingListKey;
         mItemsRef = new Firebase(context.getString(R.string.firebase_url_format, "items/"));

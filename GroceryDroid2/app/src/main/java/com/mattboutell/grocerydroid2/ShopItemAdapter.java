@@ -16,7 +16,6 @@
 package com.mattboutell.grocerydroid2;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -26,8 +25,6 @@ import android.widget.TextView;
 
 import com.mattboutell.grocerydroid2.model.Item;
 
-import java.util.List;
-
 /**
  * A custom adapter for my shop items, which contain text and a checkbox.
  * 
@@ -35,50 +32,28 @@ import java.util.List;
  */
 public class ShopItemAdapter extends ItemAdapter {
 
-	private int mResourceId;
 	private ShopActivity mShopActivity;
 	
 	/**
 	 * Creates a ShopItemAdapter from the given parameters.
 	 * 
 	 * @param context
-	 * @param textViewResourceId
-	 * @param objects
+	 * @param shoppingListKey
 	 */
-	public ShopItemAdapter(Context context, int textViewResourceId,
-			List<Item> objects) {
-		super(context, textViewResourceId, objects);
+	public ShopItemAdapter(Context context, String shoppingListKey) {
+		super(context, shoppingListKey);
 
-		// Save the resource so I can inflate it later
-		this.mResourceId = textViewResourceId;
-	}
-
-	/**
-	 * Creates a ShopItemAdapter from the given parameters.
-	 * 
-	 * @param context
-	 * @param resource
-	 * @param textViewResourceId
-	 * @param objects
-	 */
-	public ShopItemAdapter(Context context, int resource,
-			int textViewResourceId, List<Item> objects) {
-		super(context, resource, textViewResourceId, objects);
-		this.mResourceId = textViewResourceId;
 	}
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		RelativeLayout shopItemView;
-		final Item item = this.getItem(position);
+        final Item item = (Item)getItem(position);
 
 		// Create a view if it doesn't exist
 		if (convertView == null) {
-			shopItemView = new RelativeLayout(this.getContext());
-			String inflater = Context.LAYOUT_INFLATER_SERVICE;
-			LayoutInflater vi = (LayoutInflater) getContext().getSystemService(
-					inflater);
-			vi.inflate(this.mResourceId, shopItemView, true);
+			shopItemView = new RelativeLayout(mContext);
+			mInflater.inflate(R.layout.shop_item, shopItemView, true);
 		} else {
 			shopItemView = (RelativeLayout) convertView;
 		}
@@ -91,13 +66,14 @@ public class ShopItemAdapter extends ItemAdapter {
             @Override
             public void onClick(View v) {
                 item.setBought(!item.isBought());
-                mShopActivity.refreshDisplay();
+                ((ShopActivity)mShopActivity).refreshDisplay();
             }
         });
 
 		TextView nameView = (TextView) shopItemView
 				.findViewById(R.id.shop_item_view_name_and_to_buy);
-		nameView.setText(mShopActivity.getString(R.string.shop_item_format, item.getName(), item.getNBuy()));
+		nameView.setText(mContext.getString(R.string.shop_item_format, item.getName(), item.getNBuy()));
+
 
 		TextView infoView = (TextView) shopItemView
 				.findViewById(R.id.shop_item_view_info);

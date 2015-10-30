@@ -17,16 +17,14 @@ package com.mattboutell.grocerydroid2;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.mattboutell.grocerydroid2.model.Item;
 
-import java.util.List;
+import com.mattboutell.grocerydroid2.model.Item;
 
 /**
  * A custom adapter for my stock items, which contain text and multiple buttons.
@@ -35,78 +33,40 @@ import java.util.List;
  */
 public class StockItemAdapter extends ItemAdapter {
 
-	private int mResourceId;
 	private StockActivity mStockActivity;
 
 	/**
 	 * Creates a StockItemAdapter from the given parameters.
 	 * 
 	 * @param context
-	 * @param textViewResourceId
+	 * @param shoppingListKey
 	 */
-	public StockItemAdapter(Context context, int textViewResourceId) {
-		super(context, textViewResourceId);
-
-		// Save the resource so I can inflate it later
-		this.mResourceId = textViewResourceId;
-	}
-
-
-	
-	/**
-	 * Creates a StockItemAdapter from the given parameters.
-	 * 
-	 * @param context
-	 * @param textViewResourceId
-	 * @param objects
-	 */
-	public StockItemAdapter(Context context, int textViewResourceId,
-			List<Item> objects) {
-		super(context, textViewResourceId, objects);
-
-		// Save the resource so I can inflate it later
-		this.mResourceId = textViewResourceId;
-	}
-
-	/**
-	 * Creates a StockItemAdapter from the given parameters.
-	 * 
-	 * @param context
-	 * @param resource
-	 * @param textViewResourceId
-	 * @param objects
-	 */
-	public StockItemAdapter(Context context, int resource,
-			int textViewResourceId, List<Item> objects) {
-		super(context, resource, textViewResourceId, objects);
-		this.mResourceId = textViewResourceId;
+	public StockItemAdapter(Context context, String shoppingListKey) {
+		super(context, shoppingListKey);
 	}
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		RelativeLayout stockItemView;
-		final Item item = this.getItem(position);
+		final Item item = (Item)this.getItem(position);
 
 		// Create a view if it doesn't exist
 		if (convertView == null) {
-			stockItemView = new RelativeLayout(this.getContext());
-			String inflater = Context.LAYOUT_INFLATER_SERVICE;
-			LayoutInflater vi = (LayoutInflater) getContext().getSystemService(
-					inflater);
-			vi.inflate(this.mResourceId, stockItemView, true);
+			stockItemView = new RelativeLayout(mContext);
+			mInflater.inflate(R.layout.stock_item, stockItemView, true);
 		} else {
 			stockItemView = (RelativeLayout) convertView;
 		}
 
 		final Button addStockButton = (Button) stockItemView
 				.findViewById(R.id.add_stock_button);
-		addStockButton.setText(mStockActivity.getString(R.string.buy_format, item.getNBuy()));
+		addStockButton.setText(mContext.getString(R.string.buy_format, item.getNBuy()));
 		addStockButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Log.d(MyApplication.GD, "" + v.getId() + " " + position);
 				item.incrementNumberToBuy();
-				addStockButton.setText(mStockActivity.getString(R.string.buy_format, item.getNBuy()));
+				addStockButton.setText(mContext.getString(R.string.buy_format, item.getNBuy()));
 				mStockActivity.updateItem(item);
 			}
 		});
@@ -118,7 +78,7 @@ public class StockItemAdapter extends ItemAdapter {
 			public void onClick(View v) {
 				Log.d(MyApplication.GD, "" + v.getId() + " " + position);
 				item.resetNumberToBuy();
-				addStockButton.setText(mStockActivity.getString(R.string.buy_format, item.getNBuy()));
+				addStockButton.setText(mContext.getString(R.string.buy_format, item.getNBuy()));
 				mStockActivity.updateItem(item);
 			}
 		});
