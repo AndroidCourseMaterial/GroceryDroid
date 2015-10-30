@@ -61,16 +61,14 @@ public class ShopActivity extends ShoppingListActivity {
 		Intent intent = this.getIntent();
 		long listId = intent.getLongExtra(MainActivity.KEY_SELECTED_LIST, -1);
 
-		initializeDatabase();
+		// initializeDatabase();
 		initializeShoppingList(listId);
 		getSupportActionBar().setTitle(getShoppingList().getName());
 		getSupportActionBar().setSubtitle(R.string.shop_activity_subtitle);
-
 		mItemsToDisplay = new ArrayList<>();
 
 		setListView((ListView) findViewById(R.id.shop_list_view));
-		ShopItemAdapter sia = new ShopItemAdapter(this, R.layout.shop_item,
-				mItemsToDisplay);
+		ShopItemAdapter sia = new ShopItemAdapter(this, "TODO");
 		setItemAdapter(sia);
 		sia.setShopActivity(this);
 

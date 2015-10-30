@@ -206,7 +206,7 @@ public class ShoppingList {
         for (int i = 0; i < this.mItems.size(); i++) {
             // CONSIDER: switch order backwards so that adding an item to the
             // top doesn't affect the order of every item in the list.
-            adapter.getItem(i).setStockIdx(i + 1);
+            ((Item)adapter.getItem(i)).setStockIdx(i + 1);
         }
 
     }
@@ -224,7 +224,7 @@ public class ShoppingList {
         for (int i = 0; i < this.mItems.size(); i++) {
             // CONSIDER: switch order backwards so that adding an item to the
             // top doesn't affect the order of every item in the list.
-            adapter.getItem(i).setShopIdx(i + 1);
+            ((Item)adapter.getItem(i)).setShopIdx(i + 1);
         }
     }
 

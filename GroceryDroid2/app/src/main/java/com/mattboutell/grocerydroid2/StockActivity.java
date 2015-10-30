@@ -69,7 +69,7 @@ public class StockActivity extends ShoppingListActivity {
 		long listId = intent.getLongExtra(MainActivity.KEY_SELECTED_LIST, -1);
 		Log.d(MyApplication.GD, "stocking with list " + listId);
 
-		initializeDatabase();
+//		initializeDatabase();
 		initializeShoppingList(listId);
 		getSupportActionBar().setTitle(getShoppingList().getName());
 		getSupportActionBar().setSubtitle(R.string.stock_activity_subtitle);
@@ -79,7 +79,7 @@ public class StockActivity extends ShoppingListActivity {
 		// StockItemAdapter sia = new StockItemAdapter(this,
 		// R.layout.stock_item,
 		// getShoppingList().getItems(Order.STOCK));
-		StockItemAdapter sia = new StockItemAdapter(this, R.layout.stock_item);
+		StockItemAdapter sia = new StockItemAdapter(this, "TODO:SHOP_LIST_KEY");
 		setItemAdapter(sia);
 		sia.setStockActivity(this);
 		refreshDisplay();
@@ -98,10 +98,11 @@ public class StockActivity extends ShoppingListActivity {
 	@Override
 	protected void refreshDisplay() {
 		updateMainPrompt();
-		getItemAdapter().clear();
-		for (Item item : getShoppingList().getItems(ShoppingList.Order.STOCK)) {
-			getItemAdapter().add(item);
-		}
+// TODO: update
+//		getItemAdapter().clear();
+//		for (Item item : getShoppingList().getItems(ShoppingList.Order.STOCK)) {
+//			getItemAdapter().add(item);
+//		}
 		getItemAdapter().notifyDataSetChanged(); // redundant?
 	}
 
