@@ -37,19 +37,6 @@ public abstract class ShoppingListActivity extends AppCompatActivity {
 	private ListView mListView;
 	private ItemAdapter mItemAdapter;
 
-	
-	/**
-	 * Creates data adapters for each table, and opens them for writing.
-	 *
-	 */
-	protected void initializeDatabase() {
-		this.mSlda = new ShoppingListDataAdapter();
-		this.mSlda.open();
-
-		this.mIda = new ItemDataAdapter();
-		this.mIda.open();
-	}
-
 	/**
 	 * Returns the value of the field called 'mIda'.
 	 * @return Returns the mIda.

@@ -16,53 +16,71 @@
 package com.mattboutell.grocerydroid2;
 
 import android.content.Context;
-import android.widget.ArrayAdapter;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.widget.BaseAdapter;
 
+import com.firebase.client.Firebase;
 import com.mattboutell.grocerydroid2.model.Item;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * A base class for adapters that display items on ShoppingList activities.
  * 
  * @author Matthew Boutell. Created Apr 18, 2012.
  */
-public abstract class ItemAdapter extends ArrayAdapter<Item> {
+public abstract class ItemAdapter extends BaseAdapter {
 	// CONSIDER: As I'm writing the one for the Shopping Activity, what can I
 	// move here?
 
-	/**
-	 * Creates an ItemAdapter from the given parameters.
-	 * 
-	 * @param context
-	 * @param textViewResourceId
-	 */
-	public ItemAdapter(Context context, int textViewResourceId) {
-		super(context, textViewResourceId);
-	}
+	protected final LayoutInflater mInflater;
+    protected String mShoppingListKey;
+    protected Firebase mItemsRef;
+    protected  ArrayList<Item> mItems = new ArrayList<>();
 
-	/**
-	 * Creates an ItemAdapter from the given parameters.
-	 * 
-	 * @param context
-	 * @param textViewResourceId
-	 * @param objects
-	 */
-	public ItemAdapter(Context context, int textViewResourceId,
-			List<Item> objects) {
-		super(context, textViewResourceId, objects);
-	}
+    public ItemAdapter(Context context, String shoppingListKey) {
+        Log.d(Constants.TAG, "");
+        mInflater = LayoutInflater.from(context);
+        mShoppingListKey = shoppingListKey;
+        mItemsRef = new Firebase(context.getString(R.string.firebase_url_format, "items/"));
 
-	/**
-	 * Creates an ItemAdapter from the given parameters.
-	 * 
-	 * @param context
-	 * @param resource
-	 * @param textViewResourceId
-	 * @param objects
-	 */
-	public ItemAdapter(Context context, int resource, int textViewResourceId,
-			List<Item> objects) {
-		super(context, resource, textViewResourceId, objects);
-	}
+        // Do Firebase query in child classes, since they order items differently.
+
+    }
+
+    /**
+     * How many items are in the data set represented by this Adapter.
+     *
+     * @return Count of items.
+     */
+    @Override
+    public int getCount() {
+        return mItems.size();
+    }
+
+    /**
+     * Get the data item associated with the specified position in the data set.
+     *
+     * @param position Position of the item whose data we want within the adapter's
+     *                 data set.
+     * @return The data at the specified position.
+     */
+    @Override
+    public Object getItem(int position) {
+        return mItems.get(position);
+    }
+
+    /**
+     * Get the row id associated with the specified position in the list.
+     *
+     * @param position The position of the item within the adapter's data set whose row id we want.
+     * @return The id of the item at the specified position.
+     */
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    // getView is in children.
 }

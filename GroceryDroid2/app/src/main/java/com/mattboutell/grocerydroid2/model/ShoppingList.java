@@ -21,7 +21,7 @@ import java.util.Map;
 public class ShoppingList {
     public static final String OWNER_UID = "owner_uid";
     public static final String NAME = "name";
-    public static final String DISPLAY_INDEX = "display_index";
+    //public static final String DISPLAY_INDEX = "display_index";
 
     private static final long DEFAULT_ID = 0;
     private String mKey;
@@ -30,7 +30,7 @@ public class ShoppingList {
     private String mName;
     private double mPriority;
     private ArrayList<Item> mItems;
-    private long mDisplayIdx;
+    //private long mDisplayIdx;
 
     /**
      * Creates a ShoppingList from the given parameters.
@@ -42,7 +42,7 @@ public class ShoppingList {
     public ShoppingList(long id, String name, int displayIdx) {
         mId = id;
         mName = name;
-        mDisplayIdx = displayIdx;
+        // mDisplayIdx = displayIdx;
         mItems = new ArrayList<>();
     }
 
@@ -87,6 +87,8 @@ public class ShoppingList {
                 mPriority = (double) snapshot.getPriority();
             }
             mOwnerUid = (String) values.get(OWNER_UID);
+            mItems = new ArrayList<>();
+            // TODO: fill this with data? Or do later in next activity?
         }
     }
 
