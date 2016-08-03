@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View v, int pos,
                                     long id) {
                 mSelectedList = (ShoppingList)mAdapter.getItem(pos);
+
                 DialogFragment df = ChooseActionDialogFragment.newInstance();
                 df.show(getFragmentManager(), "choose_action");
             }

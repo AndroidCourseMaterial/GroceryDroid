@@ -58,6 +58,10 @@ public class StockActivity extends ShoppingListActivity {
 		Log.d(MyApplication.GD, "Begin onCreate stock");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_stock);
+
+        // TODO: super.initializeShoppingListActivity();
+
+
 		getSupportActionBar().setIcon(R.mipmap.ic_action_notepaper);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
